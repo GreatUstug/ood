@@ -1,5 +1,6 @@
 add_executable(my_tests
-        FiguresTest.cpp
+        TestTask1.cpp
+        TestTask2.cpp
 )
 
 target_link_libraries(my_tests

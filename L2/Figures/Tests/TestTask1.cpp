@@ -182,5 +182,5 @@ TEST(ObserverTest, FailedOperationDoesNotNotify) {
 
     EXPECT_THROW(picture.EditShapeColor("fig1", "#ZZZZZZ"), std::runtime_error);
 
-    EXPECT_EQ(obs.count, 1);  // уведомления не было
+    EXPECT_EQ(obs.count, 1);
 }

@@ -13,28 +13,56 @@ class ObserverList
 public:
 	void AddObserver(TObserver* observer)
 	{
-		if (std::find(m_observers.begin(), m_observers.end(), observer) != m_observers.end())
-			return;
-		m_observers.push_back(observer);
+		if (!observer) return;
+		for (const auto& entry : m_entries)
+		{
+			if (entry.observer == observer && entry.active)
+			{
+				return;
+			}
+		}
+		m_entries.push_back({observer, m_generation, true});
 	}
 	void RemoveObserver(TObserver* observer)
 	{
 		if (!observer) return;
-		m_observers.erase(
-			std::remove(m_observers.begin(), m_observers.end(), observer),
-			m_observers.end());
+		for (auto& e : m_entries) {
+			if (e.active && e.observer == observer) {
+				e.active = false;
+				return;
+			}
+		}
 	}
 
 	template <typename Fn>
 	void Notify(Fn&& fn) {
-		auto copy = m_observers;
-		for (auto* obs : copy) {
-			fn(obs);
+		++m_generation;
+		const std::size_t snapshotGen  = m_generation;
+		const std::size_t snapshotSize = m_entries.size();
+		for (std::size_t i = 0; i < snapshotSize; ++i)
+		{
+			Entry& entry = m_entries[i];
+			if (!entry.active) continue;
+			if (entry.generation >= snapshotGen) continue;
+			fn(m_entries[i].observer);
 		}
+		m_entries.erase(
+			std::remove_if(m_entries.begin(), m_entries.end(),
+						   [](const Entry& e) { return !e.active; }),
+			m_entries.end());
 	}
-
-	std::size_t Size() const { return m_observers.size(); }
+	std::size_t CountActive() const {
+		return static_cast<std::size_t>(std::count_if(
+			m_entries.begin(), m_entries.end(),
+			[](const Entry& e) { return e.active; }));
+	}
 private:
-	std::vector<TObserver*> m_observers;
+	struct Entry {
+		TObserver*  observer;
+		std::size_t generation;
+		bool        active;
+	};
+	std::vector<Entry> m_entries;
+	size_t m_generation = 0;
 };
 #endif //FIGURES_OBSERVERLIST_H
