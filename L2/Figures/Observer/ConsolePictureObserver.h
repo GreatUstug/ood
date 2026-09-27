@@ -12,8 +12,8 @@ class ConsolePictureObserver : public IPictureObserver {
 public:
 	explicit ConsolePictureObserver(std::ostream& out) : m_out(out) {}
 
-	void OnPictureChanged(const shapes::Picture& picture) override {
-		m_out << "Picture changed. Shapes: " << picture.GetShapeCount() << "\n";
+	void OnPictureChanged(size_t shapesCount) override {
+		m_out << "Picture changed. Shapes: " << shapesCount << "\n";
 	}
 
 private:

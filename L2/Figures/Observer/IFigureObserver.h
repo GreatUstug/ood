@@ -13,6 +13,6 @@ class IFigure;
 class IFigureObserver {
 public:
 	virtual ~IFigureObserver() = default;
-	virtual void OnShapeChanged(const shapes::IFigure& figure) = 0;
+	virtual void OnShapeChanged() = 0;
 };
 #endif //FIGURES_ISHAPEOBSERVER_H

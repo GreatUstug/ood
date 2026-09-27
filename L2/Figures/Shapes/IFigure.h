@@ -15,7 +15,7 @@ public:
 	IFigure(const std::string& id,
 		  const std::string& color,
 		  std::unique_ptr<IShapeGeometry> geometry)
-		: m_id(id), m_colorStr(color), m_colorRGB(gfx::Color::Parse(color)), m_geometry(std::move(geometry))
+		: m_id(id), m_colorRGB(gfx::Color::ParseToRGB(color)), m_geometry(std::move(geometry))
 	{
 	}
 
@@ -26,8 +26,7 @@ public:
 
 	void SetColor(const std::string& color)
 	{
-		m_colorStr = color;
-		m_colorRGB = gfx::Color::Parse(color);
+		m_colorRGB = gfx::Color::ParseToRGB(color);
 		NotifyObservers();
 	}
 
@@ -47,20 +46,19 @@ public:
 	std::string GetInfo() const {
 		std::string geo = m_geometry->GetInfo();
 		auto sp = geo.find(' ');
-		return geo.substr(0, sp) + " " + m_id + " " + m_colorStr + geo.substr(sp);
+		return geo.substr(0, sp) + " " + m_id + " " + m_colorRGB.ParseToString() + geo.substr(sp);
 	}
 
 	void AddObserver(IFigureObserver* obs)    { m_observers.AddObserver(obs); }
 	void RemoveObserver(IFigureObserver* obs) { m_observers.RemoveObserver(obs); };
 private:
 	void NotifyObservers() {
-		m_observers.Notify([this](IFigureObserver* o) {
-			o->OnShapeChanged(*this);
+		m_observers.Notify([](IFigureObserver* o) {
+			o->OnShapeChanged();
 		});
 	}
 	std::string m_id;
 	gfx::Color m_colorRGB;
-	std::string m_colorStr;
 	std::unique_ptr<IShapeGeometry> m_geometry;
 	ObserverList<IFigureObserver> m_observers;
 };

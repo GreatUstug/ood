@@ -15,8 +15,9 @@
 
 namespace shapes
 {
-	class Picture : public IFigureObserver	{
+	class Picture : public IFigureObserver {
 public:
+		Picture() {}
 		void AddShape(std::unique_ptr<IFigure> figure) {
 			const std::string id = figure->GetId();
 			if (m_shapes.contains(id)) {
@@ -85,11 +86,14 @@ public:
     }
 		void AddObserver(IPictureObserver* observer)    { m_observers.AddObserver(observer); }
 		void RemoveObserver(IPictureObserver* observer) { m_observers.RemoveObserver(observer); }
+		void OnShapeChanged() override {
+			NotifyPictureObservers();
+		}
 
 private:
 		void NotifyPictureObservers() {
 			m_observers.Notify([this](IPictureObserver* o) {
-				o->OnPictureChanged(*this);
+				o->OnPictureChanged(m_shapes.size());
 			});
 		}
     std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;

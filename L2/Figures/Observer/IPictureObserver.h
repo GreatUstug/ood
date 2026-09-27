@@ -8,7 +8,7 @@
 class IPictureObserver {
 public:
 	virtual ~IPictureObserver() = default;
-	virtual void OnPictureChanged(const shapes::Picture& picture) = 0;
+	virtual void OnPictureChanged(std::size_t shapeCount) = 0;
 };
 
 #endif //FIGURES_IPICTUREOBSERVER_H
