@@ -21,7 +21,7 @@ public:
 		void AddShape(std::unique_ptr<IFigure> figure) {
 			const std::string id = figure->GetId();
 			if (m_shapes.contains(id)) {
-				throw std::runtime_error("Shape with this ID already exists");
+				throw std::invalid_argument("Shape with this ID already exists");
 			}
 			figure->AddObserver(this);
 			m_order.push_back(id);
@@ -31,7 +31,7 @@ public:
 
     void MoveShape(const std::string& id, double dx, double dy) {
         auto it = m_shapes.find(id);
-        if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+        if (it == m_shapes.end()) throw std::invalid_argument("Shape not found. MoveShape isn't available.");
         it->second->Move(dx, dy);
     }
 
@@ -42,7 +42,7 @@ public:
     }
 
     void DeleteShape(const std::string& id) {
-        if (!m_shapes.contains(id)) throw std::runtime_error("Shape not found");
+        if (!m_shapes.contains(id)) throw std::invalid_argument("Shape not found. DeleteShape isn't available");
 			m_shapes.find(id)->second->RemoveObserver(this);
         m_shapes.erase(id);
         m_order.erase(std::remove(m_order.begin(), m_order.end(), id), m_order.end());
@@ -51,13 +51,13 @@ public:
 
     void EditShapeColor(const std::string& id, const std::string& color) {
         auto it = m_shapes.find(id);
-        if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+        if (it == m_shapes.end()) throw std::invalid_argument("Shape not found. Edit color of this shape isn't available");
         it->second->SetColor(color);
     }
 
 	void ChangeShape(const std::string& id, std::unique_ptr<IShapeGeometry> geometry) {
     	auto it = m_shapes.find(id);
-    	if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+    	if (it == m_shapes.end()) throw std::invalid_argument("Shape not found. ChangeShape isn't available");
     	it->second->SetGeometry(std::move(geometry));
     }
 
@@ -75,7 +75,7 @@ public:
 
 		void DrawShape(const std::string& id, gfx::ICanvas& canvas) const {
     	auto it = m_shapes.find(id);
-    	if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+    	if (it == m_shapes.end()) throw std::invalid_argument("Shape with this id not found. Draw isn't available");
     	it->second->Draw(canvas);
     }
 
@@ -88,7 +88,7 @@ public:
 
 		IFigure& GetShape(const std::string& id) {
 			auto it = m_shapes.find(id);
-			if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+			if (it == m_shapes.end()) throw std::invalid_argument("Shape with this id not found.");
 			return *it->second;
 		}
 
