@@ -4,7 +4,7 @@
 
 #ifndef FIGURES_IPICTUREOBSERVER_H
 #define FIGURES_IPICTUREOBSERVER_H
-#include <Shapes/Picture.h>
+
 class IPictureObserver {
 public:
 	virtual ~IPictureObserver() = default;

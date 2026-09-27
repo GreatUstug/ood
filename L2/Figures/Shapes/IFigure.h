@@ -1,8 +1,8 @@
 // Shapes/Shape.h
 #pragma once
 #include "Figures/IShapeGeometry.h"
-#include "Observer/IFigureObserver.h"
-#include "Observer/ObserverList.h"
+#include "../Observer/IFigureObserver.h"
+#include "../Observer/ObserverList.h"
 
 #include <memory>
 #include <string>

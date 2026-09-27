@@ -2,8 +2,8 @@
 #pragma once
 #include "IFigure.h"
 #include "Figures/IShapeGeometry.h"
-#include "gfx/ICanvas.h"
-#include "Observer/IPictureObserver.h"
+#include "../gfx/ICanvas.h"
+#include "../Observer/IPictureObserver.h"
 
 #include <map>
 #include <memory>
@@ -26,6 +26,7 @@ public:
 			figure->AddObserver(this);
 			m_order.push_back(id);
 			m_shapes[id] = std::move(figure);
+			NotifyPictureObservers();
 		}
 
     void MoveShape(const std::string& id, double dx, double dy) {
@@ -84,6 +85,14 @@ public:
     		if (it != m_shapes.end()) it->second->Draw(canvas);
     	}
     }
+
+		IFigure& GetShape(const std::string& id) {
+			auto it = m_shapes.find(id);
+			if (it == m_shapes.end()) throw std::runtime_error("Shape not found");
+			return *it->second;
+		}
+
+
 		void AddObserver(IPictureObserver* observer)    { m_observers.AddObserver(observer); }
 		void RemoveObserver(IPictureObserver* observer) { m_observers.RemoveObserver(observer); }
 		void OnShapeChanged() override {
