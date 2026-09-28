@@ -47,10 +47,10 @@ TEST(SubscriptionTest, DestroyedSubscriptionStopsNotifications) {
         auto sub = picture.Subscribe(&obs);
         picture.AddShape(MakeCircle("c1"));
         EXPECT_EQ(obs.count, 1);
-    }   // sub уничтожен → Disconnect → отписка
+    }
 
     picture.AddShape(MakeCircle("c2"));
-    EXPECT_EQ(obs.count, 1);  // не изменился
+    EXPECT_EQ(obs.count, 1);
 }
 
 TEST(SubscriptionTest, DisconnectStopsNotifications) {
@@ -103,7 +103,7 @@ TEST(SubscriptionTest, ObserverCanDisconnectFromHandler) {
     EXPECT_EQ(obs.count, 1);
 
     picture.AddShape(MakeCircle("c2"));
-    EXPECT_EQ(obs.count, 1);   // отписан — уведомлений нет
+    EXPECT_EQ(obs.count, 1);
 }
 
 TEST(SubscriptionTest, ObserverDestroyedBeforeSubject) {
@@ -174,7 +174,7 @@ TEST(SubscriptionTest, FigureDestroyedBeforeSubscription) {
         sub = figure->Subscribe(&obs);
         figure->Move(1, 1);
         EXPECT_EQ(obs.count, 1);
-    }   // figure уничтожена, sub жив
+    }
 
     EXPECT_NO_THROW(sub->Disconnect());
     EXPECT_FALSE(sub->IsActive());

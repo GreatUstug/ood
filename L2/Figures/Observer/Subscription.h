@@ -28,6 +28,7 @@ public:
     void Disconnect() {
         if (!m_active) return;
         if (m_alive && m_subject) {
+        	m_subject->UnsubscribeObserver(m_observer);
             m_subject->UnregisterSubscription(this);
         }
         m_active = false;
