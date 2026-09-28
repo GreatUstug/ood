@@ -43,7 +43,8 @@ add_executable(Figures main.cpp
         Observer/IFigureObserver.h
         Observer/IPictureObserver.h
         Observer/ObserverList.h
-        Observer/ConsolePictureObserver.h)
+        Observer/ConsolePictureObserver.h
+        Observer/Subscription.h)
 target_include_directories(Figures PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(Figures PRIVATE
         sfml-graphics

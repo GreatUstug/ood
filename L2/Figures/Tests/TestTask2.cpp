@@ -4,21 +4,12 @@
 #include <vector>
 #include <string>
 
-// ============================================================
-// Тестовый наблюдатель
-// ============================================================
-//
-// Хранит указатель на ObserverList, чтобы во время OnChanged
-// можно было дёрнуть AddObserver/RemoveObserver.
-// Записывает в log своё имя при каждом вызове.
-
 class TestObserver {
 public:
     std::string name;
     std::vector<std::string>* log = nullptr;
     ObserverList<TestObserver>* list = nullptr;
 
-    // Опциональные действия, выполняемые в OnChanged:
     std::function<void()> action;
 
     explicit TestObserver(std::string n) : name(std::move(n)) {}
@@ -28,10 +19,6 @@ public:
         if (action) action();
     }
 };
-
-// ============================================================
-// 1. Наблюдатель отписывает сам себя
-// ============================================================
 
 TEST(ObserverListTest, ObserverUnsubscribesItself) {
     ObserverList<TestObserver> list;
@@ -139,11 +126,9 @@ TEST(ObserverListTest, NewObserverCalledInNextNotify) {
 
     a.action = [&]() { list.AddObserver(&c); };
 
-    // Первая рассылка — C регистрируется, но не вызывается.
     list.Notify([](TestObserver* o) { o->OnChanged(); });
     log.clear();
 
-    // Вторая рассылка — C уже участвует.
     list.Notify([](TestObserver* o) { o->OnChanged(); });
 
     ASSERT_EQ(log.size(), 3u);
