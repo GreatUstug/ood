@@ -12,6 +12,16 @@
 
 const std::size_t COUNT_OF_MARKERS = 8;
 const float SIZE_OF_MARKER = 10.0;
+const EditorState::Handle order[] = {
+	EditorState::Handle::NW,
+	EditorState::Handle::N,
+	EditorState::Handle::NE,
+	EditorState::Handle::E,
+	EditorState::Handle::SE,
+	EditorState::Handle::S,
+	EditorState::Handle::SW,
+	EditorState::Handle::W,
+};
 
 inline std::array<std::pair<double, double>, COUNT_OF_MARKERS>
 HandlesOf(const shapes::Bounds& b)
@@ -31,7 +41,16 @@ HandlesOf(const shapes::Bounds& b)
 
 inline EditorState::Handle HitTestHandle(const shapes::Bounds& b, double px, double py)
 {
-
+	auto handles = HandlesOf(b);
+	for (std::size_t i = 0; i < handles.size(); ++i)
+	{
+		auto handle = handles[i];
+		if (std::abs(px - handle.first) <= SIZE_OF_MARKER && std::abs(py - handle.second) <= SIZE_OF_MARKER)
+		{
+			return order[i];
+		}
+	}
+	return EditorState::Handle::None;
 }
 
 inline void DrawSelectionFrame(gfx::ICanvas& canvas, const shapes::Bounds& bounds)

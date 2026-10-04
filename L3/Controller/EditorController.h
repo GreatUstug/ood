@@ -5,6 +5,7 @@
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Cursor.hpp"
 #include "Shapes/Picture.h"
 #include "State/DrawSelectionFrame.h"
 #include "State/EditorState.h"
@@ -84,11 +85,50 @@ class Picture;}class EditorController
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
+		if (!m_state.isDragging && !m_state.IsResizing())
+		{
+			UpdateCursor(pos);
+		}
 		if (m_state.HasSelection() && (m_state.IsResizing() || m_state.isDragging))
 		{
 			m_state.IsResizing() ? Resize(pos) : Drag(pos);
 		}
 	};
+	void UpdateCursor(const sf::Vector2f& pos)
+	{
+		if (!m_state.HasSelection() || !m_picture.HasShape(m_state.selectedId)) {
+			m_window.setMouseCursor(m_cursorArrow);
+			return;
+		}
+
+		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
+		auto h = HitTestHandle(bounds, pos.x, pos.y);
+		switch (h) {
+		case EditorState::Handle::NW:
+		case EditorState::Handle::SE:
+			m_window.setMouseCursor(m_cursorD1);
+			break;
+
+		case EditorState::Handle::NE:
+		case EditorState::Handle::SW:
+			m_window.setMouseCursor(m_cursorD2);
+			break;
+
+		case EditorState::Handle::N:
+		case EditorState::Handle::S:
+			m_window.setMouseCursor(m_cursorV);
+			break;
+
+		case EditorState::Handle::E:
+		case EditorState::Handle::W:
+			m_window.setMouseCursor(m_cursorH);
+			break;
+
+		default:
+			m_window.setMouseCursor(m_cursorArrow);
+			break;
+		}
+	}
 	void Resize(const sf::Vector2f& position)
 	{
 		auto start = m_state.resizeStartBounds;
@@ -166,6 +206,11 @@ class Picture;}class EditorController
 	sf::RenderWindow& m_window;
 	int m_canvasWidth;
 	int m_canvasHeight;
+	sf::Cursor m_cursorArrow{sf::Cursor::Type::Arrow};
+	sf::Cursor m_cursorH{sf::Cursor::Type::SizeHorizontal};
+	sf::Cursor m_cursorV{sf::Cursor::Type::SizeVertical};
+	sf::Cursor m_cursorD1{sf::Cursor::Type::SizeTopLeftBottomRight};
+	sf::Cursor m_cursorD2{sf::Cursor::Type::SizeBottomLeftTopRight};
 };
 
 #endif //L3_EDITCONTROLLER_H

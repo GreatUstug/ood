@@ -69,22 +69,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Подготовка к ресайзу">
-      <change afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Первая версия ресайза и переделка на MVC">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Lab1Picture.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Lab1Shape.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/MockCanvas.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/TestTask1.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/TestTask2.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/TestTask3.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/EditorState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -445,7 +433,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="19731000" />
+      <workItem from="1791103479138" duration="22185000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -519,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791133754044</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Лабораторная работа 3. Первая версия ресайза и переделка на MVC">
+      <option name="closed" value="true" />
+      <created>1791136843594</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1791136843594</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -563,7 +559,8 @@
     <MESSAGE value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
     <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Подготовка к ресайзу" />
+    <MESSAGE value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
