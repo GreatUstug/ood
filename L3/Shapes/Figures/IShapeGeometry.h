@@ -20,6 +20,7 @@ public:
 	virtual void Move(double dx, double dy) {};
 	virtual void Draw(gfx::ICanvas& canvas) const = 0;
 	virtual Bounds GetBounds() const = 0;
+	virtual bool HitTest(double x, double y) const = 0;
 };
 }
 

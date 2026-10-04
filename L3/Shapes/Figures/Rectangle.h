@@ -36,6 +36,10 @@ public:
 	Bounds GetBounds() const override {
 		return {m_x, m_y, m_width, m_height};
 	}
+	bool HitTest(double px, double py) const override {
+		return px >= m_x && px <= m_x + m_width
+			&& py >= m_y && py <= m_y + m_height;
+	}
 private:
 	double m_x = 0;
 	double m_y = 0;

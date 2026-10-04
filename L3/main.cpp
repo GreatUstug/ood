@@ -21,14 +21,24 @@ int main() {
 		"tri1", "#0000ff",
 		std::make_unique<shapes::Triangle>(200, 400, 350, 400, 275, 250)));
 	EditorState state;
-	state.selectedId = "rect1";
 	while (window.isOpen()) {
 		while (const std::optional event = window.pollEvent()) {
 			if (event->is<sf::Event::Closed>()) {
 				window.close();
 			}
-		}
+			if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
+			{
+				if (mouse->button == sf::Mouse::Button::Left)
+				{
+					sf::Vector2f pos = window.mapPixelToCoords(
+				{mouse->position.x, mouse->position.y});
 
+					std::string hit = picture.HitTest(pos.x, pos.y);
+					state.selectedId = hit;
+				}
+			}
+		}
+		window.clear();
 		picture.DrawPicture(canvas);
 		if (state.HasSelection() && picture.HasShape(state.selectedId)) {
 			auto bounds = picture.GetShape(state.selectedId).GetBounds();

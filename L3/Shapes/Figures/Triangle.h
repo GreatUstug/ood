@@ -41,6 +41,21 @@ public:
 		return {minX, minY, maxX - minX, maxY - minY};
 	}
 	virtual ~Triangle() = default;
+	bool HitTest(double px, double py) const override {
+		auto sign = [](double x1, double y1, double x2, double y2,
+					   double x3, double y3) {
+			return (x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3);
+		};
+
+		double d1 = sign(px, py, m_x,  m_y,  m_x2, m_y2);
+		double d2 = sign(px, py, m_x2, m_y2, m_x3, m_y3);
+		double d3 = sign(px, py, m_x3, m_y3, m_x,  m_y);
+
+		bool hasNeg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+		bool hasPos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+		return !(hasNeg && hasPos);
+	}
 private:
 	double m_x = 0;
 	double m_y = 0;

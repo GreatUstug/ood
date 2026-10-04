@@ -90,7 +90,15 @@ public:
 	bool HasShape(const std::string& id) const {
 		return m_shapes.contains(id);
 	}
-
+	std::string HitTest(double x, double y) const {
+		for (auto it = m_order.rbegin(); it != m_order.rend(); ++it) {
+			auto shapeIt = m_shapes.find(*it);
+			if (shapeIt != m_shapes.end() && shapeIt->second->HitTest(x, y)) {
+				return *it;
+			}
+		}
+		return {};
+	}
 private:
 		std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;
 		std::vector<std::string> m_order;

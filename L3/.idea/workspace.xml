@@ -68,10 +68,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Заготовка выделения.">
-      <change afterPath="$PROJECT_DIR$/editor/DrawSelectionFrame.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/editor/EditorState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Circle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Circle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Rectangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Triangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/IFigure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/IFigure.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -424,7 +428,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="9214000" />
+      <workItem from="1791103479138" duration="10709000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -450,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791111404294</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть">
+      <option name="closed" value="true" />
+      <created>1791113196291</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1791113196291</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,7 +477,8 @@
     <MESSAGE value="Лабораторная работа 3. Удалено лишнее со второй лабы" />
     <MESSAGE value="Лабораторная работа 3. Переделал рисование через примитивы сфмл. Убрал консольный ввод, лишние буферы, так как теперь все через окно будет." />
     <MESSAGE value="Лабораторная работа 3. Заготовка выделения." />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Заготовка выделения." />
+    <MESSAGE value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

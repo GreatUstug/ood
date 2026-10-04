@@ -46,6 +46,10 @@ public:
 	{
 		return m_geometry->GetBounds();
 	}
+	bool HitTest(double x, double y) const
+	{
+		return m_geometry->HitTest(x, y);
+	}
 private:
 	std::string m_id;
 	gfx::Color m_colorRGB;

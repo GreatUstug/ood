@@ -33,6 +33,12 @@ public:
 	Bounds GetBounds() const override {
 		return {m_x - m_radius, m_y - m_radius, 2 * m_radius, 2 * m_radius};
 	}
+	bool HitTest(double px, double py) const override {
+		if (m_radius <= 0) return false;
+		double dx = px - m_x;
+		double dy = py - m_y;
+		return (dx*dx + dy*dy) <= m_radius * m_radius;
+	}
 private:
 	double m_radius;
 	double m_x = 0;
