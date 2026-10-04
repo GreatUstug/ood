@@ -15,7 +15,7 @@ int main() {
 
 	picture.AddShape(std::make_unique<shapes::IFigure>(
 		"circ1", "#00ff00",
-		std::make_unique<shapes::Circle>(500, 300, 80)));
+		std::make_unique<shapes::Ellipse>(500, 300, 100, 60)));
 
 	picture.AddShape(std::make_unique<shapes::IFigure>(
 		"tri1", "#0000ff",

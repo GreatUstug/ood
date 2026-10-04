@@ -33,7 +33,7 @@ add_executable(L3 main.cpp
         Shapes/Picture.h
         Shapes/Figures/IShapeGeometry.h
         ShapeParams.h
-        Shapes/Figures/Circle.h
+        Shapes/Figures/Ellipse.h
         Shapes/Figures/Rectangle.h
         Shapes/Figures/Triangle.h
         gfx/ICanvas.h

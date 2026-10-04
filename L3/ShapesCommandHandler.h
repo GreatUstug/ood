@@ -3,7 +3,7 @@
 #pragma once
 #include "Shapes/Picture.h"
 #include "Shapes/IFigure.h"
-#include "Shapes/Figures/Circle.h"
+#include "Shapes/Figures/Ellipse.h"
 #include "Shapes/Figures/Rectangle.h"
 #include "Shapes/Figures/Triangle.h"
 
@@ -55,10 +55,10 @@ private:
     std::unique_ptr<shapes::IShapeGeometry>
     CreateGeometry(const std::string& typeName, const ShapeParams& p) {
         if (typeName == "circle") {
-            if (p.params.empty()) throw std::runtime_error("Circle needs radius");
+            if (p.params.empty()) throw std::runtime_error("Ellipse needs radius");
             double r = std::stod(p.params[0]);
             if (r < 0) throw std::runtime_error("Radius must be non-negative");
-            return std::make_unique<shapes::Circle>(p.x, p.y, r);
+            return std::make_unique<shapes::Ellipse>(p.x, p.y, r, r);
         }
         if (typeName == "rectangle") {
             if (p.params.size() < 2) throw std::runtime_error("Rectangle needs width and height");

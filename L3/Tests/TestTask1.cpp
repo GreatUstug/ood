@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include "../Shapes/Picture.h"
 #include "../Shapes/IFigure.h"
-#include "../Shapes/Figures/Circle.h"
+#include "../Shapes/Figures/Ellipse.h"
 #include "../Observer/IPictureObserver.h"
 #include "../Observer/IFigureObserver.h"
 
@@ -32,7 +32,7 @@ public:
 };
 
 TEST(ObserverTest, ShapeObserverGetsNotificationOnChange) {
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     shapes::IFigure figure("fig1", "#ff0000", std::move(geo));
 
     CountingFigureObserver obs;
@@ -50,7 +50,7 @@ TEST(ObserverTest, PictureObserverGetsNotificationOnShapeChange) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     auto figure = std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo));
     picture.AddShape(std::move(figure));
 
@@ -68,7 +68,7 @@ TEST(ObserverTest, PictureObserverGetsNotificationOnDirectShapeChange) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     auto figure = std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo));
     picture.AddShape(std::move(figure));
 
@@ -85,7 +85,7 @@ TEST(ObserverTest, AddAndDeleteNotifyObservers) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo1 = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo1 = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo1)));
     EXPECT_EQ(obs.count, 1);
     EXPECT_EQ(obs.lastShapeCount, 1);
@@ -100,7 +100,7 @@ TEST(ObserverTest, PictureSubscribesToAddedShape) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     auto figure = std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo));
     picture.AddShape(std::move(figure));
 
@@ -117,7 +117,7 @@ TEST(ObserverTest, PictureUnsubscribesOnDelete) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     auto figure = std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo));
     picture.AddShape(std::move(figure));
 
@@ -134,7 +134,7 @@ TEST(ObserverTest, MultipleObserversGetNotifications) {
     picture.AddObserver(&obs2);
     picture.AddObserver(&obs3);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo)));
 
     EXPECT_EQ(obs1.count, 1);
@@ -147,13 +147,13 @@ TEST(ObserverTest, UnsubscribedObserverStopsReceiving) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo)));
     EXPECT_EQ(obs.count, 1);
 
     picture.RemoveObserver(&obs);
 
-    auto geo2 = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo2 = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig2", "#00ff00", std::move(geo2)));
 
     EXPECT_EQ(obs.count, 1);  // не изменился
@@ -165,7 +165,7 @@ TEST(ObserverTest, DuplicateRegistrationDoesNotDuplicateNotifications) {
     picture.AddObserver(&obs);
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo)));
 
     EXPECT_EQ(obs.count, 1);
@@ -176,7 +176,7 @@ TEST(ObserverTest, FailedOperationDoesNotNotify) {
     CountingPictureObserver obs;
     picture.AddObserver(&obs);
 
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo)));
     EXPECT_EQ(obs.count, 1);
 

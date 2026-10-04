@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../Shapes/Picture.h"
 #include "../Shapes/IFigure.h"
-#include "../Shapes/Figures/Circle.h"
+#include "../Shapes/Figures/Ellipse.h"
 #include "../Shapes/Figures/Rectangle.h"
 #include "MockCanvas.h"
 
@@ -11,7 +11,7 @@ namespace {
 
 std::unique_ptr<shapes::IFigure>
 MakeCircle(const std::string& id = "c1", const std::string& color = "#ff0000") {
-    auto geo = std::make_unique<shapes::Circle>(0, 0, 10);
+    auto geo = std::make_unique<shapes::Ellipse>(0, 0, 10);
     return std::make_unique<shapes::IFigure>(id, color, std::move(geo));
 }
 
