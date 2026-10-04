@@ -1,10 +1,9 @@
 #include "ShapesCommandHandler.h"
-#include "cmake-build-debug/_deps/sfml-src/include/SFML/Graphics/Color.hpp"
+#include "editor/EditorState.h"
 #include "gfx/SFMLCanvas.h"
-
 #include <optional>
 #include <SFML/Graphics.hpp>
-#include <stdexcept>
+#include "editor/DrawSelectionFrame.h"
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(800, 600)), "Figures");
@@ -21,16 +20,20 @@ int main() {
 	picture.AddShape(std::make_unique<shapes::IFigure>(
 		"tri1", "#0000ff",
 		std::make_unique<shapes::Triangle>(200, 400, 350, 400, 275, 250)));
-	shapes::Bounds bounds = picture.GetShape("circ1").GetBounds();
-	canvas.SetColor(gfx::Color(0, 0, 255, 255));
+	EditorState state;
+	state.selectedId = "rect1";
 	while (window.isOpen()) {
 		while (const std::optional event = window.pollEvent()) {
 			if (event->is<sf::Event::Closed>()) {
 				window.close();
 			}
 		}
-		canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
+
 		picture.DrawPicture(canvas);
+		if (state.HasSelection() && picture.HasShape(state.selectedId)) {
+			auto bounds = picture.GetShape(state.selectedId).GetBounds();
+			DrawSelectionFrame(canvas, bounds);
+		}
 		window.display();
 	}
 	return 0;

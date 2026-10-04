@@ -39,7 +39,8 @@ add_executable(L3 main.cpp
         gfx/ICanvas.h
         gfx/SFMLCanvas.h
         Shapes/Bounds.h
-        editor/EditorState.h)
+        editor/EditorState.h
+        editor/DrawSelectionFrame.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics
