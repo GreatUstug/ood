@@ -4,6 +4,7 @@
 
 #ifndef L3_DRAWSELECTIONFRAME_H
 #define L3_DRAWSELECTIONFRAME_H
+#include "EditorState.h"
 #include "Shapes/Bounds.h"
 
 

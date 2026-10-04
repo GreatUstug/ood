@@ -69,16 +69,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Подготовка к ресайзу">
+      <change afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Rectangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Triangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/IFigure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/IFigure.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/editor/DrawSelectionFrame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/editor/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Lab1Picture.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/Lab1Shape.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/MockCanvas.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/TestTask1.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/TestTask2.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tests/TestTask3.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,6 +107,15 @@
     "accountId": "76ca8e40-eefc-4f53-b5cd-7740472441b0"
   }
 }]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Shapes/Bounds.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Ellipse.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Rectangle.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Triangle.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/IFigure.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Shapes/Picture.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="Fax7rZAl" />
   </component>
@@ -430,7 +445,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="16670000" />
+      <workItem from="1791103479138" duration="19731000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -496,7 +511,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791128270193</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Лабораторная работа 3. Подготовка к ресайзу">
+      <option name="closed" value="true" />
+      <created>1791133754044</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1791133754044</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +562,8 @@
     <MESSAGE value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
     <MESSAGE value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
+    <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Подготовка к ресайзу" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -552,6 +576,11 @@
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/main.cpp</url>
+          <line>14</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

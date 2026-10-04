@@ -83,7 +83,7 @@ public:
     	}
     }
 
-	IFigure& GetShape(const std::string& id) {
+	IFigure& GetShape(const std::string& id) const{
 		auto it = m_shapes.find(id);
 		if (it == m_shapes.end()) throw std::invalid_argument("Shape with this id not found.");
 		return *it->second;

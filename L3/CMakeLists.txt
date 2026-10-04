@@ -6,19 +6,6 @@ set(CMAKE_CXX_STANDARD 23)
 include(FetchContent)
 
 FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
-)
-
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-FetchContent_MakeAvailable(googletest)
-
-enable_testing()
-include(GoogleTest)
-add_subdirectory(Tests)
-
-FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
 )
@@ -38,8 +25,10 @@ add_executable(L3 main.cpp
         gfx/ICanvas.h
         gfx/SFMLCanvas.h
         Shapes/Bounds.h
-        editor/EditorState.h
-        editor/DrawSelectionFrame.h)
+        State/EditorState.h
+        State/DrawSelectionFrame.h
+        View/EditorView.h
+        Controller/EditorController.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics
