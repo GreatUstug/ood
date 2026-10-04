@@ -31,11 +31,7 @@ public:
 		m_y += y;
 	}
 	void Draw(gfx::ICanvas& canvas) const override {
-		canvas.MoveTo(m_x, m_y);
-		canvas.LineTo(m_x + m_width, m_y);
-		canvas.LineTo(m_x + m_width, m_y + m_height);
-		canvas.LineTo(m_x, m_y + m_height);
-		canvas.LineTo(m_x, m_y);
+		canvas.DrawRectangle(m_x, m_y, m_width, m_height);
 	}
 private:
 	double m_x = 0;

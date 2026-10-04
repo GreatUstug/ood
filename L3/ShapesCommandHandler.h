@@ -20,15 +20,14 @@ namespace CommandHandler {
 class ShapesCommandHandler {
 public:
     ShapesCommandHandler(shapes::Picture& picture,
-                         gfx::ICanvas& canvas,
-                         std::function<bool()> pump)
-        : m_picture(picture), m_canvas(canvas), m_pump(std::move(pump)) {}
+                         gfx::ICanvas& canvas)
+        : m_picture(picture), m_canvas(canvas) {}
 
     void Execute(std::istream& in = std::cin, std::ostream& out = std::cout) {
         std::string line;
         out << "=== Shapes Console ===\n";
 
-        while (m_pump() && std::getline(in, line)) {
+        while (std::getline(in, line)) {
             if (line.empty()) continue;
             std::istringstream iss(line);
             std::string cmd;
@@ -143,12 +142,10 @@ private:
         std::string id;
         if (!(iss >> id)) throw std::runtime_error("Invalid DrawShape");
         m_picture.DrawShape(id, m_canvas);
-        m_pump();
     }
 
     void HandleDrawPicture(std::ostream&) {
         m_picture.DrawPicture(m_canvas);
-        m_pump();
     }
 
     std::vector<std::string> GetParams(const std::string& typeName,
@@ -170,7 +167,6 @@ private:
 
     shapes::Picture&       m_picture;
     gfx::ICanvas&          m_canvas;
-    std::function<bool()>  m_pump;
 };
 
 } // namespace CommandHandler

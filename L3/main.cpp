@@ -1,35 +1,37 @@
 #include "ShapesCommandHandler.h"
+#include "cmake-build-debug/_deps/sfml-src/include/SFML/Graphics/Color.hpp"
 #include "gfx/SFMLCanvas.h"
 
+#include <optional>
 #include <SFML/Graphics.hpp>
 #include <stdexcept>
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(800, 600)), "Figures");
-	window.clear(sf::Color::White);
-	window.display();
-
 	SFMLCanvas canvas(window);
+	shapes::Picture picture;
+	picture.AddShape(std::make_unique<shapes::IFigure>(
+	   "rect1", "#ff0000",
+	   std::make_unique<shapes::Rectangle>(100, 100, 200, 150)));
 
-	auto pump = [&]() -> bool {
-		if (!window.isOpen()) return false;
+	picture.AddShape(std::make_unique<shapes::IFigure>(
+		"circ1", "#00ff00",
+		std::make_unique<shapes::Circle>(500, 300, 80)));
 
+	picture.AddShape(std::make_unique<shapes::IFigure>(
+		"tri1", "#0000ff",
+		std::make_unique<shapes::Triangle>(200, 400, 350, 400, 275, 250)));
+
+	while (window.isOpen()) {
 		while (const std::optional event = window.pollEvent()) {
 			if (event->is<sf::Event::Closed>()) {
 				window.close();
-				return false;
 			}
 		}
 
-		window.clear(sf::Color::White);
-		canvas.Render();
+		// window.clear(sf::Color::White);
+		picture.DrawPicture(canvas);
 		window.display();
-		return true;
-	};
-
-	shapes::Picture picture;
-	CommandHandler::ShapesCommandHandler handler(picture, canvas, pump);
-	handler.Execute();
-
+	}
 	return 0;
 }

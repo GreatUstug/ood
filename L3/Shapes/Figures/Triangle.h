@@ -31,10 +31,7 @@ public:
 		m_y3 += dy;
 	}
 	void Draw(gfx::ICanvas& canvas) const override {
-		canvas.MoveTo(m_x, m_y);
-		canvas.LineTo(m_x2, m_y2);
-		canvas.LineTo(m_x3, m_y3);
-		canvas.LineTo(m_x, m_y);
+		canvas.DrawTriangle(m_x, m_y, m_x2, m_y2, m_x3, m_y3);
 	}
 	virtual ~Triangle() = default;
 private:
