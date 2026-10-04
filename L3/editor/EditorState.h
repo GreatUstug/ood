@@ -10,6 +10,9 @@
 class EditorState {
 public:
 	std::string selectedId;
+	bool   isDragging = false;
+	double dragOffsetX = 0;
+	double dragOffsetY = 0;
 	bool HasSelection() const { return !selectedId.empty(); }
 	void ClearSelection() { selectedId.clear(); }
 };

@@ -4,6 +4,9 @@
 
 #ifndef L3_DRAWSELECTIONFRAME_H
 #define L3_DRAWSELECTIONFRAME_H
+#include "Shapes/Bounds.h"
+
+
 #include <array>
 
 const std::size_t COUNT_OF_MARKERS = 8;

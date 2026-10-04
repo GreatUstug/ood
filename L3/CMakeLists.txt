@@ -29,7 +29,6 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(SFML)
 
 add_executable(L3 main.cpp
-        ShapesCommandHandler.h
         Shapes/Picture.h
         Shapes/Figures/IShapeGeometry.h
         ShapeParams.h

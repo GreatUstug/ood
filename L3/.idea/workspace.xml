@@ -69,13 +69,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Выделение по клику">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Замена круга на эллипс согласно тз">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Circle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShapesCommandHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/ShapesCommandHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/Lab1Picture.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/Lab1Picture.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/TestTask1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/TestTask1.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShapesCommandHandler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/editor/EditorState.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -428,7 +426,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="12027000" />
+      <workItem from="1791103479138" duration="13245000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -470,7 +468,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791116781522</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Лабораторная работа 3. Замена круга на эллипс согласно тз">
+      <option name="closed" value="true" />
+      <created>1791118100632</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1791118100632</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,13 +487,37 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="lw3" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Лабораторная работа 3. Удалено лишнее со второй лабы" />
     <MESSAGE value="Лабораторная работа 3. Переделал рисование через примитивы сфмл. Убрал консольный ввод, лишние буферы, так как теперь все через окно будет." />
     <MESSAGE value="Лабораторная работа 3. Заготовка выделения." />
     <MESSAGE value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
     <MESSAGE value="Лабораторная работа 3. Выделение по клику" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Выделение по клику" />
+    <MESSAGE value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
