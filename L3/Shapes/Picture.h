@@ -3,8 +3,6 @@
 #include "IFigure.h"
 #include "Figures/IShapeGeometry.h"
 #include "../gfx/ICanvas.h"
-#include "../Observer/IPictureObserver.h"
-#include "../Observer/Subscription.h"
 
 #include <map>
 #include <memory>
@@ -16,34 +14,17 @@
 
 namespace shapes
 {
-	class Picture : public IFigureObserver {
+	class Picture {
 public:
 		Picture() {}
-		std::unique_ptr<Subscription<Picture, IPictureObserver>>
-  Subscribe(IPictureObserver* observer) {
-			m_observers.AddObserver(observer);
-			return std::make_unique<Subscription<Picture, IPictureObserver>>(this, observer);
-		}
-
-		void RegisterSubscription(Subscription<Picture, IPictureObserver>* sub) {
-			m_subscriptions.push_back(sub);
-		}
-
-		void UnregisterSubscription(Subscription<Picture, IPictureObserver>* sub) {
-			m_subscriptions.erase(
-				std::remove(m_subscriptions.begin(), m_subscriptions.end(), sub),
-				m_subscriptions.end());
-		}
 
 		void AddShape(std::unique_ptr<IFigure> figure) {
 			const std::string id = figure->GetId();
 			if (m_shapes.contains(id)) {
 				throw std::invalid_argument("Shape with this ID already exists");
 			}
-			figure->AddObserver(this);
 			m_order.push_back(id);
 			m_shapes[id] = std::move(figure);
-			NotifyPictureObservers();
 		}
 
     void MoveShape(const std::string& id, double dx, double dy) {
@@ -60,10 +41,8 @@ public:
 
     void DeleteShape(const std::string& id) {
         if (!m_shapes.contains(id)) throw std::invalid_argument("Shape not found. DeleteShape isn't available");
-			m_shapes.find(id)->second->RemoveObserver(this);
         m_shapes.erase(id);
         m_order.erase(std::remove(m_order.begin(), m_order.end(), id), m_order.end());
-		NotifyPictureObservers();
     }
 
     void EditShapeColor(const std::string& id, const std::string& color) {
@@ -109,25 +88,8 @@ public:
 		return *it->second;
 	}
 
-	void UnsubscribeObserver(IPictureObserver* observer) {
-		m_observers.RemoveObserver(observer);
-	}
-		void AddObserver(IPictureObserver* observer)    { m_observers.AddObserver(observer); }
-		void RemoveObserver(IPictureObserver* observer) { m_observers.RemoveObserver(observer); }
-		void OnShapeChanged() override {
-			NotifyPictureObservers();
-		}
-
 private:
-		void NotifyPictureObservers() {
-			m_observers.Notify([this](IPictureObserver* o) {
-				o->OnPictureChanged(m_shapes.size());
-			});
-		}
 		std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;
 		std::vector<std::string> m_order;
-		ObserverList<IPictureObserver> m_observers;
-		std::vector<Subscription<Picture, IPictureObserver>*> m_subscriptions;
-
 };
 }

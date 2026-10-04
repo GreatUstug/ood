@@ -6,8 +6,6 @@
 #include "Shapes/Figures/Circle.h"
 #include "Shapes/Figures/Rectangle.h"
 #include "Shapes/Figures/Triangle.h"
-#include "Shapes/Figures/Line.h"
-#include "Shapes/Figures/Text.h"
 
 #include <iostream>
 #include <sstream>
@@ -76,18 +74,6 @@ private:
                 p.x, p.y,
                 std::stod(p.params[0]), std::stod(p.params[1]),
                 std::stod(p.params[2]), std::stod(p.params[3]));
-        }
-        if (typeName == "line") {
-            if (p.params.size() < 2) throw std::runtime_error("Line needs end point");
-            return std::make_unique<shapes::Line>(
-                p.x, p.y,
-                std::stod(p.params[0]), std::stod(p.params[1]));
-        }
-        if (typeName == "text") {
-            if (p.params.size() < 2) throw std::runtime_error("Text needs size and content");
-            double size = std::stod(p.params[0]);
-            if (size < 0) throw std::runtime_error("Font size must be non-negative");
-            return std::make_unique<shapes::Text>(p.x, p.y, size, p.params[1]);
         }
         throw std::runtime_error("Unknown type: " + typeName);
     }

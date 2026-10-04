@@ -1,6 +1,5 @@
 #include "ShapesCommandHandler.h"
 #include "gfx/SFMLCanvas.h"
-#include "Observer/ConsolePictureObserver.h"
 
 #include <SFML/Graphics.hpp>
 #include <stdexcept>
@@ -10,11 +9,7 @@ int main() {
 	window.clear(sf::Color::White);
 	window.display();
 
-	sf::Font font;
-	if (!font.openFromFile("arial.ttf"))
-		throw std::runtime_error("Font could not be loaded");
-
-	SFMLCanvas canvas(window, font);
+	SFMLCanvas canvas(window);
 
 	auto pump = [&]() -> bool {
 		if (!window.isOpen()) return false;
@@ -33,8 +28,6 @@ int main() {
 	};
 
 	shapes::Picture picture;
-	ConsolePictureObserver console(std::cout);
-	picture.AddObserver(&console);
 	CommandHandler::ShapesCommandHandler handler(picture, canvas, pump);
 	handler.Execute();
 

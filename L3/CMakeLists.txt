@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(Figures)
+project(L3)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -28,25 +28,18 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Figures main.cpp
+add_executable(L3 main.cpp
         ShapesCommandHandler.h
         Shapes/Picture.h
         Shapes/Figures/IShapeGeometry.h
         ShapeParams.h
         Shapes/Figures/Circle.h
         Shapes/Figures/Rectangle.h
-        Shapes/Figures/Line.h
         Shapes/Figures/Triangle.h
-        Shapes/Figures/Text.h
         gfx/ICanvas.h
-        gfx/SFMLCanvas.h
-        Observer/IFigureObserver.h
-        Observer/IPictureObserver.h
-        Observer/ObserverList.h
-        Observer/ConsolePictureObserver.h
-        Observer/Subscription.h)
-target_include_directories(Figures PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(Figures PRIVATE
+        gfx/SFMLCanvas.h)
+target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(L3 PRIVATE
         sfml-graphics
         sfml-window
         sfml-system
