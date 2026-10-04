@@ -69,11 +69,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Замена круга на эллипс согласно тз">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShapesCommandHandler.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/editor/EditorState.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -426,7 +423,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="13245000" />
+      <workItem from="1791103479138" duration="14082000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -476,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791118100632</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа">
+      <option name="closed" value="true" />
+      <created>1791127579964</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1791127579964</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,7 +522,8 @@
     <MESSAGE value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
     <MESSAGE value="Лабораторная работа 3. Выделение по клику" />
     <MESSAGE value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
+    <MESSAGE value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

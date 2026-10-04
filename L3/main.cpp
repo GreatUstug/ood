@@ -50,6 +50,14 @@ int main() {
 					}
 				}
 			}
+			if (const auto* key = event->getIf<sf::Event::KeyPressed>())
+			{
+				if (key -> code == sf::Keyboard::Key::Delete && state.HasSelection())
+				{
+					picture.DeleteShape(state.selectedId);
+					state.ClearSelection();
+				}
+			}
 			if (const auto* moved = event->getIf<sf::Event::MouseMoved>())
 			{
 				if (state.isDragging && state.HasSelection())
@@ -57,8 +65,8 @@ int main() {
 					sf::Vector2f pos = window.mapPixelToCoords({moved->position.x, moved->position.y
 				});
 					auto bounds = picture.GetShape(state.selectedId).GetBounds();
-					double targetX = pos.x + state.dragOffsetX;
-					double targetY = pos.y + state.dragOffsetY;
+					double targetX = pos.x - state.dragOffsetX;
+					double targetY = pos.y - state.dragOffsetY;
 					const double W = 800, H = 600;
 					if (targetX < 0) targetX = 0;
 					if (targetY < 0) targetY = 0;
@@ -67,7 +75,7 @@ int main() {
 
 					double dx = targetX - bounds.x;
 					double dy = targetY - bounds.y;
-					if (dx != 0.0 && dy != 0.0)
+					if (dx != 0.0 || dy != 0.0)
 					{
 						picture.MoveShape(state.selectedId, dx, dy);
 					}
