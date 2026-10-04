@@ -60,11 +60,10 @@ public:
 
     std::vector<std::string> ListAllShapes() const {
         std::vector<std::string> result;
-        int index = 1;
         for (const auto& id : m_order) {
             auto it = m_shapes.find(id);
             if (it != m_shapes.end()) {
-                result.push_back(std::to_string(index++) + " " + it->second->GetInfo());
+                result.push_back(it->second->GetInfo());
             }
         }
         return result;
@@ -104,6 +103,10 @@ public:
 			}
 		}
 		return {};
+	}
+	void ReplaceWith(Picture&& other) {
+		m_shapes = std::move(other.m_shapes);
+		m_order  = std::move(other.m_order);
 	}
 private:
 		std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;

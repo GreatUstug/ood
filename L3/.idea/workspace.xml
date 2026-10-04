@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="13" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="14" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
@@ -24,10 +24,8 @@
       <config projectName="L3" targetName="ExperimentalSubmit" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="ContinuousMemCheck" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="L3" />
-      <config projectName="L3" targetName="my_tests" />
       <config projectName="L3" targetName="Experimental" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="ExperimentalCoverage" folderName="CTestDashboardTargets" />
-      <config projectName="L3" targetName="gmock" />
       <config projectName="L3" targetName="NightlyConfigure" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="ContinuousBuild" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="sfml-system" folderName="SFML" />
@@ -54,12 +52,9 @@
       <config projectName="L3" targetName="NightlyBuild" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="SheenBidi" folderName="Dependencies" />
       <config projectName="L3" targetName="sfml-graphics" folderName="SFML" />
-      <config projectName="L3" targetName="gmock_main" />
       <config projectName="L3" targetName="ContinuousSubmit" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="NightlySubmit" folderName="CTestDashboardTargets" />
       <config projectName="L3" targetName="harfbuzz" folderName="Dependencies" />
-      <config projectName="L3" targetName="gtest" />
-      <config projectName="L3" targetName="gtest_main" />
       <config projectName="L3" targetName="ContinuousUpdate" folderName="CTestDashboardTargets" />
     </generated>
   </component>
@@ -69,10 +64,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Первая версия ресайза и переделка на MVC">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю">
+      <change afterPath="$PROJECT_DIR$/IO/LoadService.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,16 +150,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\OOD\L3\IO" />
       <recent name="C:\Projects\OOD\L3" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.L3">
-    <configuration name="my_tests" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="my_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="L3" RUN_TARGET_NAME="my_tests" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Figures" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
       <method v="2" />
     </configuration>
@@ -324,26 +318,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="gmock" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="gmock_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="gmock_main" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="gtest" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="gtest_main" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="harfbuzz" type="CMakeRunConfiguration" factoryName="Application" folderName="Dependencies" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="harfbuzz" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -412,13 +386,8 @@
       <item itemvalue="CMake Application.sfml-main" />
       <item itemvalue="CMake Application.sfml-system" />
       <item itemvalue="CMake Application.L3" />
-      <item itemvalue="CMake Application.gmock" />
-      <item itemvalue="CMake Application.gmock_main" />
-      <item itemvalue="CMake Application.gtest" />
-      <item itemvalue="CMake Application.gtest_main" />
       <item itemvalue="CMake Debug.Figures" />
       <item itemvalue="CTest Application.All CTest" />
-      <item itemvalue="Google Test.my_tests" />
     </list>
     <recent_temporary>
       <list>
@@ -433,7 +402,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="22185000" />
+      <workItem from="1791103479138" duration="24863000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -515,7 +484,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791136843594</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю">
+      <option name="closed" value="true" />
+      <created>1791141108783</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1791141108783</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -560,7 +537,8 @@
     <MESSAGE value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
     <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
     <MESSAGE value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
+    <MESSAGE value="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -24,7 +24,7 @@ public:
 	}
 	virtual ~Ellipse() = default;
 	std::string GetInfo() const override {
-		return "circle " +
+		return "ellipse " +
 		   std::to_string(m_x) + " " + std::to_string(m_y) + " " +
 		   std::to_string(m_radiusX) + " " + std::to_string(m_radiusY);
 	}

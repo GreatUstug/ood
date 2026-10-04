@@ -28,7 +28,9 @@ add_executable(L3 main.cpp
         State/EditorState.h
         State/DrawSelectionFrame.h
         View/EditorView.h
-        Controller/EditorController.h)
+        Controller/EditorController.h
+        IO/SaveService.h
+        IO/LoadService.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

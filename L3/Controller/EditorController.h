@@ -4,11 +4,17 @@
 
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
+#include "IO/LoadService.h"
+#include "IO/SaveService.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 #include "Shapes/Picture.h"
 #include "State/DrawSelectionFrame.h"
 #include "State/EditorState.h"
+#include "../IO/portable-file-dialogs.h"
+
+#include <fstream>
+#include <iostream>
 
 namespace shapes {
 class Picture;}class EditorController
@@ -200,7 +206,67 @@ class Picture;}class EditorController
 			m_picture.DeleteShape(m_state.selectedId);
 			m_state.ClearSelection();
 		}
+		else if (key.control && key.code == sf::Keyboard::Key::S) {
+			SaveDocument();
+		}
+		else if (key.control && key.code == sf::Keyboard::Key::O) {
+			LoadDocument();
+		}
+		else if (key.control && key.code == sf::Keyboard::Key::N) {
+			NewDocument();
+		}
 	}
+
+	void SaveDocument() {
+		auto result = pfd::save_file(
+		"Сохранить документ",
+		"",
+		{"Text files", "*.txt"}
+	).result();
+
+		if (result.empty()) return;
+
+		std::ofstream file(result);
+		if (!file) {
+			std::cerr << "Cannot open file for writing: " << result << "\n";
+			return;
+		}
+
+		SaveService::Save(m_picture, file);
+		std::cout << "Saved to " << result << "\n";
+	}
+
+	void LoadDocument() {
+		auto results = pfd::open_file(
+		"Открыть документ",
+		"",
+		{"Text files", "*.txt"}
+	).result();
+
+		if (results.empty()) return;
+
+		std::ifstream file(results[0]);
+		if (!file) {
+			std::cerr << "Cannot open file: " << results[0] << "\n";
+			return;
+		}
+
+		try {
+			auto newPicture = LoadService::Load(file);
+			m_picture.ReplaceWith(std::move(newPicture));
+			m_state.ClearSelection();
+			std::cout << "Loaded " << results[0] << "\n";
+		} catch (const std::exception& e) {
+			std::cerr << "Load error: " << e.what() << "\n";
+		}
+	}
+
+	void NewDocument() {
+		shapes::Picture empty;
+		m_picture.ReplaceWith(std::move(empty));
+		m_state.ClearSelection();
+	}
+
 	shapes::Picture&  m_picture;
 	EditorState&      m_state;
 	sf::RenderWindow& m_window;
