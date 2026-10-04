@@ -28,6 +28,11 @@ HandlesOf(const shapes::Bounds& b)
 	}};
 }
 
+inline EditorState::Handle HitTestHandle(const shapes::Bounds& b, double px, double py)
+{
+
+}
+
 inline void DrawSelectionFrame(gfx::ICanvas& canvas, const shapes::Bounds& bounds)
 {
 	canvas.SetColor(gfx::Color(0, 0, 255, 255));

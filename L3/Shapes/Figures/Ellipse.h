@@ -5,6 +5,7 @@
 #ifndef FIGURES_CIRCLE_H
 #define FIGURES_CIRCLE_H
 #include "IShapeGeometry.h"
+#include "../Bounds.h"
 
 namespace shapes
 {
@@ -32,6 +33,13 @@ public:
 	}
 	Bounds GetBounds() const override {
 		return {m_x - m_radiusX, m_y - m_radiusY, 2 * m_radiusX, 2 * m_radiusY};
+	}
+	void SetBounds(const Bounds& bounds) override
+	{
+		m_x = bounds.x + bounds.width / 2;
+		m_y = bounds.y + bounds.height / 2;
+		m_radiusX = bounds.width / 2;
+		m_radiusY = bounds.height / 2;
 	}
 	bool HitTest(double px, double py) const override {
 		if (m_radiusX <= 0 || m_radiusY <= 0) return false;

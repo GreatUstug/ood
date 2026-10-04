@@ -1,5 +1,6 @@
 // Shapes/Picture.h
 #pragma once
+#include "Bounds.h"
 #include "IFigure.h"
 #include "Figures/IShapeGeometry.h"
 #include "../gfx/ICanvas.h"
@@ -90,6 +91,11 @@ public:
 	bool HasShape(const std::string& id) const {
 		return m_shapes.contains(id);
 	}
+		void SetShapeBounds(const std::string& id, const Bounds	& b) {
+			auto it = m_shapes.find(id);
+			if (it == m_shapes.end()) throw std::invalid_argument("Shape not found");
+			it->second->SetBounds(b);
+		}
 	std::string HitTest(double x, double y) const {
 		for (auto it = m_order.rbegin(); it != m_order.rend(); ++it) {
 			auto shapeIt = m_shapes.find(*it);

@@ -46,6 +46,10 @@ public:
 	{
 		return m_geometry->GetBounds();
 	}
+	void SetBounds(const Bounds& bounds)
+	{
+		m_geometry->SetBounds(bounds);
+	}
 	bool HitTest(double x, double y) const
 	{
 		return m_geometry->HitTest(x, y);

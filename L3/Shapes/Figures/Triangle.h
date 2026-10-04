@@ -40,6 +40,21 @@ public:
 		double maxY = std::max({m_y, m_y2, m_y3});
 		return {minX, minY, maxX - minX, maxY - minY};
 	}
+	void SetBounds(const Bounds& bounds) override
+	{
+		Bounds oldBounds = GetBounds();
+		if (oldBounds.width == 0 || oldBounds.height == 0) return;
+		double sx = bounds.width  / oldBounds.width;
+		double sy = bounds.height / oldBounds.height;
+
+		auto scale = [&](double& px, double& py) {
+			px = bounds.x + (px - oldBounds.x) * sx;
+			py = bounds.y + (py - oldBounds.y) * sy;
+		};
+		scale(m_x, m_y);
+		scale(m_x2, m_y2);
+		scale(m_x3, m_y3);
+	};
 	virtual ~Triangle() = default;
 	bool HitTest(double px, double py) const override {
 		auto sign = [](double x1, double y1, double x2, double y2,
