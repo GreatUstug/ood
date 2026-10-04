@@ -12,6 +12,7 @@
 #include "State/DrawSelectionFrame.h"
 #include "State/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
+#include "View/Toolbar.h"
 
 #include <fstream>
 #include <iostream>
@@ -23,11 +24,13 @@ class Picture;}class EditorController
 	EditorController(shapes::Picture& picture,
 					 EditorState& state,
 					 sf::RenderWindow& window,
+					 Toolbar& toolbar,
 					 int canvasWidth = 800,
 					 int canvasHeight = 600)
 		: m_picture(picture)
 		, m_state(state)
 		, m_window(window)
+		, m_toolbar(toolbar)
 		, m_canvasWidth(canvasWidth)
 		, m_canvasHeight(canvasHeight)
 	{}
@@ -60,6 +63,12 @@ class Picture;}class EditorController
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
+
+		auto action = m_toolbar.HitTest(pos.x, pos.y);
+		if (action != ToolbarAction::None) {
+			HandleToolbarAction(action);
+			return;
+		}
 
 		if (m_state.HasSelection() && (m_picture.HasShape(m_state.selectedId)))
 		{
@@ -217,6 +226,45 @@ class Picture;}class EditorController
 		}
 	}
 
+	void HandleToolbarAction(ToolbarAction action) {
+		switch (action) {
+		case ToolbarAction::AddRectangle: AddShapeAtCenter("rectangle"); break;
+		case ToolbarAction::AddEllipse:   AddShapeAtCenter("ellipse");   break;
+		case ToolbarAction::AddTriangle:  AddShapeAtCenter("triangle");  break;
+		case ToolbarAction::Delete:
+			if (m_state.HasSelection()) {
+				m_picture.DeleteShape(m_state.selectedId);
+				m_state.ClearSelection();
+			}
+			break;
+		default: break;
+		}
+	}
+
+	void AddShapeAtCenter(const std::string& type) {
+		static int counter = 0;
+		std::string id = type + std::to_string(++counter);
+
+		double cx = m_canvasWidth / 2.0;
+		double cy = m_canvasHeight / 2.0;
+
+		std::unique_ptr<shapes::IShapeGeometry> geo;
+
+		if (type == "rectangle") {
+			geo = std::make_unique<shapes::Rectangle>(cx - 60, cy - 40, 120, 80);
+		} else if (type == "ellipse") {
+			geo = std::make_unique<shapes::Ellipse>(cx, cy, 60, 40);
+		} else if (type == "triangle") {
+			geo = std::make_unique<shapes::Triangle>(
+				cx, cy + 40, cx + 60, cy - 40, cx - 60, cy - 40);
+		}
+
+		m_picture.AddShape(std::make_unique<shapes::IFigure>(
+			id, "#888888", std::move(geo)));
+
+		m_state.selectedId = id;
+	}
+
 	void SaveDocument() {
 		auto result = pfd::save_file(
 		"Сохранить документ",
@@ -270,6 +318,7 @@ class Picture;}class EditorController
 	shapes::Picture&  m_picture;
 	EditorState&      m_state;
 	sf::RenderWindow& m_window;
+	Toolbar& m_toolbar;
 	int m_canvasWidth;
 	int m_canvasHeight;
 	sf::Cursor m_cursorArrow{sf::Cursor::Type::Arrow};
