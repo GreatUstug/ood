@@ -42,7 +42,10 @@ public:
 		auto sp = geo.find(' ');
 		return geo.substr(0, sp) + " " + m_id + " " + m_colorRGB.ParseToString() + geo.substr(sp);
 	}
-
+	Bounds GetBounds() const
+	{
+		return m_geometry->GetBounds();
+	}
 private:
 	std::string m_id;
 	gfx::Color m_colorRGB;

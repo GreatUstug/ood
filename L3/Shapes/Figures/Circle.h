@@ -30,6 +30,9 @@ public:
 	void Draw(gfx::ICanvas& canvas) const override {
 		canvas.DrawEllipse(m_x, m_y, m_radius, m_radius);
 	}
+	Bounds GetBounds() const override {
+		return {m_x - m_radius, m_y - m_radius, 2 * m_radius, 2 * m_radius};
+	}
 private:
 	double m_radius;
 	double m_x = 0;

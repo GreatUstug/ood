@@ -33,6 +33,9 @@ public:
 	void Draw(gfx::ICanvas& canvas) const override {
 		canvas.DrawRectangle(m_x, m_y, m_width, m_height);
 	}
+	Bounds GetBounds() const override {
+		return {m_x, m_y, m_width, m_height};
+	}
 private:
 	double m_x = 0;
 	double m_y = 0;

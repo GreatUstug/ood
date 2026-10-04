@@ -33,6 +33,13 @@ public:
 	void Draw(gfx::ICanvas& canvas) const override {
 		canvas.DrawTriangle(m_x, m_y, m_x2, m_y2, m_x3, m_y3);
 	}
+	Bounds GetBounds() const override {
+		double minX = std::min({m_x, m_x2, m_x3});
+		double minY = std::min({m_y, m_y2, m_y3});
+		double maxX = std::max({m_x, m_x2, m_x3});
+		double maxY = std::max({m_y, m_y2, m_y3});
+		return {minX, minY, maxX - minX, maxY - minY};
+	}
 	virtual ~Triangle() = default;
 private:
 	double m_x = 0;

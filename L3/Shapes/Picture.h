@@ -87,6 +87,9 @@ public:
 		if (it == m_shapes.end()) throw std::invalid_argument("Shape with this id not found.");
 		return *it->second;
 	}
+	bool HasShape(const std::string& id) const {
+		return m_shapes.contains(id);
+	}
 
 private:
 		std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;

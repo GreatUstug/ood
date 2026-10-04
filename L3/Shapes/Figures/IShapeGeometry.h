@@ -6,6 +6,7 @@
 #define FIGURES_SHAPE_H
 #include "../../ShapeParams.h"
 #include  "../../gfx/ICanvas.h"
+#include "Shapes/Bounds.h"
 
 #include <string>
 
@@ -18,6 +19,7 @@ public:
 	virtual std::string GetInfo() const = 0;
 	virtual void Move(double dx, double dy) {};
 	virtual void Draw(gfx::ICanvas& canvas) const = 0;
+	virtual Bounds GetBounds() const = 0;
 };
 }
 

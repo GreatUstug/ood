@@ -48,11 +48,11 @@ namespace gfx {
         virtual void SetColor(const Color& c) = 0;
         // virtual void MoveTo(double x, double y) = 0;
         // virtual void LineTo(double x, double y) = 0;
-        virtual void DrawEllipse(double cx, double cy, double rx, double ry) = 0;
-    	virtual void DrawRectangle(double x, double y, double w, double h) = 0;
+        virtual void DrawEllipse(double cx, double cy, double rx, double ry, bool isTransparent = false) = 0;
+    	virtual void DrawRectangle(double x, double y, double w, double h, bool isTransparent = false) = 0;
     	virtual void DrawTriangle(double x1, double y1,
 								  double x2, double y2,
-								  double x3, double y3) = 0;
+								  double x3, double y3, bool isTransparent = false) = 0;
     };
 }
 #endif //FIGURES_ICANVAS_H
