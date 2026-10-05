@@ -260,7 +260,7 @@ class Picture;}class EditorController
 		}
 
 		m_picture.AddShape(std::make_unique<shapes::IFigure>(
-			id, "#888888", std::move(geo)));
+			id, "#c678ff", std::move(geo)));
 
 		m_state.selectedId = id;
 	}
