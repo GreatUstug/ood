@@ -17,6 +17,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <random>
 
 namespace shapes {
 class Picture;}class EditorController
@@ -150,7 +151,7 @@ class Picture;}class EditorController
 		if (!m_state.HasValidSelection(m_picture)) return;
 		double dx = position.x - m_state.resizeStartMouseX;
 		double dy = position.y - m_state.resizeStartMouseY;
-		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasWidth);
+		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasHeight);
 		m_picture.SetShapeBounds(m_state.selectedId, b);
 	}
 	void Drag(const sf::Vector2f& position)
@@ -211,8 +212,7 @@ class Picture;}class EditorController
 	}
 
 	void AddShapeAtCenter(const std::string& type) {
-		static int counter = 0;
-		std::string id = type + std::to_string(++counter);
+		std::string id = MakeId(type);
 
 		double cx = m_canvasWidth / 2.0;
 		double cy = m_canvasHeight / 2.0;
@@ -283,7 +283,10 @@ class Picture;}class EditorController
 		m_picture.ReplaceWith(std::move(empty));
 		m_state.ClearSelection();
 	}
-
+	std::string MakeId(const std::string& prefix) {
+		static std::mt19937 rng{std::random_device{}()};
+		return prefix + std::to_string(rng());
+	}
 	shapes::Picture&  m_picture;
 	EditorState&      m_state;
 	sf::RenderWindow& m_window;
