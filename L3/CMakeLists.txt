@@ -33,7 +33,8 @@ add_executable(L3 main.cpp
         IO/LoadService.h
         View/Toolbar.h
         State/Handle.h
-        Shapes/ResizePolicy.h)
+        Shapes/ResizePolicy.h
+        View/CursorType.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

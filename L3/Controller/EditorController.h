@@ -13,6 +13,7 @@
 #include "State/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
 #include "Shapes/ResizePolicy.h"
+#include "View/EditorView.h"
 #include "View/Toolbar.h"
 
 #include <fstream>
@@ -25,12 +26,14 @@ class Picture;}class EditorController
 	public:
 	EditorController(shapes::Picture& picture,
 					 EditorState& state,
+					 EditorView& view,
 					 sf::RenderWindow& window,
 					 Toolbar& toolbar,
 					 int canvasWidth = 800,
 					 int canvasHeight = 600)
 		: m_picture(picture)
 		, m_state(state)
+		, m_view(view)
 		, m_window(window)
 		, m_toolbar(toolbar)
 		, m_canvasWidth(canvasWidth)
@@ -104,48 +107,13 @@ class Picture;}class EditorController
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 		if (!m_state.isDragging && !m_state.IsResizing())
 		{
-			UpdateCursor(pos);
+			m_view.UpdateCursor(pos);
 		}
 		if (m_state.HasValidSelection(m_picture) && (m_state.IsResizing() || m_state.isDragging))
 		{
 			m_state.IsResizing() ? Resize(pos) : Drag(pos);
 		}
 	};
-	void UpdateCursor(const sf::Vector2f& pos)
-	{
-		if (!m_state.HasValidSelection(m_picture)) {
-			m_window.setMouseCursor(m_cursorArrow);
-			return;
-		}
-
-		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
-		auto h = HitTestHandle(bounds, pos.x, pos.y);
-		switch (h) {
-		case Handle::NW:
-		case Handle::SE:
-			m_window.setMouseCursor(m_cursorD1);
-			break;
-
-		case Handle::NE:
-		case Handle::SW:
-			m_window.setMouseCursor(m_cursorD2);
-			break;
-
-		case Handle::N:
-		case Handle::S:
-			m_window.setMouseCursor(m_cursorV);
-			break;
-
-		case Handle::E:
-		case Handle::W:
-			m_window.setMouseCursor(m_cursorH);
-			break;
-
-		default:
-			m_window.setMouseCursor(m_cursorArrow);
-			break;
-		}
-	}
 	void Resize(const sf::Vector2f& position)
 	{
 		if (!m_state.HasValidSelection(m_picture)) return;
@@ -289,15 +257,11 @@ class Picture;}class EditorController
 	}
 	shapes::Picture&  m_picture;
 	EditorState&      m_state;
+	EditorView&       m_view;
 	sf::RenderWindow& m_window;
 	Toolbar& m_toolbar;
 	int m_canvasWidth;
 	int m_canvasHeight;
-	sf::Cursor m_cursorArrow{sf::Cursor::Type::Arrow};
-	sf::Cursor m_cursorH{sf::Cursor::Type::SizeHorizontal};
-	sf::Cursor m_cursorV{sf::Cursor::Type::SizeVertical};
-	sf::Cursor m_cursorD1{sf::Cursor::Type::SizeTopLeftBottomRight};
-	sf::Cursor m_cursorD2{sf::Cursor::Type::SizeBottomLeftTopRight};
 };
 
 #endif //L3_EDITCONTROLLER_H

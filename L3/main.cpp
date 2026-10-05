@@ -25,8 +25,8 @@ int main() {
 	EditorState state;
 	Toolbar toolbar;
 
-	EditorController controller(picture, state, window, toolbar, W, H);
 	EditorView view(picture, state, canvas, window, font, toolbar);
+	EditorController controller(picture, state, view, window, toolbar, W, H);
 	while (window.isOpen()) {
 		while (const std::optional event = window.pollEvent()) {
 			if (event->is<sf::Event::Closed>())
