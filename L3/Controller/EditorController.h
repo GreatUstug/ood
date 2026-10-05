@@ -12,8 +12,10 @@
 #include "State/DrawSelectionFrame.h"
 #include "State/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
+#include "IO/DocumentIO.h"
 #include "Shapes/ResizePolicy.h"
 #include "View/EditorView.h"
+#include "View/FileDialog.h"
 #include "View/Toolbar.h"
 
 #include <fstream>
@@ -68,40 +70,43 @@ class Picture;}class EditorController
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-
+		if (HandleToolbarClick(pos)) return;
+		if (HandleResizeHandleClick(pos)) return;
+		HandleShapeClick(pos);
+	}
+	bool HandleToolbarClick(const sf::Vector2f& pos) {
 		auto action = m_toolbar.HitTest(pos.x, pos.y);
-		if (action != ToolbarAction::None) {
-			HandleToolbarAction(action);
-			return;
-		}
+		if (action == ToolbarAction::None) return false;
+		HandleToolbarAction(action);
+		return true;
+	}
+	bool HandleResizeHandleClick(const sf::Vector2f& pos) {
+		if (!m_state.HasValidSelection(m_picture)) return false;
+		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
+		auto h = HitTestHandle(bounds, pos.x, pos.y);
+		if (h == Handle::None) return false;
 
-		if (m_state.HasValidSelection(m_picture))
-		{
-			auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
-			auto h = HitTestHandle(bounds, pos.x, pos.y);
-			if (h != Handle::None) {
-				m_state.activeHandle = h;
-				m_state.resizeStartBounds = bounds;
-				m_state.resizeStartMouseX = pos.x;
-				m_state.resizeStartMouseY = pos.y;
-				m_state.isDragging = false;
-				return;
-			}
-		}
+		m_state.activeHandle = h;
+		m_state.resizeStartBounds = bounds;
+		m_state.resizeStartMouseX = pos.x;
+		m_state.resizeStartMouseY = pos.y;
+		m_state.isDragging = false;
+		return true;
+	}
 
+	void HandleShapeClick(const sf::Vector2f& pos) {
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture))
-		{
+		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture)) {
 			auto bounds = m_picture.GetShape(hit).GetBounds();
 			m_state.isDragging = true;
 			m_state.dragOffsetX = pos.x - bounds.x;
 			m_state.dragOffsetY = pos.y - bounds.y;
-		} else
-		{
+		} else {
 			m_state.selectedId = hit;
 			m_state.isDragging = false;
 		}
 	}
+
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
@@ -203,46 +208,26 @@ class Picture;}class EditorController
 	}
 
 	void SaveDocument() {
-		auto result = pfd::save_file(
-		"Сохранить документ",
-		"",
-		{"Text files", "*.txt"}
-	).result();
-
-		if (result.empty()) return;
-
-		std::ofstream file(result);
-		if (!file) {
-			std::cerr << "Cannot open file for writing: " << result << "\n";
-			return;
+		auto path = m_fileDialog.AskSavePath();
+		if (!path) return;
+		try
+		{
+			DocumentIO::Save(m_picture, *path);
+		} catch (const std::exception& e)
+		{
+			m_fileDialog.ShowError(e.what());
 		}
-
-		SaveService::Save(m_picture, file);
-		std::cout << "Saved to " << result << "\n";
 	}
 
 	void LoadDocument() {
-		auto results = pfd::open_file(
-		"Открыть документ",
-		"",
-		{"Text files", "*.txt"}
-	).result();
-
-		if (results.empty()) return;
-
-		std::ifstream file(results[0]);
-		if (!file) {
-			std::cerr << "Cannot open file: " << results[0] << "\n";
-			return;
-		}
-
+		auto path = m_fileDialog.AskOpenPath();
+		if (!path) return;
 		try {
-			auto newPicture = LoadService::Load(file);
+			auto newPicture = DocumentIO::Load(*path);
 			m_picture.ReplaceWith(std::move(newPicture));
 			m_state.ClearSelection();
-			std::cout << "Loaded " << results[0] << "\n";
 		} catch (const std::exception& e) {
-			std::cerr << "Load error: " << e.what() << "\n";
+			m_fileDialog.ShowError(e.what());
 		}
 	}
 
@@ -260,6 +245,7 @@ class Picture;}class EditorController
 	EditorView&       m_view;
 	sf::RenderWindow& m_window;
 	Toolbar& m_toolbar;
+	FileDialog m_fileDialog;
 	int m_canvasWidth;
 	int m_canvasHeight;
 };
