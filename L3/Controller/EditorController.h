@@ -114,11 +114,18 @@ class Picture;}class EditorController
 		{
 			m_view.UpdateCursor(pos);
 		}
-		if (m_state.HasValidSelection(m_picture) && (m_state.IsResizing() || m_state.isDragging))
+		if (m_state.HasValidSelection(m_picture))
 		{
-			m_state.IsResizing() ? Resize(pos) : Drag(pos);
+			if (m_state.IsResizing())
+			{
+				Resize(pos);
+			}
+			if (m_state.isDragging)
+			{
+				Drag(pos);
+			}
 		}
-	};
+	}
 	void Resize(const sf::Vector2f& position)
 	{
 		if (!m_state.HasValidSelection(m_picture)) return;
