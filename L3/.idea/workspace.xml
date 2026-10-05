@@ -64,9 +64,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Туллбар, труд сизифа окончен">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Поменял цвет добавления фигур">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -397,7 +399,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="28602000" />
+      <workItem from="1791103479138" duration="30511000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -503,7 +505,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791151864152</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Лабораторная работа 3. Поменял цвет добавления фигур">
+      <option name="closed" value="true" />
+      <created>1791169784624</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1791169784624</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -551,7 +561,8 @@
     <MESSAGE value="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю" />
     <MESSAGE value="Лабораторная работа 3. Диалоговое окно при добавлении файла" />
     <MESSAGE value="Лабораторная работа 3. Туллбар, труд сизифа окончен" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Туллбар, труд сизифа окончен" />
+    <MESSAGE value="Лабораторная работа 3. Поменял цвет добавления фигур" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Поменял цвет добавления фигур" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

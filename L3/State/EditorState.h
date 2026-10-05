@@ -10,8 +10,12 @@
 
 #include <string>
 
-class EditorState {
-public:
+struct EditorState {
+	bool HasValidSelection(const shapes::Picture& picture) const {
+		return !selectedId.empty() && picture.HasShape(selectedId);
+	}
+	bool IsResizing() const { return activeHandle != Handle::None; }
+	void ClearSelection() { selectedId.clear(); }
 	std::string selectedId;
 	bool   isDragging = false;
 	double dragOffsetX = 0;
@@ -21,9 +25,6 @@ public:
 	shapes::Bounds resizeStartBounds;
 	double resizeStartMouseX = 0;
 	double resizeStartMouseY = 0;
-	bool IsResizing() const { return activeHandle != Handle::None; }
-	bool HasSelection() const { return !selectedId.empty(); }
-	void ClearSelection() { selectedId.clear(); }
 };
 
 #endif //L3_EDITORSTATE_H

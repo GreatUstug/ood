@@ -70,7 +70,7 @@ class Picture;}class EditorController
 			return;
 		}
 
-		if (m_state.HasSelection() && (m_picture.HasShape(m_state.selectedId)))
+		if (m_state.HasValidSelection(m_picture))
 		{
 			auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 			auto h = HitTestHandle(bounds, pos.x, pos.y);
@@ -85,7 +85,7 @@ class Picture;}class EditorController
 		}
 
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if (hit == m_state.selectedId && m_state.HasSelection())
+		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture))
 		{
 			auto bounds = m_picture.GetShape(hit).GetBounds();
 			m_state.isDragging = true;
@@ -104,14 +104,14 @@ class Picture;}class EditorController
 		{
 			UpdateCursor(pos);
 		}
-		if (m_state.HasSelection() && (m_state.IsResizing() || m_state.isDragging))
+		if (m_state.HasValidSelection(m_picture) && (m_state.IsResizing() || m_state.isDragging))
 		{
 			m_state.IsResizing() ? Resize(pos) : Drag(pos);
 		}
 	};
 	void UpdateCursor(const sf::Vector2f& pos)
 	{
-		if (!m_state.HasSelection() || !m_picture.HasShape(m_state.selectedId)) {
+		if (!m_state.HasValidSelection(m_picture)) {
 			m_window.setMouseCursor(m_cursorArrow);
 			return;
 		}
@@ -190,11 +190,10 @@ class Picture;}class EditorController
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 		double targetX = position.x - m_state.dragOffsetX;
 		double targetY = position.y - m_state.dragOffsetY;
-		const double W = 800, H = 600;
 		if (targetX < 0) targetX = 0;
 		if (targetY < 0) targetY = 0;
-		if (targetX + bounds.width > W)  targetX = W - bounds.width;
-		if (targetY + bounds.height > H) targetY = H - bounds.height;
+		if (targetX + bounds.width > m_canvasWidth)  targetX = m_canvasWidth - bounds.width;
+		if (targetY + bounds.height > m_canvasHeight) targetY = m_canvasHeight - bounds.height;
 
 		double dx = targetX - bounds.x;
 		double dy = targetY - bounds.y;
@@ -210,7 +209,7 @@ class Picture;}class EditorController
 	}
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
-		if (key.code == sf::Keyboard::Key::Delete && m_state.HasSelection())
+		if (key.code == sf::Keyboard::Key::Delete && m_state.HasValidSelection(m_picture))
 		{
 			m_picture.DeleteShape(m_state.selectedId);
 			m_state.ClearSelection();
@@ -232,7 +231,7 @@ class Picture;}class EditorController
 		case ToolbarAction::AddEllipse:   AddShapeAtCenter("ellipse");   break;
 		case ToolbarAction::AddTriangle:  AddShapeAtCenter("triangle");  break;
 		case ToolbarAction::Delete:
-			if (m_state.HasSelection()) {
+			if (m_state.HasValidSelection(m_picture)) {
 				m_picture.DeleteShape(m_state.selectedId);
 				m_state.ClearSelection();
 			}

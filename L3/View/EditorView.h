@@ -20,7 +20,7 @@ class EditorView
 	void Render()
 		{
 			m_picture.DrawPicture(m_canvas);
-			if (m_state.HasSelection() && m_picture.HasShape(m_state.selectedId)) {
+			if (m_state.HasValidSelection(m_picture) && m_picture.HasShape(m_state.selectedId)) {
 				auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 				DrawSelectionFrame(m_canvas, bounds);
 			}
