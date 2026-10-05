@@ -12,6 +12,7 @@
 #include "State/DrawSelectionFrame.h"
 #include "State/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
+#include "Shapes/ResizePolicy.h"
 #include "View/Toolbar.h"
 
 #include <fstream>
@@ -74,7 +75,7 @@ class Picture;}class EditorController
 		{
 			auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 			auto h = HitTestHandle(bounds, pos.x, pos.y);
-			if (h != EditorState::Handle::None) {
+			if (h != Handle::None) {
 				m_state.activeHandle = h;
 				m_state.resizeStartBounds = bounds;
 				m_state.resizeStartMouseX = pos.x;
@@ -119,23 +120,23 @@ class Picture;}class EditorController
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 		auto h = HitTestHandle(bounds, pos.x, pos.y);
 		switch (h) {
-		case EditorState::Handle::NW:
-		case EditorState::Handle::SE:
+		case Handle::NW:
+		case Handle::SE:
 			m_window.setMouseCursor(m_cursorD1);
 			break;
 
-		case EditorState::Handle::NE:
-		case EditorState::Handle::SW:
+		case Handle::NE:
+		case Handle::SW:
 			m_window.setMouseCursor(m_cursorD2);
 			break;
 
-		case EditorState::Handle::N:
-		case EditorState::Handle::S:
+		case Handle::N:
+		case Handle::S:
 			m_window.setMouseCursor(m_cursorV);
 			break;
 
-		case EditorState::Handle::E:
-		case EditorState::Handle::W:
+		case Handle::E:
+		case Handle::W:
 			m_window.setMouseCursor(m_cursorH);
 			break;
 
@@ -146,57 +147,26 @@ class Picture;}class EditorController
 	}
 	void Resize(const sf::Vector2f& position)
 	{
-		auto start = m_state.resizeStartBounds;
+		if (!m_state.HasValidSelection(m_picture)) return;
 		double dx = position.x - m_state.resizeStartMouseX;
 		double dy = position.y - m_state.resizeStartMouseY;
-
-		shapes::Bounds b = start;
-		switch (m_state.activeHandle) {
-		case EditorState::Handle::NW: b.x += dx; b.y += dy; b.width -= dx; b.height -= dy; break;
-		case EditorState::Handle::N:  b.y += dy; b.height -= dy; break;
-		case EditorState::Handle::NE: b.y += dy; b.width += dx; b.height -= dy; break;
-		case EditorState::Handle::E:  b.width += dx; break;
-		case EditorState::Handle::SE: b.width += dx; b.height += dy; break;
-		case EditorState::Handle::S:  b.height += dy; break;
-		case EditorState::Handle::SW: b.x += dx; b.width -= dx; b.height += dy; break;
-		case EditorState::Handle::W:  b.x += dx; b.width -= dx; break;
-		default: break;
-		}
-		constexpr double MIN = 20.0;
-		if (b.width < MIN) {
-			if (m_state.activeHandle == EditorState::Handle::NW ||
-				m_state.activeHandle == EditorState::Handle::SW ||
-				m_state.activeHandle == EditorState::Handle::W)
-				b.x = start.x + start.width - MIN;
-			b.width = MIN;
-		}
-		if (b.height < MIN) {
-			if (m_state.activeHandle == EditorState::Handle::NW ||
-				m_state.activeHandle == EditorState::Handle::NE ||
-				m_state.activeHandle == EditorState::Handle::N)
-				b.y = start.y + start.height - MIN;
-			b.height = MIN;
-		}
-
-		if (b.x < 0) { b.width += b.x; b.x = 0; }
-		if (b.y < 0) { b.height += b.y; b.y = 0; }
-		if (b.x + b.width > m_canvasWidth)  b.width = m_canvasWidth - b.x;
-		if (b.y + b.height > m_canvasHeight) b.height = m_canvasHeight - b.y;
-
+		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasWidth);
 		m_picture.SetShapeBounds(m_state.selectedId, b);
 	}
 	void Drag(const sf::Vector2f& position)
 	{
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
-		double targetX = position.x - m_state.dragOffsetX;
-		double targetY = position.y - m_state.dragOffsetY;
-		if (targetX < 0) targetX = 0;
-		if (targetY < 0) targetY = 0;
-		if (targetX + bounds.width > m_canvasWidth)  targetX = m_canvasWidth - bounds.width;
-		if (targetY + bounds.height > m_canvasHeight) targetY = m_canvasHeight - bounds.height;
+		shapes::Bounds desired{
+			position.x - m_state.dragOffsetX,
+			position.y - m_state.dragOffsetY,
+			bounds.width,
+			bounds.height
+		};
 
-		double dx = targetX - bounds.x;
-		double dy = targetY - bounds.y;
+		auto target = shapes::ClampToCanvas(desired, m_canvasWidth, m_canvasHeight);
+
+		double dx = target.x - bounds.x;
+		double dy = target.y - bounds.y;
 		if (dx != 0.0 || dy != 0.0)
 		{
 			m_picture.MoveShape(m_state.selectedId, dx, dy);
@@ -205,7 +175,7 @@ class Picture;}class EditorController
 	void OnMouseReleased()
 	{
 		m_state.isDragging = false;
-		m_state.activeHandle = EditorState::Handle::None;
+		m_state.activeHandle = Handle::None;
 	}
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
 	{

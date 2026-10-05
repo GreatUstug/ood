@@ -64,11 +64,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Поменял цвет добавления фигур">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде">
+      <change afterPath="$PROJECT_DIR$/Shapes/ResizePolicy.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/State/Handle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Bounds.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/State/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/EditorState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -399,7 +403,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
-      <workItem from="1791103479138" duration="30511000" />
+      <workItem from="1791103479138" duration="31948000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -513,7 +517,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791169784624</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде">
+      <option name="closed" value="true" />
+      <created>1791172353616</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1791172353616</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -562,7 +574,8 @@
     <MESSAGE value="Лабораторная работа 3. Диалоговое окно при добавлении файла" />
     <MESSAGE value="Лабораторная работа 3. Туллбар, труд сизифа окончен" />
     <MESSAGE value="Лабораторная работа 3. Поменял цвет добавления фигур" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Поменял цвет добавления фигур" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -31,7 +31,9 @@ add_executable(L3 main.cpp
         Controller/EditorController.h
         IO/SaveService.h
         IO/LoadService.h
-        View/Toolbar.h)
+        View/Toolbar.h
+        State/Handle.h
+        Shapes/ResizePolicy.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

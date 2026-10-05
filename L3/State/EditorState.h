@@ -5,6 +5,7 @@
 #ifndef L3_EDITORSTATE_H
 #define L3_EDITORSTATE_H
 #pragma once
+#include "Handle.h"
 #include "Shapes/Bounds.h"
 
 
@@ -20,7 +21,6 @@ struct EditorState {
 	bool   isDragging = false;
 	double dragOffsetX = 0;
 	double dragOffsetY = 0;
-	enum class Handle { None, NW, N, NE, E, SE, S, SW, W };
 	Handle activeHandle = Handle::None;
 	shapes::Bounds resizeStartBounds;
 	double resizeStartMouseX = 0;
