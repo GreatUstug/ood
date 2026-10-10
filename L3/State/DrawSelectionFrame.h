@@ -12,7 +12,7 @@
 
 const std::size_t COUNT_OF_MARKERS = 8;
 const float SIZE_OF_MARKER = 10.0;
-const Handle order[] = {
+const Handle Handlers[] = {
 	Handle::NW,
 	Handle::N,
 	Handle::NE,
@@ -39,7 +39,7 @@ HandlesOf(const shapes::Bounds& b)
 	}};
 }
 
-inline Handle HitTestHandle(const shapes::Bounds& b, double px, double py)
+inline Handle GetActualHitTestHandle(const shapes::Bounds& b, double px, double py)
 {
 	auto handles = HandlesOf(b);
 	for (std::size_t i = 0; i < handles.size(); ++i)
@@ -47,7 +47,7 @@ inline Handle HitTestHandle(const shapes::Bounds& b, double px, double py)
 		auto handle = handles[i];
 		if (std::abs(px - handle.first) <= SIZE_OF_MARKER && std::abs(py - handle.second) <= SIZE_OF_MARKER)
 		{
-			return order[i];
+			return Handlers[i];
 		}
 	}
 	return Handle::None;

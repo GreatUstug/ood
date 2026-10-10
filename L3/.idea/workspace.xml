@@ -64,10 +64,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере">
-      <change afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил маус мув">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/SaveService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,11 +308,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="freetype" type="CMakeRunConfiguration" factoryName="Application" folderName="Dependencies" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="freetype" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -399,6 +398,8 @@
       <option name="presentableId" value="Default" />
       <updated>1791103477512</updated>
       <workItem from="1791103479138" duration="36776000" />
+      <workItem from="1791354108347" duration="1259000" />
+      <workItem from="1791623655358" duration="877000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -544,7 +545,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791179277016</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Лабораторная работа 3. Рефактор. Поправил маус мув">
+      <option name="closed" value="true" />
+      <created>1791190064296</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1791190064296</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -597,7 +606,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес логику ресайза и драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от статика во время создания" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

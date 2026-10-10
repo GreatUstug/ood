@@ -11,7 +11,7 @@
 class SaveService {
 public:
 	static void Save(const shapes::Picture& picture, std::ostream& out) {
-		for (const auto& line : picture.ListAllShapes()) {
+		for (const auto& line : picture.GetAllShapesInfo()) {
 			out << line << "\n";
 		}
 	}

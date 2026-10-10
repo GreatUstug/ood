@@ -83,7 +83,7 @@ class Picture;}class EditorController
 	bool HandleResizeHandleClick(const sf::Vector2f& pos) {
 		if (!m_state.HasValidSelection(m_picture)) return false;
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
-		auto h = HitTestHandle(bounds, pos.x, pos.y);
+		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None) return false;
 
 		m_state.activeHandle = h;

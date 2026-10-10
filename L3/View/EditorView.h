@@ -37,7 +37,7 @@ class EditorView
 		}
 
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
-		auto h = HitTestHandle(bounds, pos.x, pos.y);
+		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		switch (h) {
 		case Handle::NW:
 		case Handle::SE:

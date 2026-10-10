@@ -58,7 +58,7 @@ public:
     	it->second->SetGeometry(std::move(geometry));
     }
 
-    std::vector<std::string> ListAllShapes() const {
+    std::vector<std::string> GetAllShapesInfo() const {
         std::vector<std::string> result;
         for (const auto& id : m_order) {
             auto it = m_shapes.find(id);
