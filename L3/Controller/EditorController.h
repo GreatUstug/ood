@@ -23,22 +23,24 @@
 
 class EditorController
 {
-	public:
+public:
 	EditorController(shapes::Picture& picture,
-					 EditorState& state,
-					 EditorView& view,
-					 sf::RenderWindow& window,
-					 Toolbar& toolbar,
-					 int canvasWidth = 800,
-					 int canvasHeight = 600)
+		EditorState& state,
+		EditorView& view,
+		sf::RenderWindow& window,
+		Toolbar& toolbar,
+		int canvasWidth = 800,
+		int canvasHeight = 600)
 		: m_picture(picture)
-		, m_state(state)
-		, m_view(view)
-		, m_window(window)
-		, m_toolbar(toolbar)
-		, m_canvasWidth(canvasWidth)
-		, m_canvasHeight(canvasHeight)
-	{}
+		  , m_state(state)
+		  , m_view(view)
+		  , m_window(window)
+		  , m_toolbar(toolbar)
+		  , m_canvasWidth(canvasWidth)
+		  , m_canvasHeight(canvasHeight)
+	{
+	}
+
 	void HandleEvent(const sf::Event& event)
 	{
 		if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>())
@@ -64,25 +66,35 @@ class EditorController
 			}
 		}
 	}
-	private:
+
+private:
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-		if (HandleToolbarClick(pos)) return;
-		if (HandleResizeHandleClick(pos)) return;
+		if (HandleToolbarClick(pos))
+			return;
+		if (HandleResizeHandleClick(pos))
+			return;
 		HandleShapeClick(pos);
 	}
-	bool HandleToolbarClick(const sf::Vector2f& pos) {
+
+	bool HandleToolbarClick(const sf::Vector2f& pos)
+	{
 		auto action = m_toolbar.HitTest(pos.x, pos.y);
-		if (action == ToolbarAction::None) return false;
+		if (action == ToolbarAction::None)
+			return false;
 		HandleToolbarAction(action);
 		return true;
 	}
-	bool HandleResizeHandleClick(const sf::Vector2f& pos) {
-		if (!m_state.HasValidSelection(m_picture)) return false;
+
+	bool HandleResizeHandleClick(const sf::Vector2f& pos)
+	{
+		if (!m_state.HasValidSelection(m_picture))
+			return false;
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
-		if (h == Handle::None) return false;
+		if (h == Handle::None)
+			return false;
 
 		m_state.activeHandle = h;
 		m_state.resizeStartBounds = bounds;
@@ -92,14 +104,18 @@ class EditorController
 		return true;
 	}
 
-	void HandleShapeClick(const sf::Vector2f& pos) {
+	void HandleShapeClick(const sf::Vector2f& pos)
+	{
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture)) {
+		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture))
+		{
 			auto bounds = m_picture.GetShape(hit).GetBounds();
 			m_state.isDragging = true;
 			m_state.dragOffsetX = pos.x - bounds.x;
 			m_state.dragOffsetY = pos.y - bounds.y;
-		} else {
+		}
+		else
+		{
 			m_state.selectedId = hit;
 			m_state.isDragging = false;
 		}
@@ -124,14 +140,17 @@ class EditorController
 			}
 		}
 	}
+
 	void Resize(const sf::Vector2f& position)
 	{
-		if (!m_state.HasValidSelection(m_picture)) return;
+		if (!m_state.HasValidSelection(m_picture))
+			return;
 		double dx = position.x - m_state.resizeStartMouseX;
 		double dy = position.y - m_state.resizeStartMouseY;
 		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasHeight);
 		m_picture.SetShapeBounds(m_state.selectedId, b);
 	}
+
 	void Drag(const sf::Vector2f& position)
 	{
 		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
@@ -151,11 +170,13 @@ class EditorController
 			m_picture.MoveShape(m_state.selectedId, dx, dy);
 		}
 	}
+
 	void OnMouseReleased()
 	{
 		m_state.isDragging = false;
 		m_state.activeHandle = Handle::None;
 	}
+
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
 		if (key.code == sf::Keyboard::Key::Delete && m_state.HasValidSelection(m_picture))
@@ -163,81 +184,108 @@ class EditorController
 			m_picture.DeleteShape(m_state.selectedId);
 			m_state.ClearSelection();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::S) {
+		else if (key.control && key.code == sf::Keyboard::Key::S)
+		{
 			SaveDocument();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::O) {
+		else if (key.control && key.code == sf::Keyboard::Key::O)
+		{
 			LoadDocument();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::N) {
+		else if (key.control && key.code == sf::Keyboard::Key::N)
+		{
 			NewDocument();
 		}
 	}
 
-	void HandleToolbarAction(ToolbarAction action) {
-		switch (action) {
-		case ToolbarAction::AddRectangle: AddShapeAtCenter("rectangle"); break;
-		case ToolbarAction::AddEllipse:   AddShapeAtCenter("ellipse");   break;
-		case ToolbarAction::AddTriangle:  AddShapeAtCenter("triangle");  break;
+	void HandleToolbarAction(ToolbarAction action)
+	{
+		switch (action)
+		{
+		case ToolbarAction::AddRectangle:
+			AddShapeAtCenter("rectangle");
+			break;
+		case ToolbarAction::AddEllipse:
+			AddShapeAtCenter("ellipse");
+			break;
+		case ToolbarAction::AddTriangle:
+			AddShapeAtCenter("triangle");
+			break;
 		case ToolbarAction::Delete:
-			if (m_state.HasValidSelection(m_picture)) {
+			if (m_state.HasValidSelection(m_picture))
+			{
 				m_picture.DeleteShape(m_state.selectedId);
 				m_state.ClearSelection();
 			}
 			break;
-		default: break;
+		default:
+			break;
 		}
 	}
 
-	void AddShapeAtCenter(const std::string& type) {
+	void AddShapeAtCenter(const std::string& type)
+	{
 		std::string id = MakeId(type);
 
 		double cx = m_canvasWidth / 2.0;
 		double cy = m_canvasHeight / 2.0;
 
 		auto figure = shapes::MakeShape(type, id, cx, cy);
-		if (!figure) return;
+		if (!figure)
+			return;
 
 		m_picture.AddShape(std::move(figure));
 		m_state.selectedId = id;
 	}
 
-	void SaveDocument() {
+	void SaveDocument()
+	{
 		auto path = m_fileDialog.AskSavePath();
-		if (!path) return;
+		if (!path)
+			return;
 		try
 		{
 			DocumentIO::Save(m_picture, *path);
-		} catch (const std::exception& e)
+		}
+		catch (const std::exception& e)
 		{
 			m_fileDialog.ShowError(e.what());
 		}
 	}
 
-	void LoadDocument() {
+	void LoadDocument()
+	{
 		auto path = m_fileDialog.AskOpenPath();
-		if (!path) return;
-		try {
+		if (!path)
+			return;
+		try
+		{
 			auto newPicture = DocumentIO::Load(*path);
 			m_picture.ReplaceWith(std::move(newPicture));
 			m_state.ClearSelection();
-		} catch (const std::exception& e) {
+		}
+		catch (const std::exception& e)
+		{
 			m_fileDialog.ShowError(e.what());
 		}
 	}
 
-	void NewDocument() {
+	void NewDocument()
+	{
 		shapes::Picture empty;
 		m_picture.ReplaceWith(std::move(empty));
 		m_state.ClearSelection();
 	}
-	std::string MakeId(const std::string& prefix) {
-		static std::mt19937 rng{std::random_device{}()};
+
+	std::string MakeId(const std::string& prefix)
+	{
+		static std::mt19937 rng{ std::random_device{}() };
 		return prefix + std::to_string(rng());
 	}
-	shapes::Picture&  m_picture;
-	EditorState&      m_state;
-	EditorView&       m_view;
+
+	shapes::Picture& m_picture;
+	EditorState& m_state;
+	EditorView& m_view;
 	sf::RenderWindow& m_window;
 	Toolbar& m_toolbar;
 	FileDialog m_fileDialog;

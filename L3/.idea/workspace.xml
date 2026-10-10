@@ -7,6 +7,7 @@
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="14" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
     <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
@@ -64,16 +65,36 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил драг анд дроп">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/DocumentIO.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/DocumentIO.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/LoadService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/LoadService.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/SaveService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Bounds.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figure.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Ellipse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Rectangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Triangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Handle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Handle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/MakeShapeUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/MakeShapeUtils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Picture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/ResizePolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/ResizePolicy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/CursorType.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/CursorType.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/gfx/ICanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/ICanvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/gfx/SFMLCanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/SFMLCanvas.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
@@ -135,7 +156,7 @@
     &quot;git-widget-placeholder&quot;: &quot;lw3&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Projects/OOD/L3/main.cpp&quot;,
     &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C++&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -148,11 +169,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.L3">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Figures" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
       <method v="2" />
     </configuration>
@@ -306,6 +322,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="freetype" type="CMakeRunConfiguration" factoryName="Application" folderName="Dependencies" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="freetype" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -397,7 +418,8 @@
       <updated>1791103477512</updated>
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
-      <workItem from="1791623655358" duration="5916000" />
+      <workItem from="1791623655358" duration="6984000" />
+      <workItem from="1791636159823" duration="177000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -583,7 +605,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791631903616</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Лабораторная работа 3. Рефактор. Поправил драг анд дроп">
+      <option name="closed" value="true" />
+      <created>1791634560864</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1791634560864</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -641,16 +671,12 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/View/gfx/SFMLCanvas.h</url>
-          <line>23</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
           <option name="timeStamp" value="3" />
@@ -662,5 +688,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

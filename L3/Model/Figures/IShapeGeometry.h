@@ -15,11 +15,19 @@ class IShapeGeometry
 {
 public:
 	virtual ~IShapeGeometry() = default;
+
 	virtual std::string GetInfo() const = 0;
-	virtual void Move(double dx, double dy) {};
+
+	virtual void Move(double dx, double dy)
+	{
+	};
+
 	virtual void Draw(gfx::ICanvas& canvas) const = 0;
+
 	virtual Bounds GetBounds() const = 0;
+
 	virtual void SetBounds(const Bounds& bounds) = 0;
+
 	virtual bool HitTest(double x, double y) const = 0;
 };
 }

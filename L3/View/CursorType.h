@@ -5,12 +5,13 @@
 #ifndef L3_CURSORTYPE_H
 #define L3_CURSORTYPE_H
 
-enum class CursorType {
+enum class CursorType
+{
 	Arrow,
 	Horizontal,
 	Vertical,
-	DiagonalNWSE,   // ↖↘
-	DiagonalNESW    // ↗↙
+	DiagonalNWSE, // ↖↘
+	DiagonalNESW // ↗↙
 };
 
 #endif //L3_CURSORTYPE_H

@@ -14,28 +14,38 @@ namespace shapes
 class Rectangle : public IShapeGeometry
 {
 public:
-	Rectangle(double x, double y, double width, double height) : m_width(width), m_height(height)
+	Rectangle(double x, double y, double width, double height)
+		: m_width(width), m_height(height)
 	{
 		m_x = x;
 		m_y = y;
 	}
+
 	virtual ~Rectangle() = default;
-	std::string GetInfo() const override {
+
+	std::string GetInfo() const override
+	{
 		return "rectangle " +
-			   std::to_string(m_x) + " " + std::to_string(m_y) + " " +
-			   std::to_string(m_width) + " " + std::to_string(m_height);
+			std::to_string(m_x) + " " + std::to_string(m_y) + " " +
+			std::to_string(m_width) + " " + std::to_string(m_height);
 	}
+
 	void Move(double x, double y)
 	{
 		m_x += x;
 		m_y += y;
 	}
-	void Draw(gfx::ICanvas& canvas) const override {
+
+	void Draw(gfx::ICanvas& canvas) const override
+	{
 		canvas.DrawRectangle(m_x, m_y, m_width, m_height);
 	}
-	Bounds GetBounds() const override {
-		return {m_x, m_y, m_width, m_height};
+
+	Bounds GetBounds() const override
+	{
+		return { m_x, m_y, m_width, m_height };
 	}
+
 	void SetBounds(const Bounds& bounds) override
 	{
 		m_x = bounds.x;
@@ -43,10 +53,13 @@ public:
 		m_width = bounds.width;
 		m_height = bounds.height;
 	}
-	bool HitTest(double px, double py) const override {
+
+	bool HitTest(double px, double py) const override
+	{
 		return px >= m_x && px <= m_x + m_width
 			&& py >= m_y && py <= m_y + m_height;
 	}
+
 private:
 	double m_x = 0;
 	double m_y = 0;

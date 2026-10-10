@@ -11,14 +11,17 @@
 
 #include <string>
 
-struct EditorState {
-	bool HasValidSelection(const shapes::Picture& picture) const {
+struct EditorState
+{
+	bool HasValidSelection(const shapes::Picture& picture) const
+	{
 		return !selectedId.empty() && picture.HasShape(selectedId);
 	}
+
 	bool IsResizing() const { return activeHandle != Handle::None; }
 	void ClearSelection() { selectedId.clear(); }
 	std::string selectedId;
-	bool   isDragging = false;
+	bool isDragging = false;
 	double dragOffsetX = 0;
 	double dragOffsetY = 0;
 	Handle activeHandle = Handle::None;

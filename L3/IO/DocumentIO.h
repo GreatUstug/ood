@@ -9,9 +9,11 @@
 #include <stdexcept>
 #include <string>
 
-class DocumentIO {
+class DocumentIO
+{
 public:
-	static void Save(const shapes::Picture& picture, const std::string& path) {
+	static void Save(const shapes::Picture& picture, const std::string& path)
+	{
 		std::ofstream file(path);
 		if (!file)
 			throw std::runtime_error("Не удалось открыть файл для записи: " + path);
@@ -20,13 +22,17 @@ public:
 			throw std::runtime_error("Ошибка записи в файл: " + path);
 	}
 
-	static shapes::Picture Load(const std::string& path) {
+	static shapes::Picture Load(const std::string& path)
+	{
 		std::ifstream file(path);
 		if (!file)
 			throw std::runtime_error("Не удалось открыть файл: " + path);
-		try {
+		try
+		{
 			return LoadService::Load(file);
-		} catch (const std::exception& e) {
+		}
+		catch (const std::exception& e)
+		{
 			throw std::runtime_error("Некорректный файл: " + std::string(e.what()));
 		}
 	}

@@ -18,7 +18,6 @@ FetchContent_MakeAvailable(SFML)
 add_executable(L3 main.cpp
         Model/Picture.h
         Model/Figures/IShapeGeometry.h
-        ShapeParams.h
         Model/Figures/Ellipse.h
         Model/Figures/Rectangle.h
         Model/Figures/Triangle.h

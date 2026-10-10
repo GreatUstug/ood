@@ -8,10 +8,14 @@
 
 
 #include <string>
-class SaveService {
+
+class SaveService
+{
 public:
-	static void Save(const shapes::Picture& picture, std::ostream& out) {
-		for (const auto& line : picture.GetAllShapesInfo()) {
+	static void Save(const shapes::Picture& picture, std::ostream& out)
+	{
+		for (const auto& line : picture.GetAllShapesInfo())
+		{
 			out << line << "\n";
 		}
 	}
