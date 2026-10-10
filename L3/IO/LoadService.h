@@ -6,7 +6,7 @@
 #define L3_LOADSERVICE_H
 
 #include "../Model/Picture.h"
-#include "../Model/IFigure.h"
+#include "../Model/Figure.h"
 #include "../Model/Figures/Rectangle.h"
 #include "../Model/Figures/Ellipse.h"
 #include "../Model/Figures/Triangle.h"
@@ -41,7 +41,7 @@ public:
     }
 
 private:
-    static std::unique_ptr<shapes::IFigure> ParseLine(const std::string& line) {
+    static std::unique_ptr<shapes::Figure> ParseLine(const std::string& line) {
         std::istringstream iss(line);
         std::string type, id, color;
         if (!(iss >> type >> id >> color)) {
@@ -78,7 +78,7 @@ private:
             throw std::runtime_error("Unknown type: " + type);
         }
 
-        return std::make_unique<shapes::IFigure>(id, color, std::move(geo));
+        return std::make_unique<shapes::Figure>(id, color, std::move(geo));
     }
 };
 

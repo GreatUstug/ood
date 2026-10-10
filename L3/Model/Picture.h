@@ -1,7 +1,7 @@
 // Shapes/Picture.h
 #pragma once
 #include "Bounds.h"
-#include "IFigure.h"
+#include "Figure.h"
 #include "Figures/IShapeGeometry.h"
 #include "../View/gfx/ICanvas.h"
 
@@ -19,7 +19,7 @@ namespace shapes
 public:
 		Picture() {}
 
-		void AddShape(std::unique_ptr<IFigure> figure) {
+		void AddShape(std::unique_ptr<Figure> figure) {
 			const std::string id = figure->GetId();
 			if (m_shapes.contains(id)) {
 				throw std::invalid_argument("Shape with this ID already exists");
@@ -82,7 +82,7 @@ public:
     	}
     }
 
-	IFigure& GetShape(const std::string& id) const{
+	Figure& GetShape(const std::string& id) const{
 		auto it = m_shapes.find(id);
 		if (it == m_shapes.end()) throw std::invalid_argument("Shape with this id not found.");
 		return *it->second;
@@ -109,7 +109,7 @@ public:
 		m_order  = std::move(other.m_order);
 	}
 private:
-		std::unordered_map<std::string, std::unique_ptr<IFigure>> m_shapes;
+		std::unordered_map<std::string, std::unique_ptr<Figure>> m_shapes;
 		std::vector<std::string> m_order;
 };
 }

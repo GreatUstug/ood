@@ -6,16 +6,16 @@
 
 namespace shapes
 {
-class IFigure
+class Figure
 {
 public:
-	IFigure(const std::string& id,
+	Figure(const std::string& id,
 		  const std::string& color,
 		  std::unique_ptr<IShapeGeometry> geometry)
 		: m_id(id), m_colorRGB(gfx::Color::ParseToRGB(color)), m_geometry(std::move(geometry))
 	{
 	}
-	virtual ~IFigure() = default;
+	virtual ~Figure() = default;
 	void SetGeometry(std::unique_ptr<IShapeGeometry> geometry) {
 		m_geometry = std::move(geometry);
 	}

@@ -36,7 +36,8 @@ add_executable(L3 main.cpp
         Model/ResizePolicy.h
         View/CursorType.h
         IO/DocumentIO.h
-        View/FileDialog.h)
+        View/FileDialog.h
+        Model/MakeShapeUtils.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

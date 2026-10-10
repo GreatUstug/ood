@@ -5,7 +5,6 @@
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
 #include "IO/LoadService.h"
-#include "IO/SaveService.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 #include "Model/Picture.h"
@@ -14,12 +13,12 @@
 #include "../IO/portable-file-dialogs.h"
 #include "IO/DocumentIO.h"
 #include "Model/ResizePolicy.h"
+#include "Model/MakeShapeUtils.h"
 #include "View/EditorView.h"
 #include "View/FileDialog.h"
 #include "View/Toolbar.h"
 
 #include <fstream>
-#include <iostream>
 #include <random>
 
 class EditorController
@@ -196,20 +195,10 @@ class EditorController
 		double cx = m_canvasWidth / 2.0;
 		double cy = m_canvasHeight / 2.0;
 
-		std::unique_ptr<shapes::IShapeGeometry> geo;
+		auto figure = shapes::MakeShape(type, id, cx, cy);
+		if (!figure) return;
 
-		if (type == "rectangle") {
-			geo = std::make_unique<shapes::Rectangle>(cx - 60, cy - 40, 120, 80);
-		} else if (type == "ellipse") {
-			geo = std::make_unique<shapes::Ellipse>(cx, cy, 60, 40);
-		} else if (type == "triangle") {
-			geo = std::make_unique<shapes::Triangle>(
-				cx, cy - 40, cx + 60, cy + 40, cx - 60, cy + 40);
-		}
-
-		m_picture.AddShape(std::make_unique<shapes::IFigure>(
-			id, "#c678ff", std::move(geo)));
-
+		m_picture.AddShape(std::move(figure));
 		m_state.selectedId = id;
 	}
 
