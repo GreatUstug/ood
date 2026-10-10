@@ -64,14 +64,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Переименовал папки по MVC">
-      <change afterPath="$PROJECT_DIR$/Model/MakeShapeUtils.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO/LoadService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/LoadService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/IFigure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figure.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Picture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Bounds.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -401,7 +397,7 @@
       <updated>1791103477512</updated>
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
-      <workItem from="1791623655358" duration="4799000" />
+      <workItem from="1791623655358" duration="5916000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -579,7 +575,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791627399586</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера">
+      <option name="closed" value="true" />
+      <created>1791631903616</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1791631903616</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -636,7 +640,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

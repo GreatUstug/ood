@@ -142,7 +142,7 @@ class EditorController
 			bounds.height
 		};
 
-		auto target = shapes::ClampToCanvas(desired, m_canvasWidth, m_canvasHeight);
+		auto target = shapes::ClampToCanvasByShift(desired, m_canvasWidth, m_canvasHeight);
 
 		double dx = target.x - bounds.x;
 		double dy = target.y - bounds.y;

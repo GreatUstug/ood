@@ -21,5 +21,13 @@ inline Bounds ClampToCanvas(Bounds bounds, double W, double H )
 		if (bounds.height < 0) bounds.height = 0;
 		return bounds;
 }
+inline Bounds ClampToCanvasByShift(const Bounds& b, double W, double H) {
+	Bounds r = b;
+	if (r.x < 0) r.x = 0;
+	if (r.y < 0) r.y = 0;
+	if (r.x + r.width  > W) r.x = W - r.width;
+	if (r.y + r.height > H) r.y = H - r.height;
+	return r;
+}
 }
 #endif //L3_BOUNDS_H
