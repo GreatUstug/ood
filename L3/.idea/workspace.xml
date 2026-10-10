@@ -64,14 +64,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил маус мув">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил наименования функций">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO/SaveService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Shapes/Picture.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/State/DrawSelectionFrame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -399,7 +394,7 @@
       <updated>1791103477512</updated>
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
-      <workItem from="1791623655358" duration="877000" />
+      <workItem from="1791623655358" duration="1714000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -553,7 +548,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791190064296</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Лабораторная работа 3. Рефактор. Поправил наименования функций">
+      <option name="closed" value="true" />
+      <created>1791624829286</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1791624829286</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -607,7 +610,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от статика во время создания" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

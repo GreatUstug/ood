@@ -205,7 +205,7 @@ class Picture;}class EditorController
 			geo = std::make_unique<shapes::Ellipse>(cx, cy, 60, 40);
 		} else if (type == "triangle") {
 			geo = std::make_unique<shapes::Triangle>(
-				cx, cy + 40, cx + 60, cy - 40, cx - 60, cy - 40);
+				cx, cy - 40, cx + 60, cy + 40, cx - 60, cy + 40);
 		}
 
 		m_picture.AddShape(std::make_unique<shapes::IFigure>(
