@@ -64,9 +64,29 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил наименования функций">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил спавн треугольника">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/DocumentIO.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/DocumentIO.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/LoadService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/LoadService.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IO/SaveService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Bounds.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Ellipse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Rectangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Triangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/IFigure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/IFigure.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Picture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Shapes/ResizePolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/ResizePolicy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/State/Handle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Handle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gfx/ICanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/ICanvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gfx/SFMLCanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/SFMLCanvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +110,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Shapes/Bounds.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Ellipse.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/Figures/IShapeGeometry.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Rectangle.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/Figures/Triangle.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/IFigure.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shapes/Picture.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/View/gfx/SFMLCanvas.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="Fax7rZAl" />
@@ -145,6 +159,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\OOD\L3\View" />
+      <recent name="C:\Projects\OOD\L3\Model" />
       <recent name="C:\Projects\OOD\L3\IO" />
       <recent name="C:\Projects\OOD\L3" />
     </key>
@@ -394,7 +410,7 @@
       <updated>1791103477512</updated>
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
-      <workItem from="1791623655358" duration="1714000" />
+      <workItem from="1791623655358" duration="3093000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -556,7 +572,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791624829286</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Лабораторная работа 3. Рефактор. Поправил спавн треугольника">
+      <option name="closed" value="true" />
+      <created>1791625659682</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1791625659682</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -611,13 +635,14 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/gfx/SFMLCanvas.h</url>
+          <url>file://$PROJECT_DIR$/View/gfx/SFMLCanvas.h</url>
           <line>23</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
@@ -627,7 +652,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>14</line>
+          <line>11</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

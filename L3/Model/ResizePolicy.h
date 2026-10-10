@@ -5,7 +5,7 @@
 #ifndef L3_RESIZEPOLICY_H
 #define L3_RESIZEPOLICY_H
 #include "Bounds.h"
-#include "State/Handle.h"
+#include "Handle.h"
 namespace shapes
 {
 constexpr double MIN_SHAPE_SIZE = 20.0;

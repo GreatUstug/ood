@@ -8,9 +8,9 @@
 #include "gfx/ICanvas.h"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Text.hpp"
-#include "Shapes/Picture.h"
-#include "State/DrawSelectionFrame.h"
-#include "State/EditorState.h"
+#include "Model/Picture.h"
+#include "DrawSelectionFrame.h"
+#include "../Model/EditorState.h"
 #include "CursorType.h"
 class EditorView
 {

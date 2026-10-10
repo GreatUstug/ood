@@ -5,11 +5,11 @@
 #ifndef L3_LOADSERVICE_H
 #define L3_LOADSERVICE_H
 
-#include "../Shapes/Picture.h"
-#include "../Shapes/IFigure.h"
-#include "../Shapes/Figures/Rectangle.h"
-#include "../Shapes/Figures/Ellipse.h"
-#include "../Shapes/Figures/Triangle.h"
+#include "../Model/Picture.h"
+#include "../Model/IFigure.h"
+#include "../Model/Figures/Rectangle.h"
+#include "../Model/Figures/Ellipse.h"
+#include "../Model/Figures/Triangle.h"
 
 #include <istream>
 #include <sstream>

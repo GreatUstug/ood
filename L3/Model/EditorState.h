@@ -6,7 +6,7 @@
 #define L3_EDITORSTATE_H
 #pragma once
 #include "Handle.h"
-#include "Shapes/Bounds.h"
+#include "Model/Bounds.h"
 
 
 #include <string>

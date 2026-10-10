@@ -16,24 +16,24 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(SFML)
 
 add_executable(L3 main.cpp
-        Shapes/Picture.h
-        Shapes/Figures/IShapeGeometry.h
+        Model/Picture.h
+        Model/Figures/IShapeGeometry.h
         ShapeParams.h
-        Shapes/Figures/Ellipse.h
-        Shapes/Figures/Rectangle.h
-        Shapes/Figures/Triangle.h
-        gfx/ICanvas.h
-        gfx/SFMLCanvas.h
-        Shapes/Bounds.h
-        State/EditorState.h
-        State/DrawSelectionFrame.h
+        Model/Figures/Ellipse.h
+        Model/Figures/Rectangle.h
+        Model/Figures/Triangle.h
+        View/gfx/ICanvas.h
+        View/gfx/SFMLCanvas.h
+        Model/Bounds.h
+        Model/EditorState.h
+        View/DrawSelectionFrame.h
         View/EditorView.h
         Controller/EditorController.h
         IO/SaveService.h
         IO/LoadService.h
         View/Toolbar.h
-        State/Handle.h
-        Shapes/ResizePolicy.h
+        Model/Handle.h
+        Model/ResizePolicy.h
         View/CursorType.h
         IO/DocumentIO.h
         View/FileDialog.h)

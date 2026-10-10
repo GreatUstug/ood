@@ -3,7 +3,7 @@
 
 #include "LoadService.h"
 #include "SaveService.h"
-#include "Shapes/Picture.h"
+#include "Model/Picture.h"
 
 #include <fstream>
 #include <stdexcept>

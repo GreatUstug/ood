@@ -4,9 +4,8 @@
 
 #ifndef FIGURES_SHAPE_H
 #define FIGURES_SHAPE_H
-#include "../../ShapeParams.h"
-#include  "../../gfx/ICanvas.h"
-#include "Shapes/Bounds.h"
+#include  "../../View/gfx/ICanvas.h"
+#include "Model/Bounds.h"
 
 #include <string>
 

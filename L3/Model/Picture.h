@@ -3,7 +3,7 @@
 #include "Bounds.h"
 #include "IFigure.h"
 #include "Figures/IShapeGeometry.h"
-#include "../gfx/ICanvas.h"
+#include "../View/gfx/ICanvas.h"
 
 #include <map>
 #include <memory>

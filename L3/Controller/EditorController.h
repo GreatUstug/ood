@@ -8,12 +8,12 @@
 #include "IO/SaveService.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
-#include "Shapes/Picture.h"
-#include "State/DrawSelectionFrame.h"
-#include "State/EditorState.h"
+#include "Model/Picture.h"
+#include "../View/DrawSelectionFrame.h"
+#include "../Model/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
 #include "IO/DocumentIO.h"
-#include "Shapes/ResizePolicy.h"
+#include "Model/ResizePolicy.h"
 #include "View/EditorView.h"
 #include "View/FileDialog.h"
 #include "View/Toolbar.h"
@@ -22,8 +22,7 @@
 #include <iostream>
 #include <random>
 
-namespace shapes {
-class Picture;}class EditorController
+class EditorController
 {
 	public:
 	EditorController(shapes::Picture& picture,

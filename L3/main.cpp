@@ -1,19 +1,16 @@
 #include "Controller/EditorController.h"
-#include "State/EditorState.h"
-#include "gfx/SFMLCanvas.h"
+#include "Model/EditorState.h"
+#include "View/gfx/SFMLCanvas.h"
 #include <optional>
 #include <SFML/Graphics.hpp>
-#include "State/DrawSelectionFrame.h"
-#include "Shapes/Picture.h"
-#include "Shapes/Figures/Ellipse.h"
-#include "Shapes/Figures/Rectangle.h"
-#include "Shapes/Figures/Triangle.h"
+#include "View/DrawSelectionFrame.h"
+#include "Model/Picture.h"
 #include "View/EditorView.h"
 
 int main() {
 	const unsigned W = 800;
 	const unsigned H = 600;
-	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(800, 600)), "Editor");
+	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(W, H)), "Editor");
 	SFMLCanvas canvas(window);
 
 	sf::Font font;
