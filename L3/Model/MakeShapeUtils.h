@@ -34,45 +34,42 @@ inline std::string MakeId(const std::string& prefix)
 	return prefix + std::to_string(rng());
 }
 
-inline std::unique_ptr<Figure> MakeRectangle(const std::string& id, double cx, double cy)
+inline std::unique_ptr<Figure> MakeRectangle(const std::string& id, const Bounds& bounds)
 {
 	return std::make_unique<Figure>(id, defaults::COLOR,
-		std::make_unique<Rectangle>(
-			cx - defaults::RECT_W / 2,
-			cy - defaults::RECT_H / 2,
-			defaults::RECT_W,
-			defaults::RECT_H));
+		std::make_unique<Rectangle>(bounds.x, bounds.y, bounds.width, bounds.height);
 }
 
-inline std::unique_ptr<Figure> MakeEllipse(const std::string& id, double cx, double cy)
+inline std::unique_ptr<Figure> MakeEllipse(const std::string& id, const Bounds& bounds)
 {
 	return std::make_unique<Figure>(id, defaults::COLOR,
-		std::make_unique<Ellipse>(cx, cy,
-			defaults::ELLIPSE_RX,
-			defaults::ELLIPSE_RY));
+		std::make_unique<Ellipse>(bounds.x + bounds.width / 2.0,
+			bounds.y + bounds.height / 2.0,
+			bounds.width / 2.0,
+			bounds.height / 2.0));
 }
 
-inline std::unique_ptr<Figure> MakeTriangle(const std::string& id, double cx, double cy)
+inline std::unique_ptr<Figure> MakeTriangle(const std::string& id, const Bounds& bounds)
 {
-	double halfW = defaults::TRIANGLE_W / 2;
-	double halfH = defaults::TRIANGLE_H / 2;
+	double top = bounds.y;
+	double bot = bounds.y + bounds.height;
 	return std::make_unique<Figure>(id, defaults::COLOR,
 		std::make_unique<Triangle>(
-			cx, cy - halfH,
-			cx + halfW, cy + halfH,
-			cx - halfW, cy + halfH));
+			bounds.x + bounds.width / 2.0, top,
+			bounds.x + bounds.width, bot,
+			bounds.x, bot));
 }
 
 inline std::unique_ptr<Figure> MakeShape(const std::string& type,
 	const std::string& id,
-	double cx, double cy)
+	const Bounds& bounds)
 {
 	if (type == "rectangle")
-		return MakeRectangle(id, cx, cy);
+		return MakeRectangle(id, bounds);
 	if (type == "ellipse")
-		return MakeEllipse(id, cx, cy);
+		return MakeEllipse(id, bounds);
 	if (type == "triangle")
-		return MakeTriangle(id, cx, cy);
+		return MakeTriangle(id, bounds);
 	return nullptr;
 }
 

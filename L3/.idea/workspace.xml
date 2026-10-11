@@ -65,10 +65,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил форматирование">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 1. Начал вводить состояния для создания элементов">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Bounds.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/MakeShapeUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/MakeShapeUtils.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -401,7 +402,7 @@
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
       <workItem from="1791623655358" duration="6984000" />
-      <workItem from="1791636159823" duration="1671000" />
+      <workItem from="1791636159823" duration="3419000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -603,7 +604,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791636485675</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Лабораторная работа 3. Допы. Задание 1. Начал вводить состояния для создания элементов">
+      <option name="closed" value="true" />
+      <created>1791714510199</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1791714510199</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -638,7 +647,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Удалено лишнее со второй лабы" />
     <MESSAGE value="Лабораторная работа 3. Переделал рисование через примитивы сфмл. Убрал консольный ввод, лишние буферы, так как теперь все через окно будет." />
     <MESSAGE value="Лабораторная работа 3. Заготовка выделения." />
     <MESSAGE value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
@@ -663,7 +671,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
+    <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Начал вводить состояния для создания элементов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 1. Начал вводить состояния для создания элементов" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

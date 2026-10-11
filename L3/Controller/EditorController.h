@@ -100,6 +100,7 @@ private:
 		m_state.resizeStartBounds = bounds;
 		m_state.resizeStartMouseX = pos.x;
 		m_state.resizeStartMouseY = pos.y;
+		m_state.mode = EditorState::Mode::Resizing;
 		return true;
 	}
 
@@ -111,10 +112,12 @@ private:
 			auto bounds = m_picture.GetShape(hit).GetBounds();
 			m_state.dragOffsetX = pos.x - bounds.x;
 			m_state.dragOffsetY = pos.y - bounds.y;
+			m_state.mode = EditorState::Mode::Dragging;
 		}
 		else
 		{
 			m_state.selectedId = hit;
+			m_state.mode = EditorState::Mode::Idle;
 		}
 	}
 
@@ -131,8 +134,10 @@ private:
 			{
 			case EditorState::Mode::Dragging:
 				Drag(pos);
+				break;
 			case EditorState::Mode::Resizing:
 				Resize(pos);
+				break;
 			}
 		}
 	}
@@ -170,6 +175,7 @@ private:
 	void OnMouseReleased()
 	{
 		m_state.activeHandle = Handle::None;
+		m_state.mode = EditorState::Mode::Idle;
 	}
 
 	void OnKeyPressed(const sf::Event::KeyPressed& key)

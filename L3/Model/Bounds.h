@@ -4,6 +4,7 @@
 
 #ifndef L3_BOUNDS_H
 #define L3_BOUNDS_H
+#include <algorithm>
 
 namespace shapes
 {
@@ -50,6 +51,15 @@ inline Bounds ClampToCanvasByShift(const Bounds& b, double W, double H)
 	if (r.y + r.height > H)
 		r.y = H - r.height;
 	return r;
+}
+inline Bounds BoundsFromPoints(double x1, double y1, double x2, double y2)
+{
+	return {
+		std::min(x1, x2),
+		std::min(y1, y2),
+		std::abs(x2 - x1),
+		std::abs(y2 - y1)
+	};
 }
 }
 #endif //L3_BOUNDS_H
