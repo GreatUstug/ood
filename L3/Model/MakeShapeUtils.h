@@ -37,7 +37,7 @@ inline std::string MakeId(const std::string& prefix)
 inline std::unique_ptr<Figure> MakeRectangle(const std::string& id, const Bounds& bounds)
 {
 	return std::make_unique<Figure>(id, defaults::COLOR,
-		std::make_unique<Rectangle>(bounds.x, bounds.y, bounds.width, bounds.height);
+		std::make_unique<Rectangle>(bounds.x, bounds.y, bounds.width, bounds.height));
 }
 
 inline std::unique_ptr<Figure> MakeEllipse(const std::string& id, const Bounds& bounds)

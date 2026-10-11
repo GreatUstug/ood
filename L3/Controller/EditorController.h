@@ -71,11 +71,25 @@ private:
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
+		if (m_state.mode == EditorState::Mode::Creating)
+		{
+			BeginCreateGesture(pos);
+			return;
+		}
 		if (HandleToolbarClick(pos))
 			return;
 		if (HandleResizeHandlerClick(pos))
 			return;
 		HandleShapeClick(pos);
+	}
+
+	void BeginCreateGesture(const sf::Vector2f& pos)
+	{
+		m_state.createStartX = pos.x;
+		m_state.createStartY = pos.y;
+		m_state.createCurrentX = pos.x;
+		m_state.createCurrentY = pos.y;
+		m_state.hasCreateStart = true;
 	}
 
 	bool HandleToolbarClick(const sf::Vector2f& pos)
@@ -124,22 +138,27 @@ private:
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-		if (m_state.mode != EditorState::Mode::Dragging && m_state.mode != EditorState::Mode::Resizing)
+		switch (m_state.mode)
 		{
+		case EditorState::Mode::Dragging:
+			if (m_state.HasValidSelection(m_picture))
+				Drag(pos);
+			break;
+		case EditorState::Mode::Resizing:
+			if (m_state.HasValidSelection(m_picture))
+				Resize(pos);
+			break;
+		case EditorState::Mode::Creating:
+			if (m_state.hasCreateStart)
+			{
+				m_state.createCurrentX = pos.x;
+				m_state.createCurrentY = pos.y;
+			}
+			break;
+		default:
 			m_view.UpdateCursor(pos);
 		}
-		if (m_state.HasValidSelection(m_picture))
-		{
-			switch (m_state.mode)
-			{
-			case EditorState::Mode::Dragging:
-				Drag(pos);
-				break;
-			case EditorState::Mode::Resizing:
-				Resize(pos);
-				break;
-			}
-		}
+
 	}
 
 	void Resize(const sf::Vector2f& position)
@@ -174,26 +193,70 @@ private:
 
 	void OnMouseReleased()
 	{
+		if (m_state.mode == EditorState::Mode::Creating)
+		{
+			if (m_state.hasCreateStart)
+				CommitCreating();
+			return;
+		}
 		m_state.activeHandle = Handle::None;
 		m_state.mode = EditorState::Mode::Idle;
 	}
 
+	void CommitCreating()
+	{
+		shapes::Bounds b = shapes::BoundsFromPoints(
+			m_state.createStartX, m_state.createStartY,
+			m_state.createCurrentX, m_state.createCurrentY);
+
+		if (b.width < shapes::MIN_SHAPE_SIZE)
+			b.width = shapes::MIN_SHAPE_SIZE;
+		if (b.height < shapes::MIN_SHAPE_SIZE)
+			b.height = shapes::MIN_SHAPE_SIZE;
+
+		b = shapes::ClampToCanvas(b, m_canvasWidth, m_canvasHeight);
+
+		if (b.width < 1.0 || b.height < 1.0)
+		{
+			m_state.CancelCreating();
+			return;
+		}
+
+		std::string id = shapes::MakeId(m_state.creatingType);
+		auto figure = shapes::MakeShape(m_state.creatingType, id, b);
+		if (!figure)
+		{
+			m_state.CancelCreating();
+			return;
+		}
+
+		m_picture.AddShape(std::move(figure));
+		m_state.selectedId = id;
+		m_state.CancelCreating();
+	}
+
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
+		if (key.code == sf::Keyboard::Key::Escape &&
+			m_state.mode == EditorState::Mode::Creating)
+		{
+			m_state.CancelCreating();
+			return;
+		}
 		if (key.code == sf::Keyboard::Key::Delete && m_state.HasValidSelection(m_picture))
 		{
 			m_picture.DeleteShape(m_state.selectedId);
 			m_state.ClearSelection();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::S)
+		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
 			SaveDocument();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::O)
+		if (key.control && key.code == sf::Keyboard::Key::O)
 		{
 			LoadDocument();
 		}
-		else if (key.control && key.code == sf::Keyboard::Key::N)
+		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
 			NewDocument();
 		}
@@ -204,13 +267,13 @@ private:
 		switch (action)
 		{
 		case ToolbarAction::AddRectangle:
-			AddShapeAtCenter("rectangle");
+			StartCreating("rectangle");
 			break;
 		case ToolbarAction::AddEllipse:
-			AddShapeAtCenter("ellipse");
+			StartCreating("ellipse");
 			break;
 		case ToolbarAction::AddTriangle:
-			AddShapeAtCenter("triangle");
+			StartCreating("triangle");
 			break;
 		case ToolbarAction::Delete:
 			if (m_state.HasValidSelection(m_picture))
@@ -224,19 +287,12 @@ private:
 		}
 	}
 
-	void AddShapeAtCenter(const std::string& type)
+	void StartCreating(const std::string& type)
 	{
-		std::string id = MakeId(type);
-
-		double cx = m_canvasWidth / 2.0;
-		double cy = m_canvasHeight / 2.0;
-
-		auto figure = shapes::MakeShape(type, id, cx, cy);
-		if (!figure)
-			return;
-
-		m_picture.AddShape(std::move(figure));
-		m_state.selectedId = id;
+		m_state.mode = EditorState::Mode::Creating;
+		m_state.creatingType = type;
+		m_state.hasCreateStart = false;
+		m_state.selectedId.clear();
 	}
 
 	void SaveDocument()
