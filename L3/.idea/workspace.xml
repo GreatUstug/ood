@@ -65,28 +65,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил драг анд дроп">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Рефактор. Поправил форматирование">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO/DocumentIO.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/DocumentIO.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO/LoadService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/LoadService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IO/SaveService.h" beforeDir="false" afterPath="$PROJECT_DIR$/IO/SaveService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Bounds.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Bounds.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figure.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Ellipse.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Rectangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Triangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Handle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Handle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/MakeShapeUtils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/MakeShapeUtils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Picture.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/ResizePolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/ResizePolicy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/CursorType.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/CursorType.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/DrawSelectionFrame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/gfx/ICanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/ICanvas.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/gfx/SFMLCanvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/gfx/SFMLCanvas.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -419,7 +401,7 @@
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
       <workItem from="1791623655358" duration="6984000" />
-      <workItem from="1791636159823" duration="177000" />
+      <workItem from="1791636159823" duration="1671000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -613,7 +595,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791634560864</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Лабораторная работа 3. Рефактор. Поправил форматирование">
+      <option name="closed" value="true" />
+      <created>1791636485675</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1791636485675</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -672,7 +662,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
+    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -683,7 +674,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>11</line>
+          <line>12</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

@@ -73,7 +73,7 @@ private:
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 		if (HandleToolbarClick(pos))
 			return;
-		if (HandleResizeHandleClick(pos))
+		if (HandleResizeHandlerClick(pos))
 			return;
 		HandleShapeClick(pos);
 	}
@@ -87,7 +87,7 @@ private:
 		return true;
 	}
 
-	bool HandleResizeHandleClick(const sf::Vector2f& pos)
+	bool HandleResizeHandlerClick(const sf::Vector2f& pos)
 	{
 		if (!m_state.HasValidSelection(m_picture))
 			return false;
@@ -100,7 +100,6 @@ private:
 		m_state.resizeStartBounds = bounds;
 		m_state.resizeStartMouseX = pos.x;
 		m_state.resizeStartMouseY = pos.y;
-		m_state.isDragging = false;
 		return true;
 	}
 
@@ -110,33 +109,30 @@ private:
 		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture))
 		{
 			auto bounds = m_picture.GetShape(hit).GetBounds();
-			m_state.isDragging = true;
 			m_state.dragOffsetX = pos.x - bounds.x;
 			m_state.dragOffsetY = pos.y - bounds.y;
 		}
 		else
 		{
 			m_state.selectedId = hit;
-			m_state.isDragging = false;
 		}
 	}
 
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-		if (!m_state.isDragging && !m_state.IsResizing())
+		if (m_state.mode != EditorState::Mode::Dragging && m_state.mode != EditorState::Mode::Resizing)
 		{
 			m_view.UpdateCursor(pos);
 		}
 		if (m_state.HasValidSelection(m_picture))
 		{
-			if (m_state.IsResizing())
+			switch (m_state.mode)
 			{
-				Resize(pos);
-			}
-			if (m_state.isDragging)
-			{
+			case EditorState::Mode::Dragging:
 				Drag(pos);
+			case EditorState::Mode::Resizing:
+				Resize(pos);
 			}
 		}
 	}
@@ -173,7 +169,6 @@ private:
 
 	void OnMouseReleased()
 	{
-		m_state.isDragging = false;
 		m_state.activeHandle = Handle::None;
 	}
 
