@@ -10,9 +10,11 @@ namespace shapes
 class IFigure;
 }
 
-class IFigureObserver {
+class IFigureObserver
+{
 public:
 	virtual ~IFigureObserver() = default;
+
 	virtual void OnShapeChanged() = 0;
 };
 #endif //FIGURES_ISHAPEOBSERVER_H

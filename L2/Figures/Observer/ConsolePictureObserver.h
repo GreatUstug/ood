@@ -8,11 +8,16 @@
 #include "IPictureObserver.h"
 #include <ostream>
 
-class ConsolePictureObserver : public IPictureObserver {
+class ConsolePictureObserver : public IPictureObserver
+{
 public:
-	explicit ConsolePictureObserver(std::ostream& out) : m_out(out) {}
+	explicit ConsolePictureObserver(std::ostream& out)
+		: m_out(out)
+	{
+	}
 
-	void OnPictureChanged(size_t shapesCount) override {
+	void OnPictureChanged(size_t shapesCount) override
+	{
 		m_out << "Picture changed. Shapes: " << shapesCount << "\n";
 	}
 

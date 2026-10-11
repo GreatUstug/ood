@@ -6,6 +6,7 @@
 #define FIGURES_COORDS_H
 #include <string>
 #include <vector>
+
 struct ShapeParams
 {
 	std::string type;

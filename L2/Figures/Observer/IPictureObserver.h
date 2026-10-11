@@ -5,9 +5,11 @@
 #ifndef FIGURES_IPICTUREOBSERVER_H
 #define FIGURES_IPICTUREOBSERVER_H
 
-class IPictureObserver {
+class IPictureObserver
+{
 public:
 	virtual ~IPictureObserver() = default;
+
 	virtual void OnPictureChanged(std::size_t shapeCount) = 0;
 };
 

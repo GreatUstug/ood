@@ -7,13 +7,13 @@
 #include <algorithm>
 #include <vector>
 
-template <typename TObserver>
-class ObserverList
+template <typename TObserver> class ObserverList
 {
 public:
 	void AddObserver(TObserver* observer)
 	{
-		if (!observer) return;
+		if (!observer)
+			return;
 		for (const auto& entry : m_entries)
 		{
 			if (entry.observer == observer && entry.active)
@@ -21,47 +21,58 @@ public:
 				return;
 			}
 		}
-		m_entries.push_back({observer, m_generation, true});
+		m_entries.push_back({ observer, m_generation, true });
 	}
+
 	void RemoveObserver(TObserver* observer)
 	{
-		if (!observer) return;
-		for (auto& e : m_entries) {
-			if (e.active && e.observer == observer) {
+		if (!observer)
+			return;
+		for (auto& e : m_entries)
+		{
+			if (e.active && e.observer == observer)
+			{
 				e.active = false;
 				return;
 			}
 		}
 	}
 
-	template <typename Fn>
-	void Notify(Fn&& fn) {
+	template <typename Fn> void Notify(Fn&& fn)
+	{
 		++m_generation;
-		const std::size_t snapshotGen  = m_generation;
+		const std::size_t snapshotGen = m_generation;
 		const std::size_t snapshotSize = m_entries.size();
 		for (std::size_t i = 0; i < snapshotSize; ++i)
 		{
 			Entry& entry = m_entries[i];
-			if (!entry.active) continue;
-			if (entry.generation >= snapshotGen) continue;
+			if (!entry.active)
+				continue;
+			if (entry.generation >= snapshotGen)
+				continue;
 			fn(m_entries[i].observer);
 		}
 		m_entries.erase(
 			std::remove_if(m_entries.begin(), m_entries.end(),
-						   [](const Entry& e) { return !e.active; }),
+				[](const Entry& e) { return !e.active; }),
 			m_entries.end());
 	}
-	std::size_t CountActive() const {
+
+	std::size_t CountActive() const
+	{
 		return static_cast<std::size_t>(std::count_if(
 			m_entries.begin(), m_entries.end(),
 			[](const Entry& e) { return e.active; }));
 	}
+
 private:
-	struct Entry {
-		TObserver*  observer;
+	struct Entry
+	{
+		TObserver* observer;
 		std::size_t generation;
-		bool        active;
+		bool active;
 	};
+
 	std::vector<Entry> m_entries;
 	size_t m_generation = 0;
 };

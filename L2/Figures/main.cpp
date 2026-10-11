@@ -34,7 +34,8 @@ int main() {
 
 	shapes::Picture picture;
 	ConsolePictureObserver console(std::cout);
-	picture.AddObserver(&console);
+	auto sub = picture.Subscribe(&console);
+
 	CommandHandler::ShapesCommandHandler handler(picture, canvas, pump);
 	handler.Execute();
 

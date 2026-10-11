@@ -22,8 +22,23 @@ public:
 
 	Subscription(const Subscription&) = delete;
 	Subscription& operator=(const Subscription&) = delete;
-	Subscription(Subscription&&) = delete;
-	Subscription& operator=(Subscription&&) = delete;
+	Subscription(Subscription&& other)
+	{
+		m_subject  = other.m_subject;
+		m_observer = other.m_observer;
+		m_alive    = other.m_alive;
+		m_active   = other.m_active;
+
+		if (m_alive && m_subject && m_active) {
+			m_subject->UnregisterSubscription(&other);
+			m_subject->RegisterSubscription(this);
+		}
+
+		other.m_subject  = nullptr;
+		other.m_observer = nullptr;
+		other.m_alive    = false;
+		other.m_active   = false;
+	};
 
     void Disconnect() {
         if (!m_active) return;
