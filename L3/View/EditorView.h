@@ -27,6 +27,7 @@ public:
 	void Render()
 	{
 		m_picture.DrawPicture(m_canvas);
+		DrawPreview();
 		if (m_state.HasValidSelection(m_picture) && m_picture.HasShape(m_state.selectedId))
 		{
 			auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
@@ -34,6 +35,21 @@ public:
 		}
 		RenderToolbar();
 	};
+
+	void DrawPreview()
+	{
+		if (m_state.mode != EditorState::Mode::Creating) return;
+		if (!m_state.hasCreateStart) return;
+		shapes::Bounds bounds = shapes::BoundsFromPoints(m_state.createStartX, m_state.createStartY,
+			m_state.createCurrentX, m_state.createCurrentY);
+		bounds = shapes::ClampToCanvas(bounds, (double)m_window.getSize().x, (double)m_window.getSize().y);
+
+		auto figure = shapes::MakeShape(m_state.creatingType, "__preview__", bounds);
+		if (!figure) return;
+		figure -> Draw(m_canvas);
+		m_canvas.SetColor(gfx::Color(100, 100, 255, 180));
+		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
+	}
 
 	void UpdateCursor(const sf::Vector2f& pos)
 	{

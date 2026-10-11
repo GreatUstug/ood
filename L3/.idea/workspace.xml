@@ -65,9 +65,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 1. Ввел новый вид создания фигур и добавил расчет">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 1. Создание по протяжению мышки без превью">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -400,7 +400,7 @@
       <workItem from="1791103479138" duration="36776000" />
       <workItem from="1791354108347" duration="1259000" />
       <workItem from="1791623655358" duration="6984000" />
-      <workItem from="1791636159823" duration="4368000" />
+      <workItem from="1791636159823" duration="5285000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -618,7 +618,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791716197320</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Лабораторная работа 3. Допы. Задание 1. Создание по протяжению мышки без превью">
+      <option name="closed" value="true" />
+      <created>1791717360855</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1791717360855</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +661,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Заготовка выделения." />
     <MESSAGE value="Лабораторная работа 3. Теперь у нас есть выделение, пока без кликов, но просто есть" />
     <MESSAGE value="Лабораторная работа 3. Выделение по клику" />
     <MESSAGE value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
@@ -678,7 +685,8 @@
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Начал вводить состояния для создания элементов" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Ввел новый вид создания фигур и добавил расчет" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 1. Ввел новый вид создания фигур и добавил расчет" />
+    <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Создание по протяжению мышки без превью" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 1. Создание по протяжению мышки без превью" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
