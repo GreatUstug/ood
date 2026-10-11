@@ -37,7 +37,8 @@ add_executable(L3 main.cpp
         IO/DocumentIO.h
         View/FileDialog.h
         Model/MakeShapeUtils.h
-        Model/ShapeInfo.h)
+        Model/ShapeInfo.h
+        Observer/EditorStateObserver.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

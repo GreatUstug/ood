@@ -1,36 +1,31 @@
-//
-// Created by maxim on 04.10.2026.
-//
-
 #ifndef L3_EDITORSTATE_H
 #define L3_EDITORSTATE_H
-#pragma once
-#include "Handle.h"
-#include "Model/Bounds.h"
 
+#include "Handle.h"
+#include "Bounds.h"
+#include "Observer/ObserverList.h"
+#include "Observer/EditorStateObserver.h"
 
 #include <string>
 
-struct EditorState
-{
-	enum class Mode
-	{
-		Idle,
-		Dragging,
-		Resizing,
-		Creating
-	};
+struct EditorState {
+	enum class Mode { Idle, Dragging, Resizing, Creating };
 
-	std::string selectedId;
+	void Subscribe(EditorStateObserver* obs)   { m_observers.AddObserver(obs); }
+	void Unsubscribe(EditorStateObserver* obs) { m_observers.RemoveObserver(obs); }
 
-	bool HasValidSelection(const shapes::Picture& picture) const
-	{
-		return !selectedId.empty() && picture.HasShape(selectedId);
+	const std::string& GetSelectedId() const { return selectedId; }
+
+	void SetSelectedId(const std::string& id) {
+		if (selectedId == id) return;
+		selectedId = id;
+		NotifySelectionChanged();
 	}
 
-	void ClearSelection()
-	{
-		selectedId.clear();
+	void ClearSelection() { SetSelectedId(""); }
+
+	bool HasValidSelection(const shapes::Picture& picture) const {
+		return !selectedId.empty() && picture.HasShape(selectedId);
 	}
 
 	Mode mode = Mode::Idle;
@@ -48,14 +43,23 @@ struct EditorState
 	double createStartY = 0;
 	double createCurrentX = 0;
 	double createCurrentY = 0;
-	bool hasCreateStart = false;
+	bool   hasCreateStart = false;
 
-	void CancelCreating()
-	{
+	void CancelCreating() {
 		mode = Mode::Idle;
 		creatingType.clear();
 		hasCreateStart = false;
 	}
+
+private:
+	void NotifySelectionChanged() {
+		m_observers.Notify([this](EditorStateObserver* o) {
+			o->OnSelectionChanged(selectedId);
+		});
+	}
+
+	std::string selectedId;
+	ObserverList<EditorStateObserver> m_observers;
 };
 
-#endif //L3_EDITORSTATE_H
+#endif

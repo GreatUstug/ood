@@ -105,7 +105,7 @@ private:
 	{
 		if (!m_state.HasValidSelection(m_picture))
 			return false;
-		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
+		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None)
 			return false;
@@ -121,7 +121,7 @@ private:
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if (hit == m_state.selectedId && m_state.HasValidSelection(m_picture))
+		if ((hit == m_state.GetSelectedId()) && m_state.HasValidSelection(m_picture))
 		{
 			auto bounds = m_picture.GetShape(hit).GetBounds();
 			m_state.dragOffsetX = pos.x - bounds.x;
@@ -130,7 +130,7 @@ private:
 		}
 		else
 		{
-			m_state.selectedId = hit;
+			m_state.SetSelectedId(hit);
 			m_state.mode = EditorState::Mode::Idle;
 		}
 	}
@@ -168,12 +168,12 @@ private:
 		double dx = position.x - m_state.resizeStartMouseX;
 		double dy = position.y - m_state.resizeStartMouseY;
 		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasHeight);
-		m_picture.SetShapeBounds(m_state.selectedId, b);
+		m_picture.SetShapeBounds(m_state.GetSelectedId(), b);
 	}
 
 	void Drag(const sf::Vector2f& position)
 	{
-		auto bounds = m_picture.GetShape(m_state.selectedId).GetBounds();
+		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
 		shapes::Bounds desired{
 			position.x - m_state.dragOffsetX,
 			position.y - m_state.dragOffsetY,
@@ -187,7 +187,7 @@ private:
 		double dy = target.y - bounds.y;
 		if (dx != 0.0 || dy != 0.0)
 		{
-			m_picture.MoveShape(m_state.selectedId, dx, dy);
+			m_picture.MoveShape(m_state.GetSelectedId(), dx, dy);
 		}
 	}
 
@@ -231,7 +231,7 @@ private:
 		}
 
 		m_picture.AddShape(std::move(figure));
-		m_state.selectedId = id;
+		m_state.SetSelectedId(id);
 		m_state.CancelCreating();
 	}
 
@@ -245,7 +245,7 @@ private:
 		}
 		if (key.code == sf::Keyboard::Key::Delete && m_state.HasValidSelection(m_picture))
 		{
-			m_picture.DeleteShape(m_state.selectedId);
+			m_picture.DeleteShape(m_state.GetSelectedId());
 			m_state.ClearSelection();
 		}
 		if (key.control && key.code == sf::Keyboard::Key::S)
@@ -278,7 +278,7 @@ private:
 		case ToolbarAction::Delete:
 			if (m_state.HasValidSelection(m_picture))
 			{
-				m_picture.DeleteShape(m_state.selectedId);
+				m_picture.DeleteShape(m_state.GetSelectedId());
 				m_state.ClearSelection();
 			}
 			break;
@@ -292,7 +292,7 @@ private:
 		m_state.mode = EditorState::Mode::Creating;
 		m_state.creatingType = type;
 		m_state.hasCreateStart = false;
-		m_state.selectedId.clear();
+		m_state.ClearSelection();
 	}
 
 	void SaveDocument()
