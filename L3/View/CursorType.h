@@ -10,8 +10,8 @@ enum class CursorType
 	Arrow,
 	Horizontal,
 	Vertical,
-	DiagonalNWSE, // ↖↘
-	DiagonalNESW // ↗↙
+	DiagonalNWSE,
+	DiagonalNESW
 };
 
 #endif //L3_CURSORTYPE_H

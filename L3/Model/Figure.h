@@ -63,6 +63,11 @@ public:
 		return m_geometry->HitTest(x, y);
 	}
 
+	std::string GetType() const
+	{
+		return m_geometry->GetType();
+	}
+
 private:
 	std::string m_id;
 	gfx::Color m_colorRGB;

@@ -44,6 +44,11 @@ public:
 		return { m_x - m_radiusX, m_y - m_radiusY, 2 * m_radiusX, 2 * m_radiusY };
 	}
 
+	std::string GetType() const override
+	{
+		return "ellipse";
+	}
+
 	void SetBounds(const Bounds& bounds) override
 	{
 		m_x = bounds.x + bounds.width / 2;

@@ -26,6 +26,8 @@ public:
 
 	virtual Bounds GetBounds() const = 0;
 
+	virtual std::string GetType() const = 0;
+
 	virtual void SetBounds(const Bounds& bounds) = 0;
 
 	virtual bool HitTest(double x, double y) const = 0;

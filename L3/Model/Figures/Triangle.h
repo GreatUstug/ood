@@ -50,6 +50,11 @@ public:
 		return { minX, minY, maxX - minX, maxY - minY };
 	}
 
+	std::string GetType() const override
+	{
+		return "triangle";
+	}
+
 	void SetBounds(const Bounds& bounds) override
 	{
 		Bounds oldBounds = GetBounds();

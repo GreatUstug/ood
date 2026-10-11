@@ -41,6 +41,11 @@ public:
 		canvas.DrawRectangle(m_x, m_y, m_width, m_height);
 	}
 
+	std::string GetType() const override
+	{
+		return "rectangle";
+	}
+
 	Bounds GetBounds() const override
 	{
 		return { m_x, m_y, m_width, m_height };
