@@ -10,7 +10,7 @@
 class PictureObserver {
 public:
 	virtual ~PictureObserver() = default;
-	virtual void OnPictureChanged(const std::vector<ShapeInfo> shapesInfo) = 0;
+	virtual void OnPictureChanged(const std::vector<ShapeInfo>& shapesInfo) = 0;
 };
 
 #endif //FIGURES_IPICTUREOBSERVER_H

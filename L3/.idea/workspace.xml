@@ -65,13 +65,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя">
-      <change afterPath="$PROJECT_DIR$/Observer/EditorStateObserver.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора">
+      <change afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/PictureObserver.h" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/PictureObserver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -406,7 +405,7 @@
       <workItem from="1791623655358" duration="6984000" />
       <workItem from="1791636159823" duration="5645000" />
       <workItem from="1791724976975" duration="11000" />
-      <workItem from="1791730891157" duration="5027000" />
+      <workItem from="1791730891157" duration="6707000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -648,7 +647,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791739049916</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора">
+      <option name="closed" value="true" />
+      <created>1791750250162</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1791750250162</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -683,7 +690,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Замена круга на эллипс согласно тз" />
     <MESSAGE value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
     <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
@@ -708,7 +714,8 @@
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Создание по протяжению мышки без превью" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Превью при создании фигуры" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя" />
+    <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -719,7 +726,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>12</line>
+          <line>13</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

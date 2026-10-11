@@ -6,12 +6,14 @@
 #include "View/DrawSelectionFrame.h"
 #include "Model/Picture.h"
 #include "View/EditorView.h"
+#include "View/ShapeListView.h"
 
 int main()
 {
 	const unsigned W = 800;
 	const unsigned H = 600;
-	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(W, H)), "Editor");
+	const unsigned PANEL_W = 200;
+	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(W + PANEL_W, H)), "Editor");
 	SFMLCanvas canvas(window);
 
 	sf::Font font;
@@ -26,6 +28,7 @@ int main()
 
 	EditorView view(picture, state, canvas, window, font, toolbar);
 	EditorController controller(picture, state, view, window, toolbar, W, H);
+	ShapeListView listView(picture, state, window, font, W, 0.f, PANEL_W, H);
 	while (window.isOpen())
 	{
 		while (const std::optional event = window.pollEvent())
@@ -38,6 +41,7 @@ int main()
 		}
 		window.clear();
 		view.Render();
+		listView.Render();
 		window.display();
 	}
 	return 0;
