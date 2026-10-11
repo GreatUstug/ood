@@ -54,7 +54,34 @@ public:
         bg.setOutlineThickness(1.f);
         m_window.draw(bg);
 
-        // TODO: строки
+        DrawRows();
+    }
+
+	void DrawRows()
+    {
+    	float rowY = m_y + ROW_PADDING;
+    	for (auto shape = m_cachedShapes.rbegin(); shape != m_cachedShapes.rend(); ++shape) {
+    		DrawRow(*shape, rowY);
+    		rowY += ROW_HEIGHT;
+    		if (rowY > m_y + m_height) break;
+    	}
+    }
+
+	void DrawRow(const ShapeInfo& shape, float rowY)
+    {
+    	sf::RectangleShape rowBg({m_width - 2 * ROW_PADDING, ROW_HEIGHT - 2});
+    	rowBg.setPosition({m_x + ROW_PADDING, rowY});
+    	rowBg.setFillColor(shape.id == m_selectedId ? sf::Color(198, 120, 255)
+									: sf::Color(230, 230, 230));
+    	rowBg.setOutlineColor(sf::Color(180, 180, 180));
+    	rowBg.setOutlineThickness(1.f);
+    	m_window.draw(rowBg);
+    	sf::Text text(m_font);
+    	text.setString(shape.id.substr(0, 12) + " (" + shape.type + ")");
+    	text.setCharacterSize((unsigned)TEXT_SIZE);
+    	text.setFillColor(sf::Color::Black);
+    	text.setPosition({m_x + ROW_PADDING + 6.f, rowY + 6.f});
+    	m_window.draw(text);
     }
 
     bool HitTest(float px, float py) const {
@@ -62,7 +89,31 @@ public:
             && py >= m_y && py <= m_y + m_height;
     }
 
+	bool HandleClick(float px, float py)
+    {
+    	int visualIndex = VisualIndexAt(px, py);
+    	if (visualIndex < 0) return false;
+
+    	int modelIndex = (int)m_cachedShapes.size() - 1 - visualIndex;
+    	m_state.SetSelectedId(m_cachedShapes[modelIndex].id);
+    	return true;
+    }
+
+	int VisualIndexAt(float px, float py) const
+    {
+    	if (px < m_x || px > m_x + m_width) return -1;
+    	if (py < m_y + ROW_PADDING) return -1;
+
+    	int index = (int)((py - m_y - ROW_PADDING) / ROW_HEIGHT);
+    	if (index < 0 || index >= (int)m_cachedShapes.size()) return -1;
+    	return index;
+    }
+
 private:
+	static constexpr float ROW_HEIGHT = 28.f;
+	static constexpr float ROW_PADDING = 4.f;
+	static constexpr float TEXT_SIZE = 14.f;
+
     shapes::Picture& m_picture;
     EditorState&     m_state;
     sf::RenderWindow& m_window;

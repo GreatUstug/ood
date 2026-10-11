@@ -27,8 +27,9 @@ int main()
 	Toolbar toolbar;
 
 	EditorView view(picture, state, canvas, window, font, toolbar);
-	EditorController controller(picture, state, view, window, toolbar, W, H);
 	ShapeListView listView(picture, state, window, font, W, 0.f, PANEL_W, H);
+	EditorController controller(picture, state, view, window, toolbar, listView, W, H);
+
 	while (window.isOpen())
 	{
 		while (const std::optional event = window.pollEvent())

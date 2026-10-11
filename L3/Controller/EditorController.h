@@ -16,6 +16,7 @@
 #include "Model/MakeShapeUtils.h"
 #include "View/EditorView.h"
 #include "View/FileDialog.h"
+#include "View/ShapeListView.h"
 #include "View/Toolbar.h"
 
 #include <fstream>
@@ -29,9 +30,11 @@ public:
 		EditorView& view,
 		sf::RenderWindow& window,
 		Toolbar& toolbar,
-		int canvasWidth = 800,
-		int canvasHeight = 600)
+		ShapeListView& listView,
+		int canvasWidth,
+		int canvasHeight)
 		: m_picture(picture)
+	      ,m_listView(listView)
 		  , m_state(state)
 		  , m_view(view)
 		  , m_window(window)
@@ -71,6 +74,13 @@ private:
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
+
+		if (m_listView.HitTest(pos.x, pos.y)) {
+			if (m_listView.HandleClick(pos.x, pos.y)) {
+				return;
+			}
+			return;
+		}
 		if (m_state.mode == EditorState::Mode::Creating)
 		{
 			BeginCreateGesture(pos);
@@ -341,6 +351,7 @@ private:
 	}
 
 	shapes::Picture& m_picture;
+	ShapeListView& m_listView;
 	EditorState& m_state;
 	EditorView& m_view;
 	sf::RenderWindow& m_window;

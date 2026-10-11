@@ -65,11 +65,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора">
-      <change afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 2. Внедрение списка фигур">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Observer/PictureObserver.h" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/PictureObserver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/ShapeListView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -405,7 +404,7 @@
       <workItem from="1791623655358" duration="6984000" />
       <workItem from="1791636159823" duration="5645000" />
       <workItem from="1791724976975" duration="11000" />
-      <workItem from="1791730891157" duration="6707000" />
+      <workItem from="1791730891157" duration="9567000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -655,7 +654,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791750250162</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Лабораторная работа 3. Допы. Задание 2. Внедрение списка фигур">
+      <option name="closed" value="true" />
+      <created>1791751948084</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1791751948084</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -690,7 +697,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Избавился окончательно от консольного вида программы, также первая версия драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Починил драг анд дроп и добавил обработку кнопки delete" />
     <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
     <MESSAGE value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
@@ -715,7 +721,8 @@
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 1. Превью при создании фигуры" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора" />
+    <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрение списка фигур" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 2. Внедрение списка фигур" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
