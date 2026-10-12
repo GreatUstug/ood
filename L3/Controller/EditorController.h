@@ -5,6 +5,7 @@
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
 #include "DocumentController.h"
+#include "ShapeCreateController.h"
 #include "ShapeTransformController.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
@@ -41,8 +42,7 @@ public:
 		  , m_toolbar(toolbar)
 		  , m_document(picture, state, m_fileDialog)
 		  , m_transform(picture, state, canvasWidth, canvasHeight)
-		  , m_canvasWidth(canvasWidth)
-		  , m_canvasHeight(canvasHeight)
+		  , m_create(picture, state, canvasWidth, canvasHeight)
 	{
 	}
 
@@ -84,23 +84,14 @@ private:
 		}
 		if (m_state.mode == EditorState::Mode::Creating)
 		{
-			BeginCreateGesture(pos);
+			m_create.Begin(pos);
 			return;
 		}
 		if (HandleToolbarClick(pos))
 			return;
-		if (HandleResizeHandlerClick(pos))
+		if (m_transform.TryStartResize(pos))
 			return;
 		m_transform.HandleShapeClick(pos);
-	}
-
-	void BeginCreateGesture(const sf::Vector2f& pos)
-	{
-		m_state.createStartX = pos.x;
-		m_state.createStartY = pos.y;
-		m_state.createCurrentX = pos.x;
-		m_state.createCurrentY = pos.y;
-		m_state.hasCreateStart = true;
 	}
 
 	bool HandleToolbarClick(const sf::Vector2f& pos)
@@ -109,23 +100,6 @@ private:
 		if (action == ToolbarAction::None)
 			return false;
 		HandleToolbarAction(action);
-		return true;
-	}
-
-	bool HandleResizeHandlerClick(const sf::Vector2f& pos)
-	{
-		if (!m_state.HasValidSelection(m_picture))
-			return false;
-		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
-		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
-		if (h == Handle::None)
-			return false;
-
-		m_state.activeHandle = h;
-		m_state.resizeStartBounds = bounds;
-		m_state.resizeStartMouseX = pos.x;
-		m_state.resizeStartMouseY = pos.y;
-		m_state.mode = EditorState::Mode::Resizing;
 		return true;
 	}
 
@@ -139,16 +113,11 @@ private:
 			m_transform.Update(pos);
 			break;
 		case EditorState::Mode::Creating:
-			if (m_state.hasCreateStart)
-			{
-				m_state.createCurrentX = pos.x;
-				m_state.createCurrentY = pos.y;
-			}
+			m_create.UpdatePreview(pos);
 			break;
 		default:
 			m_view.UpdateCursor(pos);
 		}
-
 	}
 
 	void OnMouseReleased()
@@ -156,42 +125,10 @@ private:
 		if (m_state.mode == EditorState::Mode::Creating)
 		{
 			if (m_state.hasCreateStart)
-				CommitCreating();
+				m_create.Commit();
 			return;
 		}
 		m_transform.Release();
-	}
-
-	void CommitCreating()
-	{
-		shapes::Bounds b = shapes::BoundsFromPoints(
-			m_state.createStartX, m_state.createStartY,
-			m_state.createCurrentX, m_state.createCurrentY);
-
-		if (b.width < shapes::MIN_SHAPE_SIZE)
-			b.width = shapes::MIN_SHAPE_SIZE;
-		if (b.height < shapes::MIN_SHAPE_SIZE)
-			b.height = shapes::MIN_SHAPE_SIZE;
-
-		b = shapes::ClampToCanvas(b, m_canvasWidth, m_canvasHeight);
-
-		if (b.width < 1.0 || b.height < 1.0)
-		{
-			m_state.CancelCreating();
-			return;
-		}
-
-		std::string id = shapes::MakeId(m_state.creatingType);
-		auto figure = shapes::MakeShape(m_state.creatingType, id, b);
-		if (!figure)
-		{
-			m_state.CancelCreating();
-			return;
-		}
-
-		m_picture.AddShape(std::move(figure));
-		m_state.SetSelectedId(id);
-		m_state.CancelCreating();
 	}
 
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
@@ -267,10 +204,9 @@ private:
 	sf::RenderWindow& m_window;
 	Toolbar& m_toolbar;
 	FileDialog m_fileDialog;
+	ShapeCreateController m_create;
 	DocumentController m_document;
 	ShapeTransformController m_transform;
-	int m_canvasWidth;
-	int m_canvasHeight;
 };
 
 #endif //L3_EDITCONTROLLER_H
