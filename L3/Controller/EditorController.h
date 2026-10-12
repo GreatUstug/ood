@@ -7,14 +7,11 @@
 #include "DocumentController.h"
 #include "ShapeCreateController.h"
 #include "ShapeTransformController.h"
+#include "ShortcutController.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 #include "Model/Picture.h"
-#include "../View/DrawSelectionFrame.h"
 #include "../Model/EditorState.h"
-#include "../IO/portable-file-dialogs.h"
-#include "Model/ResizePolicy.h"
-#include "Model/MakeShapeUtils.h"
 #include "View/EditorView.h"
 #include "View/FileDialog.h"
 #include "View/ShapeListView.h"
@@ -43,6 +40,7 @@ public:
 		  , m_document(picture, state, m_fileDialog)
 		  , m_transform(picture, state, canvasWidth, canvasHeight)
 		  , m_create(picture, state, canvasWidth, canvasHeight)
+		  , m_shortcuts(picture, state, m_document, m_create)
 	{
 	}
 
@@ -133,29 +131,7 @@ private:
 
 	void OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
-		if (key.code == sf::Keyboard::Key::Escape &&
-			m_state.mode == EditorState::Mode::Creating)
-		{
-			m_state.CancelCreating();
-			return;
-		}
-		if (key.code == sf::Keyboard::Key::Delete && m_state.HasValidSelection(m_picture))
-		{
-			m_picture.DeleteShape(m_state.GetSelectedId());
-			m_state.ClearSelection();
-		}
-		if (key.control && key.code == sf::Keyboard::Key::S)
-		{
-			m_document.Save();
-		}
-		if (key.control && key.code == sf::Keyboard::Key::O)
-		{
-			m_document.Load();
-		}
-		if (key.control && key.code == sf::Keyboard::Key::N)
-		{
-			m_document.New();
-		}
+		m_shortcuts.OnKeyPressed(key);
 	}
 
 	void HandleToolbarAction(ToolbarAction action)
@@ -207,6 +183,8 @@ private:
 	ShapeCreateController m_create;
 	DocumentController m_document;
 	ShapeTransformController m_transform;
+	ShortcutController m_shortcuts;
+
 };
 
 #endif //L3_EDITCONTROLLER_H
