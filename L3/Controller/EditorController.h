@@ -76,9 +76,7 @@ private:
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 
 		if (m_listView.HitTest(pos.x, pos.y)) {
-			if (m_listView.HandleClick(pos.x, pos.y)) {
-				return;
-			}
+			m_listView.HandleClick(pos.x, pos.y);
 			return;
 		}
 		if (m_state.mode == EditorState::Mode::Creating)
