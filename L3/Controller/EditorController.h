@@ -4,14 +4,13 @@
 
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
-#include "IO/LoadService.h"
+#include "DocumentController.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 #include "Model/Picture.h"
 #include "../View/DrawSelectionFrame.h"
 #include "../Model/EditorState.h"
 #include "../IO/portable-file-dialogs.h"
-#include "IO/DocumentIO.h"
 #include "Model/ResizePolicy.h"
 #include "Model/MakeShapeUtils.h"
 #include "View/EditorView.h"
@@ -34,11 +33,12 @@ public:
 		int canvasWidth,
 		int canvasHeight)
 		: m_picture(picture)
-	      ,m_listView(listView)
+		  ,m_listView(listView)
 		  , m_state(state)
 		  , m_view(view)
 		  , m_window(window)
 		  , m_toolbar(toolbar)
+		  , m_document(picture, state, m_fileDialog)
 		  , m_canvasWidth(canvasWidth)
 		  , m_canvasHeight(canvasHeight)
 	{
@@ -258,15 +258,15 @@ private:
 		}
 		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
-			SaveDocument();
+			m_document.Save();
 		}
 		if (key.control && key.code == sf::Keyboard::Key::O)
 		{
-			LoadDocument();
+			m_document.Load();
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
-			NewDocument();
+			m_document.New();
 		}
 	}
 
@@ -303,45 +303,6 @@ private:
 		m_state.ClearSelection();
 	}
 
-	void SaveDocument()
-	{
-		auto path = m_fileDialog.AskSavePath();
-		if (!path)
-			return;
-		try
-		{
-			DocumentIO::Save(m_picture, *path);
-		}
-		catch (const std::exception& e)
-		{
-			m_fileDialog.ShowError(e.what());
-		}
-	}
-
-	void LoadDocument()
-	{
-		auto path = m_fileDialog.AskOpenPath();
-		if (!path)
-			return;
-		try
-		{
-			auto newPicture = DocumentIO::Load(*path);
-			m_picture.ReplaceWith(std::move(newPicture));
-			m_state.ClearSelection();
-		}
-		catch (const std::exception& e)
-		{
-			m_fileDialog.ShowError(e.what());
-		}
-	}
-
-	void NewDocument()
-	{
-		shapes::Picture empty;
-		m_picture.ReplaceWith(std::move(empty));
-		m_state.ClearSelection();
-	}
-
 	std::string MakeId(const std::string& prefix)
 	{
 		static std::mt19937 rng{ std::random_device{}() };
@@ -355,6 +316,7 @@ private:
 	sf::RenderWindow& m_window;
 	Toolbar& m_toolbar;
 	FileDialog m_fileDialog;
+	DocumentController m_document;
 	int m_canvasWidth;
 	int m_canvasHeight;
 };
