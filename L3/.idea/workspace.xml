@@ -65,8 +65,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Допы. Задание 1. Промежуточный коммит">
-      <change afterPath="$PROJECT_DIR$/Controller/DocumentController.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Разбиение EditorController. Вынес работу с документами">
+      <change afterPath="$PROJECT_DIR$/Controller/ShapeCreateController.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Controller/ShapeTransformController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
@@ -405,7 +406,7 @@
       <workItem from="1791636159823" duration="5645000" />
       <workItem from="1791724976975" duration="11000" />
       <workItem from="1791730891157" duration="11196000" />
-      <workItem from="1791783254415" duration="561000" />
+      <workItem from="1791783254415" duration="1210000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -671,7 +672,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791755080547</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Лабораторная работа 3. Разбиение EditorController. Вынес работу с документами">
+      <option name="closed" value="true" />
+      <created>1791783936683</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1791783936683</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -706,7 +715,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Подготовка к ресайзу" />
     <MESSAGE value="Лабораторная работа 3. Первая версия ресайза и переделка на MVC" />
     <MESSAGE value="Лабораторная работа 3. Ресайз и изменение курсора мыши для подсказки пользователю" />
     <MESSAGE value="Лабораторная работа 3. Диалоговое окно при добавлении файла" />
@@ -731,7 +739,8 @@
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрил наблюдателя на состояние редактора" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Внедрение списка фигур" />
     <MESSAGE value="Лабораторная работа 3. Допы. Задание 2. Селект через список фигур" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Допы. Задание 2. Селект через список фигур" />
+    <MESSAGE value="Лабораторная работа 3. Разбиение EditorController. Вынес работу с документами" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Разбиение EditorController. Вынес работу с документами" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

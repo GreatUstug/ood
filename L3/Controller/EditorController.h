@@ -5,6 +5,7 @@
 #ifndef L3_EDITCONTROLLER_H
 #define L3_EDITCONTROLLER_H
 #include "DocumentController.h"
+#include "ShapeTransformController.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 #include "Model/Picture.h"
@@ -33,12 +34,13 @@ public:
 		int canvasWidth,
 		int canvasHeight)
 		: m_picture(picture)
-		  ,m_listView(listView)
+		  , m_listView(listView)
 		  , m_state(state)
 		  , m_view(view)
 		  , m_window(window)
 		  , m_toolbar(toolbar)
 		  , m_document(picture, state, m_fileDialog)
+		  , m_transform(picture, state, canvasWidth, canvasHeight)
 		  , m_canvasWidth(canvasWidth)
 		  , m_canvasHeight(canvasHeight)
 	{
@@ -75,7 +77,8 @@ private:
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 
-		if (m_listView.HitTest(pos.x, pos.y)) {
+		if (m_listView.HitTest(pos.x, pos.y))
+		{
 			m_listView.HandleClick(pos.x, pos.y);
 			return;
 		}
@@ -88,7 +91,7 @@ private:
 			return;
 		if (HandleResizeHandlerClick(pos))
 			return;
-		HandleShapeClick(pos);
+		m_transform.HandleShapeClick(pos);
 	}
 
 	void BeginCreateGesture(const sf::Vector2f& pos)
@@ -126,35 +129,14 @@ private:
 		return true;
 	}
 
-	void HandleShapeClick(const sf::Vector2f& pos)
-	{
-		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if ((hit == m_state.GetSelectedId()) && m_state.HasValidSelection(m_picture))
-		{
-			auto bounds = m_picture.GetShape(hit).GetBounds();
-			m_state.dragOffsetX = pos.x - bounds.x;
-			m_state.dragOffsetY = pos.y - bounds.y;
-			m_state.mode = EditorState::Mode::Dragging;
-		}
-		else
-		{
-			m_state.SetSelectedId(hit);
-			m_state.mode = EditorState::Mode::Idle;
-		}
-	}
-
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 		switch (m_state.mode)
 		{
 		case EditorState::Mode::Dragging:
-			if (m_state.HasValidSelection(m_picture))
-				Drag(pos);
-			break;
 		case EditorState::Mode::Resizing:
-			if (m_state.HasValidSelection(m_picture))
-				Resize(pos);
+			m_transform.Update(pos);
 			break;
 		case EditorState::Mode::Creating:
 			if (m_state.hasCreateStart)
@@ -169,36 +151,6 @@ private:
 
 	}
 
-	void Resize(const sf::Vector2f& position)
-	{
-		if (!m_state.HasValidSelection(m_picture))
-			return;
-		double dx = position.x - m_state.resizeStartMouseX;
-		double dy = position.y - m_state.resizeStartMouseY;
-		auto b = shapes::ResizeAndClamp(m_state.resizeStartBounds, m_state.activeHandle, dx, dy, m_canvasWidth, m_canvasHeight);
-		m_picture.SetShapeBounds(m_state.GetSelectedId(), b);
-	}
-
-	void Drag(const sf::Vector2f& position)
-	{
-		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
-		shapes::Bounds desired{
-			position.x - m_state.dragOffsetX,
-			position.y - m_state.dragOffsetY,
-			bounds.width,
-			bounds.height
-		};
-
-		auto target = shapes::ClampToCanvasByShift(desired, m_canvasWidth, m_canvasHeight);
-
-		double dx = target.x - bounds.x;
-		double dy = target.y - bounds.y;
-		if (dx != 0.0 || dy != 0.0)
-		{
-			m_picture.MoveShape(m_state.GetSelectedId(), dx, dy);
-		}
-	}
-
 	void OnMouseReleased()
 	{
 		if (m_state.mode == EditorState::Mode::Creating)
@@ -207,8 +159,7 @@ private:
 				CommitCreating();
 			return;
 		}
-		m_state.activeHandle = Handle::None;
-		m_state.mode = EditorState::Mode::Idle;
+		m_transform.Release();
 	}
 
 	void CommitCreating()
@@ -317,6 +268,7 @@ private:
 	Toolbar& m_toolbar;
 	FileDialog m_fileDialog;
 	DocumentController m_document;
+	ShapeTransformController m_transform;
 	int m_canvasWidth;
 	int m_canvasHeight;
 };
