@@ -30,14 +30,9 @@ int main()
 	ShapeListView listView(picture, state, window, font, W, 0.f, PANEL_W, H);
 	EditorController controller(picture, state, view, window, toolbar, listView, W, H);
 
-	while (window.isOpen())
-	{
-		while (const std::optional event = window.pollEvent())
-		{
-			if (event->is<sf::Event::Closed>())
-			{
-				window.close();
-			}
+	while (window.isOpen()) {
+		while (const auto event = window.pollEvent()) {
+			if (event->is<sf::Event::Closed>()) window.close();
 			controller.HandleEvent(*event);
 		}
 		window.clear();

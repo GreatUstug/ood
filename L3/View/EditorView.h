@@ -12,6 +12,8 @@
 #include "DrawSelectionFrame.h"
 #include "../Model/EditorState.h"
 #include "CursorType.h"
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Cursor.hpp"
 
 class EditorView
 {
