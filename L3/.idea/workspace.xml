@@ -66,17 +66,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Правки. Исправление создания за кнопкой, а также создание посетителя для развязки мвс">
-      <change afterPath="$PROJECT_DIR$/View/DrawVisitor.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Правки. Убрал отрисовку из модели">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figure.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figure.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Ellipse.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Rectangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Triangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Picture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Picture.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -415,7 +406,7 @@
       <workItem from="1791730891157" duration="11196000" />
       <workItem from="1791783254415" duration="2823000" />
       <workItem from="1791797460022" duration="721000" />
-      <workItem from="1792316243548" duration="24440000" />
+      <workItem from="1792316243548" duration="25146000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -785,7 +776,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792358760901</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Лабораторная работа 3. Правки. Убрал отрисовку из модели">
+      <option name="closed" value="true" />
+      <created>1792360435454</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1792360435454</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -820,7 +819,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил драг анд дроп" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил форматирование" />
@@ -845,7 +843,8 @@
     <MESSAGE value="Лабораторная работа 3. Задание 4. Первая версия множественного драга" />
     <MESSAGE value="Лабораторная работа 3. Задание 4. Первая версия доп задания" />
     <MESSAGE value="Лабораторная работа 3. Правки. Исправление создания за кнопкой, а также создание посетителя для развязки мвс" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Правки. Исправление создания за кнопкой, а также создание посетителя для развязки мвс" />
+    <MESSAGE value="Лабораторная работа 3. Правки. Убрал отрисовку из модели" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Правки. Убрал отрисовку из модели" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
