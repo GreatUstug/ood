@@ -38,12 +38,10 @@ public:
 
     void OnPictureChanged(const std::vector<ShapeInfo>& shapes) override {
         m_cachedShapes = shapes;
-        m_dirty = true;
     }
 
-    void OnSelectionChanged(const std::string& selectedId) override {
-        m_selectedId = selectedId;
-        m_dirty = true;
+    void OnSelectionChanged(const std::set<std::string>& selectedIds) override {
+        m_selectedIds = selectedIds;
     }
 
     void Render() {
@@ -71,7 +69,7 @@ public:
     {
     	sf::RectangleShape rowBg({m_width - 2 * ROW_PADDING, ROW_HEIGHT - 2});
     	rowBg.setPosition({m_x + ROW_PADDING, rowY});
-    	rowBg.setFillColor(shape.id == m_selectedId ? sf::Color(198, 120, 255)
+    	rowBg.setFillColor(m_selectedIds.contains(shape.id) ? sf::Color(198, 120, 255)
 									: sf::Color(230, 230, 230));
     	rowBg.setOutlineColor(sf::Color(180, 180, 180));
     	rowBg.setOutlineThickness(1.f);
@@ -95,7 +93,7 @@ public:
     	if (visualIndex < 0) return false;
 
     	int modelIndex = (int)m_cachedShapes.size() - 1 - visualIndex;
-    	m_state.SetSelectedId(m_cachedShapes[modelIndex].id);
+    	m_state.SetPrimarySelectedId(m_cachedShapes[modelIndex].id);
     	return true;
     }
 
@@ -122,8 +120,7 @@ private:
     float m_x, m_y, m_width, m_height;
 
     std::vector<ShapeInfo> m_cachedShapes;
-    std::string m_selectedId;
-    bool m_dirty = true;
+    std::set<std::string> m_selectedIds;
 };
 
 #endif //L3_SHAPELISTVIEW_H

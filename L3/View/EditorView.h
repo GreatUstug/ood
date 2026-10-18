@@ -30,9 +30,9 @@ public:
 	{
 		m_picture.DrawPicture(m_canvas);
 		DrawPreview();
-		if (m_state.HasValidSelection(m_picture) && m_picture.HasShape(m_state.GetSelectedId()))
+		if (m_state.HasValidSelection(m_picture) && m_picture.HasShape(m_state.GetPrimarySelectedId()))
 		{
-			auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
+			auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 			DrawSelectionFrame(m_canvas, bounds);
 		}
 		RenderToolbar();
@@ -61,7 +61,7 @@ public:
 			return;
 		}
 
-		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
+		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		switch (h)
 		{

@@ -32,7 +32,7 @@ public:
 		if (!m_state.HasValidSelection(m_picture))
 			return false;
 
-		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
+		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None)
 			return false;
@@ -48,16 +48,16 @@ public:
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if ((hit == m_state.GetSelectedId()) && m_state.HasValidSelection(m_picture))
+		if ((hit == m_state.GetPrimarySelectedId()) && m_state.HasValidSelection(m_picture))
 		{
 			auto bounds = m_picture.GetShape(hit).GetBounds();
-			m_state.dragOffsetX = pos.x - bounds.x;
-			m_state.dragOffsetY = pos.y - bounds.y;
+			m_state.dragAnchorX = pos.x - bounds.x;
+			m_state.dragAnchorY = pos.y - bounds.y;
 			m_state.mode = EditorState::Mode::Dragging;
 		}
 		else
 		{
-			m_state.SetSelectedId(hit);
+			m_state.SetPrimarySelectedId(hit);
 			m_state.mode = EditorState::Mode::Idle;
 		}
 	}
@@ -89,10 +89,10 @@ public:
 private:
 	void Drag(const sf::Vector2f& position)
 	{
-		auto bounds = m_picture.GetShape(m_state.GetSelectedId()).GetBounds();
+		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 		shapes::Bounds desired{
-			position.x - m_state.dragOffsetX,
-			position.y - m_state.dragOffsetY,
+			position.x - m_state.dragAnchorX,
+			position.y - m_state.dragAnchorY,
 			bounds.width,
 			bounds.height
 		};
@@ -103,7 +103,7 @@ private:
 		double dy = target.y - bounds.y;
 		if (dx != 0.0 || dy != 0.0)
 		{
-			m_picture.MoveShape(m_state.GetSelectedId(), dx, dy);
+			m_picture.MoveShape(m_state.GetPrimarySelectedId(), dx, dy);
 		}
 	}
 
@@ -116,7 +116,7 @@ private:
 			m_state.activeHandle,
 			dx, dy,
 			m_canvasWidth, m_canvasHeight);
-		m_picture.SetShapeBounds(m_state.GetSelectedId(), b);
+		m_picture.SetShapeBounds(m_state.GetPrimarySelectedId(), b);
 	}
 
 	shapes::Picture& m_picture;

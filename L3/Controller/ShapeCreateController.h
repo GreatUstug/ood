@@ -85,7 +85,7 @@ public:
         }
 
         m_picture.AddShape(std::move(figure));
-        m_state.SetSelectedId(id);
+        m_state.SetPrimarySelectedId(id);
         m_state.CancelCreating();
     }
 

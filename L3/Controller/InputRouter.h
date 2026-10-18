@@ -140,7 +140,7 @@ private:
         case ToolbarAction::Delete:
             if (m_state.HasValidSelection(m_picture))
             {
-                m_picture.DeleteShape(m_state.GetSelectedId());
+                m_picture.DeleteShape(m_state.GetPrimarySelectedId());
                 m_state.ClearSelection();
             }
             break;

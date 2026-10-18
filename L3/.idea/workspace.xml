@@ -65,13 +65,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 3. Передача команд согласно созданию файла">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 3. Завершено, осталось поправить только фиксми">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/EditorWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorWindow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/InputRouter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/InputRouter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/ShapeCreateController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShapeCreateController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/ShapeTransformController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShapeTransformController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/ShortcutController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShortcutController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/EditorState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/EditorState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Observer/EditorStateObserver.h" beforeDir="false" afterPath="$PROJECT_DIR$/Observer/EditorStateObserver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/ShapeListView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +125,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "CMake Application.L3.executor": "Debug",
+    "CMake Application.L3.executor": "Run",
     "CMake Debug.Figures.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
@@ -410,7 +413,7 @@
       <workItem from="1791730891157" duration="11196000" />
       <workItem from="1791783254415" duration="2823000" />
       <workItem from="1791797460022" duration="721000" />
-      <workItem from="1792316243548" duration="8497000" />
+      <workItem from="1792316243548" duration="13780000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -724,7 +727,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792324246882</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Лабораторная работа 3. Задание 3. Завершено, осталось поправить только фиксми">
+      <option name="closed" value="true" />
+      <created>1792331184842</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1792331184842</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -759,7 +770,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес логику ресайза и драг анд дропа" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от статика во время создания" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Избавился от курсора в контроллере" />
@@ -784,7 +794,8 @@
     <MESSAGE value="Лабораторная работа 3. Разбиение EditorController. Вынес работу с файлами" />
     <MESSAGE value="Лабораторная работа 3. Задание 3. Начало работы над поддержкой разных файлов" />
     <MESSAGE value="Лабораторная работа 3. Задание 3. Передача команд согласно созданию файла" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 3. Передача команд согласно созданию файла" />
+    <MESSAGE value="Лабораторная работа 3. Задание 3. Завершено, осталось поправить только фиксми" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 3. Завершено, осталось поправить только фиксми" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
