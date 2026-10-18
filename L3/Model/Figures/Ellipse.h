@@ -34,11 +34,6 @@ public:
 			std::to_string(m_radiusX) + " " + std::to_string(m_radiusY);
 	}
 
-	void Draw(gfx::ICanvas& canvas) const override
-	{
-		canvas.DrawEllipse(m_x, m_y, m_radiusX, m_radiusY);
-	}
-
 	Bounds GetBounds() const override
 	{
 		return { m_x - m_radiusX, m_y - m_radiusY, 2 * m_radiusX, 2 * m_radiusY };

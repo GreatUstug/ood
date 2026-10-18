@@ -4,7 +4,7 @@
 
 #ifndef FIGURES_SHAPE_H
 #define FIGURES_SHAPE_H
-#include  "../../View/gfx/ICanvas.h"
+#include "IShapeGeometryVisitor.h"
 #include "Model/Bounds.h"
 
 #include <string>
@@ -16,13 +16,13 @@ class IShapeGeometry
 public:
 	virtual ~IShapeGeometry() = default;
 
+	virtual void Accept(IShapeGeometryVisitor& v) const = 0;
+
 	virtual std::string GetInfo() const = 0;
 
 	virtual void Move(double dx, double dy)
 	{
 	};
-
-	virtual void Draw(gfx::ICanvas& canvas) const = 0;
 
 	virtual Bounds GetBounds() const = 0;
 

@@ -65,3 +65,16 @@ int main()
 
 	return 0;
 }
+
+// int main()
+// {
+// 	std::string str;
+// 	std::getline(std::cin, str);
+// 	std::unordered_map<size_t, size_t> actors;
+// 	size_t id = 0;
+// 	actors.reserve(std::stoull(str));
+// 	while (std::getline(std::cin, str))
+// 	{
+// 		actors[++id]
+// 	}
+// }

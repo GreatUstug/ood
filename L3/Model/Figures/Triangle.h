@@ -36,11 +36,6 @@ public:
 		m_y3 += dy;
 	}
 
-	void Draw(gfx::ICanvas& canvas) const override
-	{
-		canvas.DrawTriangle(m_x, m_y, m_x2, m_y2, m_x3, m_y3);
-	}
-
 	Bounds GetBounds() const override
 	{
 		double minX = std::min({ m_x, m_x2, m_x3 });

@@ -76,13 +76,13 @@ private:
             m_listView.HandleClick(pos.x, pos.y);
             return;
         }
+    	if (HandleToolbarClick(pos))
+    		return;
         if (m_state.mode == EditorState::Mode::Creating)
         {
             m_create.Begin(pos);
             return;
         }
-        if (HandleToolbarClick(pos))
-            return;
         if (m_transform.TryStartResize(pos))
             return;
         m_transform.HandleShapeClick(pos);

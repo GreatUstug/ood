@@ -66,11 +66,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 4. Первая версия множественного драга">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 4. Первая версия доп задания">
+      <change afterPath="$PROJECT_DIR$/Model/Figures/IShapeGeometryVisitor.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/InputRouter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/InputRouter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Ellipse.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Ellipse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/IShapeGeometry.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Rectangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Figures/Triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Figures/Triangle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/View/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/DrawSelectionFrame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/ShapeListView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -410,7 +416,7 @@
       <workItem from="1791730891157" duration="11196000" />
       <workItem from="1791783254415" duration="2823000" />
       <workItem from="1791797460022" duration="721000" />
-      <workItem from="1792316243548" duration="19292000" />
+      <workItem from="1792316243548" duration="22781000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -764,7 +770,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792352609468</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Лабораторная работа 3. Задание 4. Первая версия доп задания">
+      <option name="closed" value="true" />
+      <created>1792353725182</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1792353725183</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -799,7 +813,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Убрал создание фигур из контроллера" />
@@ -824,7 +837,8 @@
     <MESSAGE value="Лабораторная работа 3. Задание 4. Ввел множественное удаление и перемещение для объектов." />
     <MESSAGE value="Лабораторная работа 3. Задание 4. Использование множественного удаления и перемещения" />
     <MESSAGE value="Лабораторная работа 3. Задание 4. Первая версия множественного драга" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 4. Первая версия множественного драга" />
+    <MESSAGE value="Лабораторная работа 3. Задание 4. Первая версия доп задания" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 4. Первая версия доп задания" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

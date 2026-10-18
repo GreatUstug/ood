@@ -36,11 +36,6 @@ public:
 		m_y += y;
 	}
 
-	void Draw(gfx::ICanvas& canvas) const override
-	{
-		canvas.DrawRectangle(m_x, m_y, m_width, m_height);
-	}
-
 	std::string GetType() const override
 	{
 		return "rectangle";
