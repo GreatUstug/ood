@@ -11,6 +11,7 @@
 #include "Model/Handle.h"
 #include "Model/ResizePolicy.h"
 #include "SFML/System/Vector2.hpp"
+#include "SFML/Window/Keyboard.hpp"
 #include "View/DrawSelectionFrame.h"
 
 class ShapeTransformController
@@ -29,13 +30,17 @@ public:
 
 	bool TryStartResize(const sf::Vector2f& pos)
 	{
-		if (!m_state.HasValidSelection(m_picture))
+		if (!m_state.HasValidSelection(m_picture) || m_state.GetSelectedIds().size() > 1)
+		{
 			return false;
+		}
 
 		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None)
+		{
 			return false;
+		}
 
 		m_state.activeHandle = h;
 		m_state.resizeStartBounds = bounds;
@@ -48,18 +53,47 @@ public:
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
-		if ((hit == m_state.GetPrimarySelectedId()) && m_state.HasValidSelection(m_picture))
+
+		const bool additive =
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift)   ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
+
+		if (additive)
 		{
-			auto bounds = m_picture.GetShape(hit).GetBounds();
-			m_state.dragAnchorX = pos.x - bounds.x;
-			m_state.dragAnchorY = pos.y - bounds.y;
-			m_state.mode = EditorState::Mode::Dragging;
-		}
-		else
-		{
-			m_state.SetPrimarySelectedId(hit);
+			if (hit.empty())
+				m_state.ClearSelection();
+			else
+				m_state.ToggleSelected(hit);
 			m_state.mode = EditorState::Mode::Idle;
+			return;   // при Ctrl/Shift+Click drag не начинаем
 		}
+
+		if (hit.empty())
+		{
+			m_state.ClearSelection();
+			m_state.mode = EditorState::Mode::Idle;
+			return;
+		}
+
+		if (m_state.IsSelected(hit))
+			m_state.SetPrimarySelectedId(hit);          // уже в наборе — не сбрасываем
+		else
+			m_state.SetSelectedIds({ hit });            // новое одиночное выделение
+
+		// подготовка группового drag: anchor — точка клика, а не offset
+		m_state.dragAnchorX = pos.x;
+		m_state.dragAnchorY = pos.y;
+		m_state.dragStartBounds.clear();
+		for (const auto& id : m_state.GetSelectedIds())
+		{
+			if (m_picture.HasShape(id))
+				m_state.dragStartBounds[id] = m_picture.GetShape(id).GetBounds();
+		}
+		m_state.lastAppliedDx = 0;
+		m_state.lastAppliedDy = 0;
+		m_state.mode = EditorState::Mode::Dragging;
 	}
 
 	void Update(const sf::Vector2f& pos)
@@ -83,28 +117,42 @@ public:
 	void Release()
 	{
 		m_state.activeHandle = Handle::None;
+		m_state.dragStartBounds.clear();
+		m_state.lastAppliedDx = 0;
+		m_state.lastAppliedDy = 0;
 		m_state.mode = EditorState::Mode::Idle;
 	}
 
 private:
 	void Drag(const sf::Vector2f& position)
 	{
-		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
-		shapes::Bounds desired{
-			position.x - m_state.dragAnchorX,
-			position.y - m_state.dragAnchorY,
-			bounds.width,
-			bounds.height
-		};
+		const auto& ids = m_state.GetSelectedIds();
+		if (ids.empty()) return;
+		if (m_state.dragStartBounds.empty()) return;
 
-		auto target = shapes::ClampToCanvasByShift(desired, m_canvasWidth, m_canvasHeight);
+		double rawDx = position.x - m_state.dragAnchorX;
+		double rawDy = position.y - m_state.dragAnchorY;
 
-		double dx = target.x - bounds.x;
-		double dy = target.y - bounds.y;
-		if (dx != 0.0 || dy != 0.0)
+		double minDx = -1e9, maxDx = 1e9, minDy = -1e9, maxDy = 1e9;
+		for (const auto& [id, b] : m_state.dragStartBounds)
 		{
-			m_picture.MoveShape(m_state.GetPrimarySelectedId(), dx, dy);
+			minDx = std::max(minDx, -b.x);
+			maxDx = std::min(maxDx, (double)m_canvasWidth  - (b.x + b.width));
+			minDy = std::max(minDy, -b.y);
+			maxDy = std::min(maxDy, (double)m_canvasHeight - (b.y + b.height));
 		}
+
+		double dx = std::clamp(rawDx, minDx, maxDx);
+		double dy = std::clamp(rawDy, minDy, maxDy);
+
+		double deltaDx = dx - m_state.lastAppliedDx;
+		double deltaDy = dy - m_state.lastAppliedDy;
+		if (deltaDx == 0.0 && deltaDy == 0.0) return;
+
+		std::vector<std::string> idsVec(ids.begin(), ids.end());
+		m_picture.MoveShapes(idsVec, deltaDx, deltaDy);
+		m_state.lastAppliedDx = dx;
+		m_state.lastAppliedDy = dy;
 	}
 
 	void Resize(const sf::Vector2f& position)
