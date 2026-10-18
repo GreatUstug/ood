@@ -19,7 +19,8 @@ struct EditorState
 
 	[[nodiscard]] const std::set<std::string>& GetSelectedIds() const { return m_selectedIds; }
 	[[nodiscard]] const std::string& GetPrimarySelectedId() const { return m_primarySelectedId; }
-	[[nodiscard]] bool IsSelected() const { return !m_selectedIds.empty(); }
+	[[nodiscard]] bool IsSelected(const std::string& id) const { return m_selectedIds.contains(id); }
+	[[nodiscard]] bool HasAnySelection() const { return !m_selectedIds.empty(); }
 
 	void SetSelectedIds(const std::set<std::string>& selectedIds)
 	{

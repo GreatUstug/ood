@@ -24,8 +24,10 @@ public:
 	Picture()
 	{
 	}
-	void Subscribe(PictureObserver* obs)   { m_observers.AddObserver(obs); }
+
+	void Subscribe(PictureObserver* obs) { m_observers.AddObserver(obs); }
 	void Unsubscribe(PictureObserver* obs) { m_observers.RemoveObserver(obs); }
+
 	void AddShape(std::unique_ptr<Figure> figure)
 	{
 		const std::string id = figure->GetId();
@@ -38,29 +40,29 @@ public:
 		NotifyPictureObservers();
 	}
 
-	void MoveShape(const std::string& id, double dx, double dy)
+	void MoveShapes(const std::vector<std::string>& ids, double dx, double dy)
 	{
-		auto it = m_shapes.find(id);
-		if (it == m_shapes.end())
-			throw std::invalid_argument("Shape not found. MoveShape isn't available.");
-		it->second->Move(dx, dy);
+		for (const auto& id : ids)
+		{
+			auto it = m_shapes.find(id);
+			if (it == m_shapes.end())
+				throw std::invalid_argument("Shape not found. MoveShapes isn't available.");
+			it->second->Move(dx, dy);
+		}
 		NotifyPictureObservers();
 	}
 
-	void MovePicture(double dx, double dy)
+	void DeleteShapes(const std::vector<std::string>& ids)
 	{
-		for (auto& [id, shape] : m_shapes)
+		for (const auto& id : ids)
 		{
-			shape->Move(dx, dy);
+			if (!m_shapes.contains(id))
+			{
+				throw std::invalid_argument("Shape not found. DeleteShapes isn't available");
+			}
+			m_shapes.erase(id);
+			m_order.erase(std::remove(m_order.begin(), m_order.end(), id), m_order.end());
 		}
-	}
-
-	void DeleteShape(const std::string& id)
-	{
-		if (!m_shapes.contains(id))
-			throw std::invalid_argument("Shape not found. DeleteShape isn't available");
-		m_shapes.erase(id);
-		m_order.erase(std::remove(m_order.begin(), m_order.end(), id), m_order.end());
 		NotifyPictureObservers();
 	}
 
@@ -139,11 +141,13 @@ public:
 	}
 
 private:
-	void NotifyPictureObservers() {
+	void NotifyPictureObservers()
+	{
 		m_observers.Notify([this](PictureObserver* o) {
 			o->OnPictureChanged(BuildShapeInfo());
 		});
 	}
+
 	std::vector<ShapeInfo> BuildShapeInfo() const
 	{
 		std::vector<ShapeInfo> result;
@@ -154,13 +158,14 @@ private:
 			if (it != m_shapes.end())
 			{
 				result.push_back({
-				it->second->GetId(),
-				it->second->GetType(),
+					it->second->GetId(),
+					it->second->GetType(),
 				});
 			}
 		}
 		return result;
 	}
+
 	ObserverList<PictureObserver> m_observers;
 	std::unordered_map<std::string, std::unique_ptr<Figure> > m_shapes;
 	std::vector<std::string> m_order;
