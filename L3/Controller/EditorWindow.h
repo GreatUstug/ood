@@ -21,7 +21,8 @@ class EditorWindow
 	constexpr static std::string DEFAULT_FILE_NAME = "Unnamed";
 
 public:
-	explicit EditorWindow(sf::Font& font, const std::string& fileName = DEFAULT_FILE_NAME)
+	explicit EditorWindow(sf::Font& font, FileDialog& dialog,
+		sf::Vector2i pos = { 0, 0 }, const std::string& fileName = DEFAULT_FILE_NAME)
 		: m_window(sf::VideoMode(sf::Vector2u(CANVAS_W + PANEL_W, CANVAS_H)), APP_NAME + fileName)
 		  , m_canvas(m_window)
 		  , m_font(font)
@@ -32,8 +33,9 @@ public:
 		  , m_listView(m_picture, m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
 		  , m_controller(m_picture, m_state, m_view, m_window, m_toolbar,
-			  m_listView, (int)CANVAS_W, (int)CANVAS_H)
+			  m_listView, dialog, CANVAS_W, CANVAS_H)
 	{
+		m_window.setPosition(pos);
 	}
 
 	bool IsOpen()
@@ -66,7 +68,18 @@ public:
 		m_listView.Render();
 		m_window.display();
 	}
-	AppCommand TakePendingCommand() { return m_controller.TakePendingCommand(); }
+
+	AppCommand TakePendingCommand()
+	{
+		return m_controller.TakePendingCommand();
+	}
+
+	void ReplaceDocument(shapes::Picture&& p)
+	{
+		m_picture.ReplaceWith(std::move(p));
+		m_state.ClearSelection();
+	}
+
 private:
 	sf::RenderWindow m_window;
 	SFMLCanvas m_canvas;

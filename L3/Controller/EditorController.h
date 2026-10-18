@@ -27,9 +27,10 @@ public:
 		sf::RenderWindow& window,
 		Toolbar& toolbar,
 		ShapeListView& listView,
+		FileDialog& fileDialog,
 		int canvasWidth,
 		int canvasHeight)
-		: m_fileDialog()
+		: m_fileDialog(fileDialog)
 		  , m_create(picture, state, canvasWidth, canvasHeight)
 		  , m_transform(picture, state, canvasWidth, canvasHeight)
 		  , m_document(picture, state, m_fileDialog)
@@ -43,16 +44,18 @@ public:
 	{
 		AppCommand cmd = m_router.HandleEvent(event);
 		if (cmd != AppCommand::None)
-			m_pendingCommand = cmd
+			m_pendingCommand = cmd;
 	}
+
 	AppCommand TakePendingCommand()
 	{
 		AppCommand c = m_pendingCommand;
 		m_pendingCommand = AppCommand::None;
 		return c;
 	}
+
 private:
-	FileDialog m_fileDialog;
+	FileDialog& m_fileDialog;
 	ShapeCreateController m_create;
 	ShapeTransformController m_transform;
 	DocumentController m_document;

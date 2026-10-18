@@ -60,6 +60,7 @@ public:
 				m_state.ClearSelection();
 			}
 		}
+		return AppCommand::None;
 	}
 
 private:
