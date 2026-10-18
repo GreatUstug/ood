@@ -93,7 +93,16 @@ public:
     	if (visualIndex < 0) return false;
 
     	int modelIndex = (int)m_cachedShapes.size() - 1 - visualIndex;
-    	m_state.SetPrimarySelectedId(m_cachedShapes[modelIndex].id);
+    	const std::string& id = m_cachedShapes[modelIndex].id;
+
+    	const bool additive =
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift)   ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
+
+    	if (additive) m_state.ToggleSelected(id);
+    	else          m_state.SetSelectedIds({ id });
     	return true;
     }
 

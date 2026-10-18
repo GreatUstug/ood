@@ -66,9 +66,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 4. Использование множественного удаления и перемещения">
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 4. Первая версия множественного драга">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/ShapeTransformController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShapeTransformController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/DrawSelectionFrame.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/DrawSelectionFrame.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/EditorView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/EditorView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/ShapeListView.h" beforeDir="false" afterPath="$PROJECT_DIR$/View/ShapeListView.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -407,7 +410,7 @@
       <workItem from="1791730891157" duration="11196000" />
       <workItem from="1791783254415" duration="2823000" />
       <workItem from="1791797460022" duration="721000" />
-      <workItem from="1792316243548" duration="18183000" />
+      <workItem from="1792316243548" duration="19292000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -753,7 +756,15 @@
       <option name="project" value="LOCAL" />
       <updated>1792350180702</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Лабораторная работа 3. Задание 4. Первая версия множественного драга">
+      <option name="closed" value="true" />
+      <created>1792352609468</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1792352609468</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -788,7 +799,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил маус мув" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил наименования функций" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Поправил спавн треугольника" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Переименовал папки по MVC" />
@@ -813,7 +823,8 @@
     <MESSAGE value="Лабораторная работа 3. Задание 4. Ввел множество для хранения всех выделенных объектов" />
     <MESSAGE value="Лабораторная работа 3. Задание 4. Ввел множественное удаление и перемещение для объектов." />
     <MESSAGE value="Лабораторная работа 3. Задание 4. Использование множественного удаления и перемещения" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 4. Использование множественного удаления и перемещения" />
+    <MESSAGE value="Лабораторная работа 3. Задание 4. Первая версия множественного драга" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 4. Первая версия множественного драга" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

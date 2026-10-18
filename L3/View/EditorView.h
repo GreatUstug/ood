@@ -30,10 +30,11 @@ public:
 	{
 		m_picture.DrawPicture(m_canvas);
 		DrawPreview();
-		if (m_state.HasValidSelection(m_picture) && m_picture.HasShape(m_state.GetPrimarySelectedId()))
+		auto primary = m_state.GetPrimarySelectedId();
+		for (const auto& id : m_state.GetSelectedIds())
 		{
-			auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
-			DrawSelectionFrame(m_canvas, bounds);
+			if (!m_picture.HasShape(id)) continue;
+			DrawSelectionFrame(m_canvas, m_picture.GetShape(id).GetBounds(), id == primary);
 		}
 		RenderToolbar();
 	};
