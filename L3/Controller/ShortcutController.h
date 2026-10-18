@@ -56,7 +56,8 @@ public:
 		{
 			if (m_state.HasValidSelection(m_picture))
 			{
-				m_picture.DeleteShapes(m_state.GetPrimarySelectedId());
+				std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
+				m_picture.DeleteShapes(selectedIds);
 				m_state.ClearSelection();
 			}
 		}
