@@ -1,0 +1,128 @@
+Index: ../L2/Figures/Observer/Subscription.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#ifndef FIGURES_SUBSCRIPTION_H\r\n#define FIGURES_SUBSCRIPTION_H\r\n#pragma once\r\n\r\ntemplate <typename TSubject, typename TObserver>\r\nclass Subscription {\r\npublic:\r\n    Subscription() = default;\r\n\r\n    Subscription(TSubject* subject, TObserver* observer)\r\n        : m_subject(subject)\r\n        , m_observer(observer)\r\n    {\r\n        if (m_subject) {\r\n            m_subject->RegisterSubscription(this);\r\n        }\r\n    }\r\n\r\n    ~Subscription() {\r\n        Disconnect();\r\n    }\r\n\r\n\tSubscription(const Subscription&) = delete;\r\n\tSubscription& operator=(const Subscription&) = delete;\r\n\tSubscription(Subscription&& other)\r\n\t{\r\n\t\tm_subject  = other.m_subject;\r\n\t\tm_observer = other.m_observer;\r\n\t\tm_alive    = other.m_alive;\r\n\t\tm_active   = other.m_active;\r\n\r\n\t\tif (m_alive && m_subject && m_active) {\r\n\t\t\tm_subject->UnregisterSubscription(&other);\r\n\t\t\tm_subject->RegisterSubscription(this);\r\n\t\t}\r\n\r\n\t\tother.m_subject  = nullptr;\r\n\t\tother.m_observer = nullptr;\r\n\t\tother.m_alive    = false;\r\n\t\tother.m_active   = false;\r\n\t};\r\n\r\n    void Disconnect() {\r\n        if (!m_active) return;\r\n        if (m_alive && m_subject) {\r\n        \tm_subject->UnsubscribeObserver(m_observer);\r\n            m_subject->UnregisterSubscription(this);\r\n        }\r\n        m_active = false;\r\n        m_subject = nullptr;\r\n        m_observer = nullptr;\r\n    }\r\n\r\n    bool IsActive() const { return m_active; }\r\n    TObserver* GetObserver() const { return m_observer; }\r\n\r\n    void MarkSubjectDead() {\r\n        m_alive = false;\r\n    }\r\n\r\nprivate:\r\n    TSubject*  m_subject  = nullptr;\r\n    TObserver* m_observer = nullptr;\r\n    bool       m_alive    = true;\r\n    bool       m_active   = true;\r\n};\r\n\r\n#endif //FIGURES_SUBSCRIPTION_H
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../L2/Figures/Observer/Subscription.h b/../L2/Figures/Observer/Subscription.h
+--- a/../L2/Figures/Observer/Subscription.h	(revision 68cd3d15a274e691a4cded0e6a24c03a8e8dfb65)
++++ b/../L2/Figures/Observer/Subscription.h	(date 1791790068441)
+@@ -2,67 +2,76 @@
+ #define FIGURES_SUBSCRIPTION_H
+ #pragma once
+ 
+-template <typename TSubject, typename TObserver>
+-class Subscription {
++template <typename TSubject, typename TObserver> class Subscription
++{
+ public:
+-    Subscription() = default;
++	Subscription() = default;
+ 
+-    Subscription(TSubject* subject, TObserver* observer)
+-        : m_subject(subject)
+-        , m_observer(observer)
+-    {
+-        if (m_subject) {
+-            m_subject->RegisterSubscription(this);
+-        }
+-    }
++	Subscription(TSubject* subject, TObserver* observer)
++		: m_subject(subject)
++		  , m_observer(observer)
++	{
++		if (m_subject)
++		{
++			m_subject->RegisterSubscription(this);
++		}
++	}
+ 
+-    ~Subscription() {
+-        Disconnect();
+-    }
++	~Subscription()
++	{
++		Disconnect();
++	}
+ 
+ 	Subscription(const Subscription&) = delete;
++
+ 	Subscription& operator=(const Subscription&) = delete;
++
+ 	Subscription(Subscription&& other)
+ 	{
+-		m_subject  = other.m_subject;
++		m_subject = other.m_subject;
+ 		m_observer = other.m_observer;
+-		m_alive    = other.m_alive;
+-		m_active   = other.m_active;
++		m_alive = other.m_alive;
++		m_active = other.m_active;
+ 
+-		if (m_alive && m_subject && m_active) {
++		if (m_alive && m_subject && m_active)
++		{
+ 			m_subject->UnregisterSubscription(&other);
+ 			m_subject->RegisterSubscription(this);
+ 		}
+ 
+-		other.m_subject  = nullptr;
++		other.m_subject = nullptr;
+ 		other.m_observer = nullptr;
+-		other.m_alive    = false;
+-		other.m_active   = false;
++		other.m_alive = false;
++		other.m_active = false;
+ 	};
+ 
+-    void Disconnect() {
+-        if (!m_active) return;
+-        if (m_alive && m_subject) {
+-        	m_subject->UnsubscribeObserver(m_observer);
+-            m_subject->UnregisterSubscription(this);
+-        }
+-        m_active = false;
+-        m_subject = nullptr;
+-        m_observer = nullptr;
+-    }
++	void Disconnect()
++	{
++		if (!m_active)
++			return;
++		if (m_alive && m_subject)
++		{
++			m_subject->UnsubscribeObserver(m_observer);
++			m_subject->UnregisterSubscription(this);
++		}
++		m_active = false;
++		m_subject = nullptr;
++		m_observer = nullptr;
++	}
+ 
+-    bool IsActive() const { return m_active; }
+-    TObserver* GetObserver() const { return m_observer; }
++	bool IsActive() const { return m_active; }
++	TObserver* GetObserver() const { return m_observer; }
+ 
+-    void MarkSubjectDead() {
+-        m_alive = false;
+-    }
++	void MarkSubjectDead()
++	{
++		m_alive = false;
++	}
+ 
+ private:
+-    TSubject*  m_subject  = nullptr;
+-    TObserver* m_observer = nullptr;
+-    bool       m_alive    = true;
+-    bool       m_active   = true;
++	TSubject* m_subject = nullptr;
++	TObserver* m_observer = nullptr;
++	bool m_alive = true;
++	bool m_active = true;
+ };
+ 
+ #endif //FIGURES_SUBSCRIPTION_H
+\ No newline at end of file
