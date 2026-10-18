@@ -1,4 +1,6 @@
+#include "cmake-build-debug/_deps/harfbuzz-src/src/hb-cplusplus.hh"
 #include "Controller/EditorController.h"
+#include "Controller/EditorWindow.h"
 #include "Model/EditorState.h"
 #include "View/gfx/SFMLCanvas.h"
 #include <optional>
@@ -10,35 +12,27 @@
 
 int main()
 {
-	const unsigned W = 800;
-	const unsigned H = 600;
-	const unsigned PANEL_W = 200;
-	sf::RenderWindow window(sf::VideoMode(sf::Vector2u(W + PANEL_W, H)), "Editor");
-	SFMLCanvas canvas(window);
 
 	sf::Font font;
 	if (!font.openFromFile("arial.ttf"))
 	{
 		throw std::runtime_error("Font not found: arial.ttf");
 	}
-
-	shapes::Picture picture;
-	EditorState state;
-	Toolbar toolbar;
-
-	EditorView view(picture, state, canvas, window, font, toolbar);
-	ShapeListView listView(picture, state, window, font, W, 0.f, PANEL_W, H);
-	EditorController controller(picture, state, view, window, toolbar, listView, W, H);
-
-	while (window.isOpen()) {
-		while (const auto event = window.pollEvent()) {
-			if (event->is<sf::Event::Closed>()) window.close();
-			controller.HandleEvent(*event);
+	std::vector<std::unique_ptr<EditorWindow>> windows;
+	windows.push_back(std::make_unique<EditorWindow>(font));
+	while (!windows.empty())
+	{
+		for (auto &window : windows)
+		{
+			if (!window->IsOpen()) continue;
+			window->HandleEvents();
+			if (window->IsOpen()) window->Render();
+			windows.erase(
+			std::ranges::remove_if(windows,
+				[](const auto& w) { return !w->IsOpen(); }).begin(),
+			windows.end());
 		}
-		window.clear();
-		view.Render();
-		listView.Render();
-		window.display();
 	}
+
 	return 0;
 }
