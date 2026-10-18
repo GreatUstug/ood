@@ -66,7 +66,7 @@ public:
 		m_listView.Render();
 		m_window.display();
 	}
-
+	AppCommand TakePendingCommand() { return m_controller.TakePendingCommand(); }
 private:
 	sf::RenderWindow m_window;
 	SFMLCanvas m_canvas;

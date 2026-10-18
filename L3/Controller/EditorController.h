@@ -22,35 +22,43 @@ class EditorController
 {
 public:
 	EditorController(shapes::Picture& picture,
-					 EditorState& state,
-					 EditorView& view,
-					 sf::RenderWindow& window,
-					 Toolbar& toolbar,
-					 ShapeListView& listView,
-					 int canvasWidth,
-					 int canvasHeight)
+		EditorState& state,
+		EditorView& view,
+		sf::RenderWindow& window,
+		Toolbar& toolbar,
+		ShapeListView& listView,
+		int canvasWidth,
+		int canvasHeight)
 		: m_fileDialog()
-		, m_create(picture, state, canvasWidth, canvasHeight)
-		, m_transform(picture, state, canvasWidth, canvasHeight)
-		, m_document(picture, state, m_fileDialog)
-		, m_shortcuts(picture, state, m_document, m_create)
-		, m_router(picture, state, view, window, toolbar, listView,
-				   m_create, m_transform, m_shortcuts)
+		  , m_create(picture, state, canvasWidth, canvasHeight)
+		  , m_transform(picture, state, canvasWidth, canvasHeight)
+		  , m_document(picture, state, m_fileDialog)
+		  , m_shortcuts(picture, state, m_document, m_create)
+		  , m_router(picture, state, view, window, toolbar, listView,
+			  m_create, m_transform, m_shortcuts)
 	{
 	}
 
 	void HandleEvent(const sf::Event& event)
 	{
-		m_router.HandleEvent(event);
+		AppCommand cmd = m_router.HandleEvent(event);
+		if (cmd != AppCommand::None)
+			m_pendingCommand = cmd
 	}
-
+	AppCommand TakePendingCommand()
+	{
+		AppCommand c = m_pendingCommand;
+		m_pendingCommand = AppCommand::None;
+		return c;
+	}
 private:
-	FileDialog                 m_fileDialog;
-	ShapeCreateController      m_create;
-	ShapeTransformController   m_transform;
-	DocumentController         m_document;
-	ShortcutController         m_shortcuts;
-	InputRouter                m_router;
+	FileDialog m_fileDialog;
+	ShapeCreateController m_create;
+	ShapeTransformController m_transform;
+	DocumentController m_document;
+	ShortcutController m_shortcuts;
+	InputRouter m_router;
+	AppCommand m_pendingCommand;
 };
 
 #endif

@@ -65,12 +65,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Разбиение EditorController. Вынес работу с файлами">
-      <change afterPath="$PROJECT_DIR$/Controller/EditorWindow.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/Figures/Observer/Subscription.h" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/Figures/Observer/Subscription.h" afterDir="false" />
+    <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Задание 3. Начало работы над поддержкой разных файлов">
+      <change afterPath="$PROJECT_DIR$/Controller/AppCommand.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/EditorController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/EditorWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorWindow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/InputRouter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/InputRouter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/ShortcutController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShortcutController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -410,7 +412,7 @@
       <workItem from="1791730891157" duration="11196000" />
       <workItem from="1791783254415" duration="2823000" />
       <workItem from="1791797460022" duration="721000" />
-      <workItem from="1792316243548" duration="3648000" />
+      <workItem from="1792316243548" duration="5630000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
@@ -708,7 +710,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791786131065</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Лабораторная работа 3. Задание 3. Начало работы над поддержкой разных файлов">
+      <option name="closed" value="true" />
+      <created>1792320306928</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1792320306928</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -743,7 +753,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Лабораторная работа 3. Туллбар, труд сизифа окончен" />
     <MESSAGE value="Лабораторная работа 3. Поменял цвет добавления фигур" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес условие в отдельную функцию и заменил его везде" />
     <MESSAGE value="Лабораторная работа 3. Рефактор. Вынес логику ресайза и драг анд дропа" />
@@ -768,7 +777,8 @@
     <MESSAGE value="Лабораторная работа 3. Разбиение EditorController. Вынес работу c трансформацией объектов" />
     <MESSAGE value="Лабораторная работа 3. Разбиение EditorController. Вынес создание объектов" />
     <MESSAGE value="Лабораторная работа 3. Разбиение EditorController. Вынес работу с файлами" />
-    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Разбиение EditorController. Вынес работу с файлами" />
+    <MESSAGE value="Лабораторная работа 3. Задание 3. Начало работы над поддержкой разных файлов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Задание 3. Начало работы над поддержкой разных файлов" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

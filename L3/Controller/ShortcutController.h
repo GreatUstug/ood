@@ -5,6 +5,7 @@
 #ifndef L3_SHORTCUTCONTROLLER_H
 #define L3_SHORTCUTCONTROLLER_H
 
+#include "AppCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
 
@@ -28,29 +29,27 @@ public:
 	{
 	}
 
-	void OnKeyPressed(const sf::Event::KeyPressed& key)
+	AppCommand OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
 		if (key.code == sf::Keyboard::Key::Escape &&
 			m_state.mode == EditorState::Mode::Creating)
 		{
 			m_create.Cancel();
-			return;
+			return AppCommand::None;
 		}
 
 		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
 			m_document.Save();
-			return;
+			return AppCommand::None;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::O)
 		{
-			m_document.Load();
-			return;
+			return AppCommand::OpenInNewWindow;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
-			m_document.New();
-			return;
+			return AppCommand::NewWindow;
 		}
 
 		if (key.code == sf::Keyboard::Key::Delete)

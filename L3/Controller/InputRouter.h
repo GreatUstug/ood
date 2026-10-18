@@ -43,7 +43,7 @@ public:
     {
     }
 
-    void HandleEvent(const sf::Event& event)
+    AppCommand HandleEvent(const sf::Event& event)
     {
         if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>())
         {
@@ -52,7 +52,7 @@ public:
         }
         if (const auto* key = event.getIf<sf::Event::KeyPressed>())
         {
-            m_shortcuts.OnKeyPressed(*key);
+           return  m_shortcuts.OnKeyPressed(*key);
         }
         if (const auto* moved = event.getIf<sf::Event::MouseMoved>())
         {
@@ -63,6 +63,7 @@ public:
             if (rel->button == sf::Mouse::Button::Left)
                 OnMouseReleased();
         }
+    	return AppCommand::None;
     }
 
 private:

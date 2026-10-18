@@ -45,7 +45,8 @@ add_executable(L3 main.cpp
         Controller/ShapeCreateController.h
         Controller/ShortcutController.h
         Controller/InputRouter.h
-        Controller/WIndowController.h)
+        Controller/WIndowController.h
+        Controller/AppCommand.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics
