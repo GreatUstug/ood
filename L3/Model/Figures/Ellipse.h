@@ -27,6 +27,8 @@ public:
 
 	virtual ~Ellipse() = default;
 
+	void Accept(IShapeGeometryVisitor& v) const override { v.Visit(*this); }
+
 	std::string GetInfo() const override
 	{
 		return "ellipse " +
@@ -60,7 +62,10 @@ public:
 		double dy = (py - m_y) / m_radiusY;
 		return dx * dx + dy * dy <= 1.0;
 	}
-
+	double GetCx() const { return m_x; }
+	double GetCy() const { return m_y; }
+	double GetRx() const { return m_radiusX; }
+	double GetRy() const { return m_radiusY; }
 private:
 	double m_radiusX;
 	double m_radiusY;

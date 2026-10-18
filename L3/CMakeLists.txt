@@ -47,7 +47,8 @@ add_executable(L3 main.cpp
         Controller/InputRouter.h
         Controller/EditorWindow.h
         Controller/AppCommand.h
-        Model/Figures/IShapeGeometryVisitor.h)
+        Model/Figures/IShapeGeometryVisitor.h
+        View/DrawVisitor.h)
 target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L3 PRIVATE
         sfml-graphics

@@ -1,6 +1,8 @@
 // Shapes/Shape.h
 #pragma once
 #include "Figures/IShapeGeometry.h"
+#include "View/gfx/ICanvas.h"
+
 #include <memory>
 #include <string>
 
@@ -21,17 +23,6 @@ public:
 	void SetGeometry(std::unique_ptr<IShapeGeometry> geometry)
 	{
 		m_geometry = std::move(geometry);
-	}
-
-	void SetColor(const std::string& color)
-	{
-		m_colorRGB = gfx::Color::ParseToRGB(color);
-	}
-
-	void Draw(gfx::ICanvas& canvas) const
-	{
-		canvas.SetColor(m_colorRGB);
-		m_geometry->Draw(canvas);
 	}
 
 	void Move(double dx, double dy)
@@ -68,9 +59,18 @@ public:
 		return m_geometry->GetType();
 	}
 
+	void Accept(IShapeGeometryVisitor& v) const
+	{
+		m_geometry->Accept(v);
+	}
+
+	gfx::Color GetColor() const
+	{
+		return m_colorRGB;
+	}
 private:
 	std::string m_id;
-	gfx::Color m_colorRGB;
 	std::unique_ptr<IShapeGeometry> m_geometry;
+	gfx::Color m_colorRGB;
 };
 }

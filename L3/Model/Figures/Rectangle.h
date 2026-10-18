@@ -36,6 +36,8 @@ public:
 		m_y += y;
 	}
 
+	void Accept(IShapeGeometryVisitor& v) const override { v.Visit(*this); }
+
 	std::string GetType() const override
 	{
 		return "rectangle";
@@ -59,7 +61,10 @@ public:
 		return px >= m_x && px <= m_x + m_width
 			&& py >= m_y && py <= m_y + m_height;
 	}
-
+	double GetX() const { return m_x; }
+	double GetY() const { return m_y; }
+	double GetW() const { return m_width; }
+	double GetH() const { return m_height; }
 private:
 	double m_x = 0;
 	double m_y = 0;

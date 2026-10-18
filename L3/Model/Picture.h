@@ -3,8 +3,6 @@
 #include "Bounds.h"
 #include "Figure.h"
 #include "ShapeInfo.h"
-#include "Figures/IShapeGeometry.h"
-#include "../View/gfx/ICanvas.h"
 #include "Observer/ObserverList.h"
 #include "Observer/PictureObserver.h"
 
@@ -80,23 +78,7 @@ public:
 		return result;
 	}
 
-	void DrawShape(const std::string& id, gfx::ICanvas& canvas) const
-	{
-		auto it = m_shapes.find(id);
-		if (it == m_shapes.end())
-			throw std::invalid_argument("Shape with this id not found. Draw isn't available");
-		it->second->Draw(canvas);
-	}
-
-	void DrawPicture(gfx::ICanvas& canvas) const
-	{
-		for (const auto& id : m_order)
-		{
-			auto it = m_shapes.find(id);
-			if (it != m_shapes.end())
-				it->second->Draw(canvas);
-		}
-	}
+	const std::vector<std::string>& GetOrder() const { return m_order; }
 
 	Figure& GetShape(const std::string& id) const
 	{

@@ -36,6 +36,8 @@ public:
 		m_y3 += dy;
 	}
 
+	void Accept(IShapeGeometryVisitor& v) const override { v.Visit(*this); }
+
 	Bounds GetBounds() const override
 	{
 		double minX = std::min({ m_x, m_x2, m_x3 });
@@ -85,7 +87,12 @@ public:
 
 		return !(hasNeg && hasPos);
 	}
-
+	double GetX1() const { return m_x; }
+	double GetY1() const { return m_y; }
+	double GetX2() const { return m_x2; }
+	double GetY2() const { return m_y2; }
+	double GetX3() const { return m_x3; }
+	double GetY3() const { return m_y3; }
 private:
 	double m_x = 0;
 	double m_y = 0;

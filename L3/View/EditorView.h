@@ -12,6 +12,7 @@
 #include "DrawSelectionFrame.h"
 #include "../Model/EditorState.h"
 #include "CursorType.h"
+#include "DrawVisitor.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Cursor.hpp"
 
@@ -28,7 +29,12 @@ public:
 
 	void Render()
 	{
-		m_picture.DrawPicture(m_canvas);
+		for (const auto& id : m_picture.GetOrder())
+		{
+			const auto& f = m_picture.GetShape(id);
+			shapes::DrawVisitor v(m_canvas, f.GetColor());
+			f.Accept(v);
+		}
 		DrawPreview();
 		auto primary = m_state.GetPrimarySelectedId();
 		for (const auto& id : m_state.GetSelectedIds())
@@ -49,7 +55,8 @@ public:
 
 		auto figure = shapes::MakeShape(m_state.creatingType, "__preview__", bounds);
 		if (!figure) return;
-		figure -> Draw(m_canvas);
+		shapes::DrawVisitor v(m_canvas, figure->GetColor());
+		figure->Accept(v);
 		m_canvas.SetColor(gfx::Color(100, 100, 255, 180));
 		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
 	}
