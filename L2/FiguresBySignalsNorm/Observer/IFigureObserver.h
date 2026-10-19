@@ -15,6 +15,8 @@ class IFigureObserver
 public:
 	virtual ~IFigureObserver() = default;
 
-	virtual void OnShapeChanged() = 0;
+	virtual void OnShapeMoved(const shapes::IFigure&, double /*dx*/, double /*dy*/) {}
+	virtual void OnShapeColorChanged(const shapes::IFigure&, const std::string& /*color*/) {}
+	virtual void OnShapeGeometryChanged(const shapes::IFigure&) {}
 };
 #endif //FIGURES_ISHAPEOBSERVER_H

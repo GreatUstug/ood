@@ -5,6 +5,7 @@
 #include "../gfx/ICanvas.h"
 #include "../Observer/IPictureObserver.h"
 #include "../Observer/Subscription.h"
+#include "../Observer/Event.h"
 
 #include <map>
 #include <memory>
@@ -22,9 +23,42 @@ public:
 	Picture()
 	{
 	}
+
+	Event<void(const shapes::IFigure&, std::size_t)> ShapeAdded;
+	Event<void(const std::string&, std::size_t)> ShapeRemoved;
+	Event<void(const shapes::IFigure&, double, double)> ShapeMoved;
+	Event<void(const shapes::IFigure&, const std::string&)> ShapeColorChanged;
+	Event<void(const shapes::IFigure&)> ShapeGeometryChanged;
+
+	auto SubscribeToShapeAdded(Event<void(const shapes::IFigure&, std::size_t)>::Handler h)
+	{
+		return ShapeAdded.Subscribe(std::move(h));
+	}
+
+	auto SubscribeToShapeRemoved(Event<void(const std::string&, std::size_t)>::Handler h)
+	{
+		return ShapeRemoved.Subscribe(std::move(h));
+	}
+
+	auto SubscribeToShapeMoved(Event<void(const shapes::IFigure&, double, double)>::Handler h)
+	{
+		return ShapeMoved.Subscribe(std::move(h));
+	}
+
+	auto SubscribeToShapeColorChanged(Event<void(const shapes::IFigure&, const std::string&)>::Handler h)
+	{
+		return ShapeColorChanged.Subscribe(std::move(h));
+	}
+
+	auto SubscribeToShapeGeometryChanged(Event<void(const shapes::IFigure&)>::Handler h)
+	{
+		return ShapeGeometryChanged.Subscribe(std::move(h));
+	}
+
 	~Picture()
 	{
-		for (auto* sub : m_subscriptions) {
+		for (auto* sub : m_subscriptions)
+		{
 			sub->MarkSubjectDead();
 		}
 	}
@@ -58,6 +92,7 @@ public:
 		figure->AddObserver(this);
 		m_order.push_back(id);
 		m_shapes[id] = std::move(figure);
+		ShapeAdded.Notify(*m_shapes[id], m_shapes.size());
 		NotifyPictureObservers();
 	}
 
@@ -84,6 +119,7 @@ public:
 		m_shapes.find(id)->second->RemoveObserver(this);
 		m_shapes.erase(id);
 		m_order.erase(std::remove(m_order.begin(), m_order.end(), id), m_order.end());
+		ShapeRemoved.Notify(id, m_shapes.size());
 		NotifyPictureObservers();
 	}
 
@@ -152,8 +188,21 @@ public:
 	void AddObserver(IPictureObserver* observer) { m_observers.AddObserver(observer); }
 	void RemoveObserver(IPictureObserver* observer) { m_observers.RemoveObserver(observer); }
 
-	void OnShapeChanged() override
+	void OnShapeMoved(const shapes::IFigure& f, double dx, double dy) override
 	{
+		ShapeMoved.Notify(f, dx, dy);
+		NotifyPictureObservers();
+	}
+
+	void OnShapeColorChanged(const shapes::IFigure& f, const std::string& c) override
+	{
+		ShapeColorChanged.Notify(f, c);
+		NotifyPictureObservers();
+	}
+
+	void OnShapeGeometryChanged(const shapes::IFigure& f) override
+	{
+		ShapeGeometryChanged.Notify(f);
 		NotifyPictureObservers();
 	}
 

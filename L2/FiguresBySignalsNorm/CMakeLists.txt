@@ -45,7 +45,10 @@ add_executable(FiguresBySignalsNorm main.cpp
         Observer/ObserverList.h
         Observer/ConsolePictureObserver.h
         Observer/Subscription.h
-        Tests/TestTask4.cpp)
+        Observer/ObserverListById.h
+        Observer/SubscriptionById.h
+        Observer/Event.h
+)
 target_include_directories(FiguresBySignalsNorm PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(FiguresBySignalsNorm PRIVATE
         sfml-graphics

@@ -17,7 +17,9 @@ public:
 class CountingFigureObserver : public IFigureObserver {
 public:
     int count = 0;
-    void OnShapeChanged() override { ++count; }
+    void OnShapeMoved(const shapes::IFigure&, double, double) override { ++count; }
+    void OnShapeColorChanged(const shapes::IFigure&, const std::string&) override { ++count; }
+    void OnShapeGeometryChanged(const shapes::IFigure&) override { ++count; }
 };
 
 static std::unique_ptr<shapes::IFigure> MakeCircle(const std::string& id) {
@@ -159,7 +161,7 @@ TEST(SubscriptionTest, FigureSubscriptionWorks) {
 
         figure->SetColor("#00ff00");
         EXPECT_EQ(obs.count, 2);
-    }   // отписка
+    }
 
     figure->Move(1, 1);
     EXPECT_EQ(obs.count, 2);

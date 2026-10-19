@@ -48,13 +48,13 @@ public:
 	void SetGeometry(std::unique_ptr<IShapeGeometry> geometry)
 	{
 		m_geometry = std::move(geometry);
-		NotifyObservers();
+		NotifyGeometryChanged();
 	}
 
 	void SetColor(const std::string& color)
 	{
 		m_colorRGB = gfx::Color::ParseToRGB(color);
-		NotifyObservers();
+		NotifyColorChanged(color.c_str());
 	}
 
 	void Draw(gfx::ICanvas& canvas) const
@@ -66,7 +66,7 @@ public:
 	void Move(double dx, double dy)
 	{
 		m_geometry->Move(dx, dy);
-		NotifyObservers();
+		NotifyMoved(dx, dy);
 	}
 
 	const std::string& GetId() const { return m_id; }
@@ -87,10 +87,21 @@ public:
 	void RemoveObserver(IFigureObserver* obs) { m_observers.RemoveObserver(obs); };
 
 private:
-	void NotifyObservers()
-	{
-		m_observers.Notify([](IFigureObserver* o) {
-			o->OnShapeChanged();
+	void NotifyMoved(double dx, double dy) {
+		m_observers.Notify([this, dx, dy](IFigureObserver* o) {
+			o->OnShapeMoved(*this, dx, dy);
+		});
+	}
+
+	void NotifyColorChanged(const std::string& color) {
+		m_observers.Notify([this, &color](IFigureObserver* o) {
+			o->OnShapeColorChanged(*this, color);
+		});
+	}
+
+	void NotifyGeometryChanged() {
+		m_observers.Notify([this](IFigureObserver* o) {
+			o->OnShapeGeometryChanged(*this);
 		});
 	}
 

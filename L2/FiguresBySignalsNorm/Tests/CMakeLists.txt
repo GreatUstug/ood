@@ -5,6 +5,7 @@ add_executable(my_tests
         Lab1Shape.cpp
         Lab1Picture.cpp
         MockCanvas.h
+        TestTask4.cpp
 )
 
 target_link_libraries(my_tests

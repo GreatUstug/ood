@@ -26,9 +26,9 @@ class CountingFigureObserver : public IFigureObserver {
 public:
     int count = 0;
 
-    void OnShapeChanged() override {
-        ++count;
-    }
+    void OnShapeMoved(const shapes::IFigure&, double, double) override { ++count; }
+    void OnShapeColorChanged(const shapes::IFigure&, const std::string&) override { ++count; }
+    void OnShapeGeometryChanged(const shapes::IFigure&) override { ++count; }
 };
 
 TEST(ObserverTest, ShapeObserverGetsNotificationOnChange) {
@@ -72,12 +72,12 @@ TEST(ObserverTest, PictureObserverGetsNotificationOnDirectShapeChange) {
     auto figure = std::make_unique<shapes::IFigure>("fig1", "#ff0000", std::move(geo));
     picture.AddShape(std::move(figure));
 
-    EXPECT_EQ(obs.count, 1);  // AddShape
+    EXPECT_EQ(obs.count, 1);
 
     auto& shape = picture.GetShape("fig1");
     shape.SetColor("#0000ff");
 
-    EXPECT_EQ(obs.count, 2);  // Picture узнала через подписку
+    EXPECT_EQ(obs.count, 2);
 }
 
 TEST(ObserverTest, AddAndDeleteNotifyObservers) {
@@ -156,7 +156,7 @@ TEST(ObserverTest, UnsubscribedObserverStopsReceiving) {
     auto geo2 = std::make_unique<shapes::Circle>(0, 0, 10);
     picture.AddShape(std::make_unique<shapes::IFigure>("fig2", "#00ff00", std::move(geo2)));
 
-    EXPECT_EQ(obs.count, 1);  // не изменился
+    EXPECT_EQ(obs.count, 1);
 }
 
 TEST(ObserverTest, DuplicateRegistrationDoesNotDuplicateNotifications) {
