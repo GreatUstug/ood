@@ -27,16 +27,20 @@ public:
 	{
 		if (m_undoList.empty())
 			return false;
-		m_redoList.push_back(std::move(m_undoList.back()));
+		auto cmd = std::move(m_undoList.back());
 		m_undoList.pop_back();
+		cmd->Unexecute();
+		m_redoList.push_back(std::move(cmd));
 		return true;
 	}
 
 	bool Redo()
 	{
 		if (m_redoList.empty()) return false;
-		m_redoList.push_back(std::move(m_redoList.back()));
+		auto cmd = std::move(m_redoList.back());
 		m_redoList.pop_back();
+		cmd -> Execute();
+		m_undoList.push_back(std::move(cmd));
 		return true;
 	}
 
