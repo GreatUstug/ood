@@ -3,8 +3,8 @@
 #include "Bounds.h"
 #include "Figure.h"
 #include "ShapeInfo.h"
-#include "Observer/ObserverList.h"
-#include "Observer/PictureObserver.h"
+#include "Observers/ObserverList.h"
+#include "Observers/PictureObserver.h"
 
 #include <map>
 #include <memory>
@@ -120,6 +120,20 @@ public:
 		m_shapes = std::move(other.m_shapes);
 		m_order = std::move(other.m_order);
 		NotifyPictureObservers();
+	}
+
+	std::unique_ptr<Figure> ExtractFigure(const std::string& id)
+	{
+		const auto it = m_shapes.find(id);
+		if (it == m_shapes.end())
+		{
+			throw std::invalid_argument("Shape with this id not found.");
+		}
+		auto fig = std::move(it->second);
+		m_shapes.erase(it);
+		m_order.erase(m_order.begin(), m_order.end());
+		NotifyPictureObservers();
+		return fig;
 	}
 
 private:
