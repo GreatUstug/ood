@@ -1,5 +1,5 @@
 #include "Controller/EditorController.h"
-#include "Controller/EditorWindow.h"
+#include "Controller/EditorWindowController.h"
 #include "View/gfx/SFMLCanvas.h"
 #include <SFML/Graphics.hpp>
 #include "Model/Picture.h"
@@ -13,12 +13,12 @@ int main()
 	{
 		throw std::runtime_error("Font not found: arial.ttf");
 	}
-	std::vector<std::unique_ptr<EditorWindow> > windows;
-	windows.push_back(std::make_unique<EditorWindow>(font, dialog));
+	std::vector<std::unique_ptr<EditorWindowController> > windows;
+	windows.push_back(std::make_unique<EditorWindowController>(font, dialog));
 
 	while (!windows.empty())
 	{
-		std::vector<std::unique_ptr<EditorWindow> > toAdd;
+		std::vector<std::unique_ptr<EditorWindowController> > toAdd;
 		for (auto& window : windows)
 		{
 			if (!window->IsOpen())
@@ -33,7 +33,7 @@ int main()
 			switch (window->TakePendingCommand())
 			{
 			case AppCommand::NewWindow:
-				toAdd.push_back(std::make_unique<EditorWindow>(font, dialog));
+				toAdd.push_back(std::make_unique<EditorWindowController>(font, dialog));
 				break;
 			case AppCommand::OpenInNewWindow: {
 				auto path = dialog.AskOpenPath();
@@ -41,7 +41,7 @@ int main()
 				{
 					auto picture = DocumentIO::Load(*path);
 					// FIXME: пофиксить 43 строчку и добавить легкое смещение на создание.
-					auto newWindow = std::make_unique<EditorWindow>(font, dialog, sf::Vector2i{0, 0}, *path);
+					auto newWindow = std::make_unique<EditorWindowController>(font, dialog, sf::Vector2i{0, 0}, *path);
 					newWindow->ReplaceDocument(std::move(picture));
 					toAdd.push_back(std::move(newWindow));
 				}

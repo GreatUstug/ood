@@ -67,17 +67,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Правки. Убрал отрисовку из модели">
-      <change afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Observer/Event.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Observer/ObserverListById.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Observer/SubscriptionById.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Observer/IFigureObserver.h" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Observer/IFigureObserver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Shapes/IFigure.h" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Shapes/IFigure.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask1.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask3.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask3.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask4.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../L2/FiguresBySignalsNorm/Tests/TestTask4.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/EditorWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorWindowController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/ShapeTransformController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShapeTransformController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +83,11 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="lw3" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -857,21 +856,6 @@
     <MESSAGE value="Лабораторная работа 3. Правки. Исправление создания за кнопкой, а также создание посетителя для развязки мвс" />
     <MESSAGE value="Лабораторная работа 3. Правки. Убрал отрисовку из модели" />
     <option name="LAST_COMMIT_MESSAGE" value="Лабораторная работа 3. Правки. Убрал отрисовку из модели" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Controller/EditorWindow.h</url>
-          <line>4</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -50,24 +50,26 @@ public:
 		return true;
 	}
 
+	bool IsAdditive()
+	{
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
+	}
+
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
 		std::string hit = m_picture.HitTest(pos.x, pos.y);
 
-		const bool additive =
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift)   ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
-
-		if (additive)
+		if (IsAdditive())
 		{
 			if (hit.empty())
 				m_state.ClearSelection();
 			else
 				m_state.ToggleSelected(hit);
 			m_state.mode = EditorState::Mode::Idle;
-			return;   // при Ctrl/Shift+Click drag не начинаем
+			return;
 		}
 
 		if (hit.empty())
@@ -78,11 +80,10 @@ public:
 		}
 
 		if (m_state.IsSelected(hit))
-			m_state.SetPrimarySelectedId(hit);          // уже в наборе — не сбрасываем
+			m_state.SetPrimarySelectedId(hit);
 		else
-			m_state.SetSelectedIds({ hit });            // новое одиночное выделение
+			m_state.SetSelectedIds({ hit });
 
-		// подготовка группового drag: anchor — точка клика, а не offset
 		m_state.dragAnchorX = pos.x;
 		m_state.dragAnchorY = pos.y;
 		m_state.dragStartBounds.clear();
@@ -127,8 +128,10 @@ private:
 	void Drag(const sf::Vector2f& position)
 	{
 		const auto& ids = m_state.GetSelectedIds();
-		if (ids.empty()) return;
-		if (m_state.dragStartBounds.empty()) return;
+		if (ids.empty())
+			return;
+		if (m_state.dragStartBounds.empty())
+			return;
 
 		double rawDx = position.x - m_state.dragAnchorX;
 		double rawDy = position.y - m_state.dragAnchorY;
@@ -137,7 +140,7 @@ private:
 		for (const auto& [id, b] : m_state.dragStartBounds)
 		{
 			minDx = std::max(minDx, -b.x);
-			maxDx = std::min(maxDx, (double)m_canvasWidth  - (b.x + b.width));
+			maxDx = std::min(maxDx, (double)m_canvasWidth - (b.x + b.width));
 			minDy = std::max(minDy, -b.y);
 			maxDy = std::min(maxDy, (double)m_canvasHeight - (b.y + b.height));
 		}
@@ -147,9 +150,10 @@ private:
 
 		double deltaDx = dx - m_state.lastAppliedDx;
 		double deltaDy = dy - m_state.lastAppliedDy;
-		if (deltaDx == 0.0 && deltaDy == 0.0) return;
+		if (deltaDx == 0.0 && deltaDy == 0.0)
+			return;
 
-		std::vector<std::string> idsVec(ids.begin(), ids.end());
+		std::vector idsVec(ids.begin(), ids.end());
 		m_picture.MoveShapes(idsVec, deltaDx, deltaDy);
 		m_state.lastAppliedDx = dx;
 		m_state.lastAppliedDy = dy;

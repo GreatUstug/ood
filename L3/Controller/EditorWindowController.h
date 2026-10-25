@@ -12,23 +12,20 @@
 #include "View/Toolbar.h"
 #include "View/gfx/SFMLCanvas.h"
 
-class EditorWindow
+class EditorWindowController
 {
 	constexpr static unsigned CANVAS_W = 800;
 	constexpr static unsigned CANVAS_H = 600;
 	constexpr static unsigned PANEL_W = 200;
 	constexpr static std::string APP_NAME = "Editor: File ";
-	constexpr static std::string DEFAULT_FILE_NAME = "Unnamed";
+	constexpr static std::string DEFAULT_FILE_NAME = "Unsaved";
 
 public:
-	explicit EditorWindow(sf::Font& font, FileDialog& dialog,
+	explicit EditorWindowController(sf::Font& font, FileDialog& dialog,
 		sf::Vector2i pos = { 0, 0 }, const std::string& fileName = DEFAULT_FILE_NAME)
 		: m_window(sf::VideoMode(sf::Vector2u(CANVAS_W + PANEL_W, CANVAS_H)), APP_NAME + fileName)
 		  , m_canvas(m_window)
 		  , m_font(font)
-		  , m_picture()
-		  , m_state()
-		  , m_toolbar()
 		  , m_view(m_picture, m_state, m_canvas, m_window, m_font, m_toolbar)
 		  , m_listView(m_picture, m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
