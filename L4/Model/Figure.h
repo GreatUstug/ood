@@ -1,0 +1,76 @@
+// Shapes/Shape.h
+#pragma once
+#include "Figures/IShapeGeometry.h"
+#include "View/gfx/ICanvas.h"
+
+#include <memory>
+#include <string>
+
+namespace shapes
+{
+class Figure
+{
+public:
+	Figure(const std::string& id,
+		const std::string& color,
+		std::unique_ptr<IShapeGeometry> geometry)
+		: m_id(id), m_colorRGB(gfx::Color::ParseToRGB(color)), m_geometry(std::move(geometry))
+	{
+	}
+
+	virtual ~Figure() = default;
+
+	void SetGeometry(std::unique_ptr<IShapeGeometry> geometry)
+	{
+		m_geometry = std::move(geometry);
+	}
+
+	void Move(double dx, double dy)
+	{
+		m_geometry->Move(dx, dy);
+	}
+
+	const std::string& GetId() const { return m_id; }
+
+	std::string GetInfo() const
+	{
+		std::string geo = m_geometry->GetInfo();
+		auto sp = geo.find(' ');
+		return geo.substr(0, sp) + " " + m_id + " " + m_colorRGB.ParseToString() + geo.substr(sp);
+	}
+
+	Bounds GetBounds() const
+	{
+		return m_geometry->GetBounds();
+	}
+
+	void SetBounds(const Bounds& bounds)
+	{
+		m_geometry->SetBounds(bounds);
+	}
+
+	bool HitTest(double x, double y) const
+	{
+		return m_geometry->HitTest(x, y);
+	}
+
+	std::string GetType() const
+	{
+		return m_geometry->GetType();
+	}
+
+	void Accept(IShapeGeometryVisitor& v) const
+	{
+		m_geometry->Accept(v);
+	}
+
+	gfx::Color GetColor() const
+	{
+		return m_colorRGB;
+	}
+private:
+	std::string m_id;
+	std::unique_ptr<IShapeGeometry> m_geometry;
+	gfx::Color m_colorRGB;
+};
+}
