@@ -44,6 +44,12 @@ public:
 		return true;
 	}
 
+	void Clear()
+	{
+		m_undoList.clear();
+		m_redoList.clear();
+	}
+
 private:
 	std::vector<std::unique_ptr<ICommand> > m_undoList;
 	std::vector<std::unique_ptr<ICommand> > m_redoList;
