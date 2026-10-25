@@ -64,18 +64,32 @@ public:
 				m_state.ClearSelection();
 			}
 		}
-		if (key.control && key.code == sf::Keyboard::Key::Z && m_commandHistory.Undo())
+		if (key.control && key.code == sf::Keyboard::Key::Z && !key.shift)
 		{
-			//FIXME: поработать над выделением и остальным.
+			m_commandHistory.Undo();
+			PruneSelection();
+			return AppCommand::None;
 		}
-		if (key.control && key.code == sf::Keyboard::Key::Y)
+		if (key.control && (key.code == sf::Keyboard::Key::Y ||
+			(key.code == sf::Keyboard::Key::Z && key.shift)))
 		{
 			m_commandHistory.Redo();
+			PruneSelection();
+			return AppCommand::None;
 		}
 		return AppCommand::None;
 	}
 
 private:
+	void PruneSelection() const
+	{
+		std::set<std::string> valid;
+		for (const auto& id : m_state.GetSelectedIds())
+			if (m_picture.HasShape(id)) valid.insert(id);
+		if (valid != m_state.GetSelectedIds())
+			m_state.SetSelectedIds(valid);
+	}
+
 	shapes::Picture&      m_picture;
 	EditorState&          m_state;
 	CommandHistory&       m_commandHistory;

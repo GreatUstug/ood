@@ -5,6 +5,8 @@
 #ifndef L3_SHAPETRANSFORMCONTROLLER_H
 #define L3_SHAPETRANSFORMCONTROLLER_H
 
+#include "Commands/CommandHistory.h"
+#include "Commands/MoveShapesCommand.h"
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/Bounds.h"
@@ -19,10 +21,12 @@ class ShapeTransformController
 public:
 	ShapeTransformController(shapes::Picture& picture,
 		EditorState& state,
+		CommandHistory& history,
 		int canvasWidth,
 		int canvasHeight)
 		: m_picture(picture)
 		  , m_state(state)
+		  , m_commandHistory(history)
 		  , m_canvasWidth(canvasWidth)
 		  , m_canvasHeight(canvasHeight)
 	{
@@ -117,6 +121,18 @@ public:
 
 	void Release()
 	{
+		if (m_state.mode == EditorState::Mode::Dragging)
+		{
+			double dx = m_state.lastAppliedDx;
+			double dy = m_state.lastAppliedDy;
+			if (dx != 0.0 || dy != 0.0)
+			{
+				std::vector<std::string> ids(
+					m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
+				m_commandHistory.Execute(std::make_unique<MoveShapesCommand>(
+					m_picture, ids, dx, dy, true));
+			}
+		}
 		m_state.activeHandle = Handle::None;
 		m_state.dragStartBounds.clear();
 		m_state.lastAppliedDx = 0;
@@ -173,6 +189,7 @@ private:
 
 	shapes::Picture& m_picture;
 	EditorState& m_state;
+	CommandHistory& m_commandHistory;
 	int m_canvasWidth;
 	int m_canvasHeight;
 };
