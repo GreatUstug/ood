@@ -7,6 +7,7 @@
 
 #include "Commands/CommandHistory.h"
 #include "Commands/MoveShapesCommand.h"
+#include "Commands/ResizeCommand.h"
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/Bounds.h"
@@ -132,7 +133,29 @@ public:
 				m_commandHistory.Execute(std::make_unique<MoveShapesCommand>(
 					m_picture, ids, dx, dy, true));
 			}
+		} else if (m_state.mode == EditorState::Mode::Resizing)
+		{
+			const std::string& id = m_state.GetPrimarySelectedId();
+			if (!id.empty() && m_picture.HasShape(id))
+			{
+				shapes::Bounds oldB = m_state.resizeStartBounds;
+				shapes::Bounds newB = m_picture.GetShape(id).GetBounds();
+
+				constexpr double EPS = 1e-9;
+				bool changed =
+					std::abs(oldB.x      - newB.x)      > EPS ||
+					std::abs(oldB.y      - newB.y)      > EPS ||
+					std::abs(oldB.width  - newB.width)  > EPS ||
+					std::abs(oldB.height - newB.height) > EPS;
+
+				if (changed)
+				{
+					m_commandHistory.Execute(std::make_unique<ResizeCommand>(
+						m_picture, id, oldB, newB, /*alreadyApplied=*/true));
+				}
+			}
 		}
+
 		m_state.activeHandle = Handle::None;
 		m_state.dragStartBounds.clear();
 		m_state.lastAppliedDx = 0;

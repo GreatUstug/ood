@@ -53,7 +53,8 @@ add_executable(L4 main.cpp
         Commands/AddCommand.h
         Commands/CommandHistory.h
         Commands/DeleteCommand.h
-        Commands/MoveShapes.h)
+        Commands/MoveShapesCommand.h
+        Commands/ResizeCommand.h)
 target_include_directories(L4 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L4 PRIVATE
         sfml-graphics
