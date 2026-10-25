@@ -5,6 +5,7 @@
 #ifndef L3_WINDOWCONTROLLER_H
 #define L3_WINDOWCONTROLLER_H
 #include "EditorController.h"
+#include "Commands/CommandHistory.h"
 #include "Model/EditorState.h"
 #include "Model/Picture.h"
 #include "View/EditorView.h"
@@ -29,7 +30,7 @@ public:
 		  , m_view(m_picture, m_state, m_canvas, m_window, m_font, m_toolbar)
 		  , m_listView(m_picture, m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
-		  , m_controller(m_picture, m_state, m_view, m_window, m_toolbar,
+		  , m_controller(m_picture, m_state, m_commandHistory, m_view, m_window, m_toolbar,
 			  m_listView, dialog, CANVAS_W, CANVAS_H)
 	{
 		m_window.setPosition(pos);
@@ -84,6 +85,7 @@ private:
 
 	shapes::Picture m_picture;
 	EditorState m_state;
+	CommandHistory m_commandHistory;
 	Toolbar m_toolbar;
 
 	EditorView m_view;

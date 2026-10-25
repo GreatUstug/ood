@@ -5,6 +5,9 @@
 #ifndef L3_SHAPECREATECONTROLLER_H
 #define L3_SHAPECREATECONTROLLER_H
 
+#include "ShapeTransformController.h"
+#include "Commands/AddCommand.h"
+#include "Commands/CommandHistory.h"
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/Bounds.h"
@@ -20,10 +23,12 @@ class ShapeCreateController
 public:
     ShapeCreateController(shapes::Picture& picture,
                           EditorState& state,
+                          CommandHistory& commandHistory,
                           int canvasWidth,
                           int canvasHeight)
         : m_picture(picture)
         , m_state(state)
+		, m_commandHistory(commandHistory)
         , m_canvasWidth(canvasWidth)
         , m_canvasHeight(canvasHeight)
     {
@@ -76,7 +81,7 @@ public:
             return;
         }
 
-        std::string id = shapes::MakeId(m_state.creatingType);
+        const std::string id = shapes::MakeId(m_state.creatingType);
         auto figure = shapes::MakeShape(m_state.creatingType, id, b);
         if (!figure)
         {
@@ -84,7 +89,7 @@ public:
             return;
         }
 
-        m_picture.AddShape(std::move(figure));
+        m_commandHistory.Execute(std::make_unique<AddCommand>(m_picture, std::move(figure)));
         m_state.SetPrimarySelectedId(id);
         m_state.CancelCreating();
     }
@@ -97,6 +102,7 @@ public:
 private:
     shapes::Picture& m_picture;
     EditorState&     m_state;
+	CommandHistory& m_commandHistory;
     int m_canvasWidth;
     int m_canvasHeight;
 };
