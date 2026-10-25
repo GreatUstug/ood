@@ -3,8 +3,8 @@
 
 #include "Handle.h"
 #include "Bounds.h"
-#include "Observer/ObserverList.h"
-#include "Observer/EditorStateObserver.h"
+#include "Observers/ObserverList.h"
+#include "Observers/EditorStateObserver.h"
 
 #include <set>
 #include <string>

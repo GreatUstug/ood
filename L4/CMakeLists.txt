@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(L3)
+project(L4)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -15,7 +15,7 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(L3 main.cpp
+add_executable(L4 main.cpp
         Model/Picture.h
         Model/Figures/IShapeGeometry.h
         Model/Figures/Ellipse.h
@@ -38,19 +38,22 @@ add_executable(L3 main.cpp
         View/FileDialog.h
         Model/MakeShapeUtils.h
         Model/ShapeInfo.h
-        Observer/EditorStateObserver.h
+        Observers/EditorStateObserver.h
         View/ShapeListView.h
         Controller/DocumentController.h
         Controller/ShapeTransformController.h
         Controller/ShapeCreateController.h
         Controller/ShortcutController.h
         Controller/InputRouter.h
-        Controller/EditorWindow.h
+        Controller/EditorWindowController.h
         Controller/AppCommand.h
         Model/Figures/IShapeGeometryVisitor.h
-        View/DrawVisitor.h)
-target_include_directories(L3 PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(L3 PRIVATE
+        View/DrawVisitor.h
+        Commands/ICommand.h
+        Commands/AddCommand.h
+        Commands/CommandHistory.h)
+target_include_directories(L4 PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(L4 PRIVATE
         sfml-graphics
         sfml-window
         sfml-system
