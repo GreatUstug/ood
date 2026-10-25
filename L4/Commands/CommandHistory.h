@@ -23,6 +23,23 @@ public:
 		m_redoList.clear();
 	}
 
+	bool Undo()
+	{
+		if (m_undoList.empty())
+			return false;
+		m_redoList.push_back(std::move(m_undoList.back()));
+		m_undoList.pop_back();
+		return true;
+	}
+
+	bool Redo()
+	{
+		if (m_redoList.empty()) return false;
+		m_redoList.push_back(std::move(m_redoList.back()));
+		m_redoList.pop_back();
+		return true;
+	}
+
 private:
 	std::vector<std::unique_ptr<ICommand> > m_undoList;
 	std::vector<std::unique_ptr<ICommand> > m_redoList;

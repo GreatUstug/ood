@@ -37,7 +37,7 @@ public:
 		  , m_create(picture, state, commandHistory, canvasWidth, canvasHeight)
 		  , m_transform(picture, state, canvasWidth, canvasHeight)
 		  , m_document(picture, state, m_fileDialog)
-		  , m_shortcuts(picture, state, m_document, m_create)
+		  , m_shortcuts(picture, state, m_commandHistory, m_document, m_create)
 		  , m_router(picture, state, view, window, toolbar, listView,
 			  m_create, m_transform, m_shortcuts)
 	{

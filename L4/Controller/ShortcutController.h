@@ -20,10 +20,12 @@ class ShortcutController
 public:
 	ShortcutController(shapes::Picture& picture,
 					   EditorState& state,
+					   CommandHistory& commandHistory,
 					   DocumentController& document,
 					   ShapeCreateController& create)
 		: m_picture(picture)
 		, m_state(state)
+		, m_commandHistory(commandHistory)
 		, m_document(document)
 		, m_create(create)
 	{
@@ -61,12 +63,21 @@ public:
 				m_state.ClearSelection();
 			}
 		}
+		if (key.control && key.code == sf::Keyboard::Key::Z && m_commandHistory.Undo())
+		{
+			//FIXME: поработать над выделением и остальным.
+		}
+		if (key.control && key.code == sf::Keyboard::Key::Y)
+		{
+			m_commandHistory.Redo();
+		}
 		return AppCommand::None;
 	}
 
 private:
 	shapes::Picture&      m_picture;
 	EditorState&          m_state;
+	CommandHistory&       m_commandHistory;
 	DocumentController&   m_document;
 	ShapeCreateController& m_create;
 };
