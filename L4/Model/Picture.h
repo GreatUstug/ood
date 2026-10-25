@@ -131,9 +131,31 @@ public:
 		}
 		auto fig = std::move(it->second);
 		m_shapes.erase(it);
-		m_order.erase(m_order.begin(), m_order.end());
+		m_order.erase(std::ranges::remove(m_order, id).begin(), m_order.end());
 		NotifyPictureObservers();
 		return fig;
+	}
+
+	size_t IndexOf(const std::string& id) const
+	{
+		const auto it = std::ranges::find(m_order, id);
+		if (it == m_order.end())
+		{
+			throw std::invalid_argument("Shape not found. IndexOf isn't available");
+		}
+		return std::distance(m_order.begin(), it);
+	}
+
+	void InsertShape(size_t index, std::unique_ptr<Figure> figure, const std::string& id)
+	{
+		if (m_shapes.contains(id))
+		{
+			throw std::invalid_argument("Shape with this id already exists.");
+		}
+		if (index > m_order.size()) index = m_order.size();
+		m_order.insert(m_order.begin() + index, id);
+		m_shapes[id] = std::move(figure);
+		NotifyPictureObservers();
 	}
 
 private:

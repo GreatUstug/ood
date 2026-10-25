@@ -51,7 +51,8 @@ add_executable(L4 main.cpp
         View/DrawVisitor.h
         Commands/ICommand.h
         Commands/AddCommand.h
-        Commands/CommandHistory.h)
+        Commands/CommandHistory.h
+        Commands/DeleteCommand.h)
 target_include_directories(L4 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L4 PRIVATE
         sfml-graphics

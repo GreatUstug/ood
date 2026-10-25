@@ -25,6 +25,7 @@ public:
     InputRouter(shapes::Picture& picture,
                 EditorState& state,
                 EditorView& view,
+                CommandHistory& commandHistory,
                 sf::RenderWindow& window,
                 Toolbar& toolbar,
                 ShapeListView& listView,
@@ -34,6 +35,7 @@ public:
         : m_picture(picture)
         , m_state(state)
         , m_view(view)
+		, m_commandHistory(commandHistory)
         , m_window(window)
         , m_toolbar(toolbar)
         , m_listView(listView)
@@ -141,7 +143,7 @@ private:
             if (m_state.HasValidSelection(m_picture))
             {
             	std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-                m_picture.DeleteShapes(selectedIds);
+                m_commandHistory.Execute(std::make_unique<DeleteCommand>(m_picture, selectedIds));
                 m_state.ClearSelection();
             }
             break;
@@ -153,6 +155,7 @@ private:
     shapes::Picture&           m_picture;
     EditorState&               m_state;
     EditorView&                m_view;
+	CommandHistory&            m_commandHistory;
     sf::RenderWindow&          m_window;
     Toolbar&                   m_toolbar;
     ShapeListView&             m_listView;

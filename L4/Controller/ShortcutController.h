@@ -6,6 +6,7 @@
 #define L3_SHORTCUTCONTROLLER_H
 
 #include "AppCommand.h"
+#include "Commands/DeleteCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
 
@@ -59,7 +60,7 @@ public:
 			if (m_state.HasValidSelection(m_picture))
 			{
 				std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-				m_picture.DeleteShapes(selectedIds);
+				m_commandHistory.Execute(std::make_unique<DeleteCommand>(m_picture, selectedIds));
 				m_state.ClearSelection();
 			}
 		}
