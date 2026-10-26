@@ -10,7 +10,7 @@
 class MoveShapesCommand : public ICommand
 {
 public:
-	MoveShapesCommand(shapes::Picture& picture, std::vector<std::string>& ids, double dx, double dy, bool alreadyApplied)
+	MoveShapesCommand(shapes::Picture& picture, std::vector<std::string> ids, double dx, double dy, bool alreadyApplied)
 		: m_picture(picture), m_ids(std::move(ids)), m_dx(dx), m_dy(dy), m_alreadyApplied(alreadyApplied)
 	{
 	};
