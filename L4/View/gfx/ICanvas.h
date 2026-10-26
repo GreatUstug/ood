@@ -65,6 +65,11 @@ public:
 	virtual void DrawTriangle(double x1, double y1,
 		double x2, double y2,
 		double x3, double y3, bool isTransparent = false) = 0;
+
+	virtual void DrawLine(double x1, double y1, double x2, double y2) = 0;
+
+	virtual void DrawPolygon(const std::vector<std::pair<double, double> >& points,
+		bool filled = false) = 0;
 };
 }
 #endif //FIGURES_ICANVAS_H

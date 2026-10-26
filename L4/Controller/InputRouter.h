@@ -139,6 +139,12 @@ private:
         case ToolbarAction::AddTriangle:
             m_create.Start("triangle");
             break;
+        case ToolbarAction::AddLine:
+        	m_create.Start("line");
+        	break;
+        case ToolbarAction::AddPolygon:
+        	m_create.Start("polygon");
+        	break;
         case ToolbarAction::Delete:
             if (m_state.HasValidSelection(m_picture))
             {

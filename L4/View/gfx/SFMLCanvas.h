@@ -61,6 +61,36 @@ public:
 		m_window.draw(triangle);
 	}
 
+	void DrawLine(double x1, double y1, double x2, double y2) override
+	{
+		sf::Vertex line[2] = {
+			{ sf::Vector2f((float)x1, (float)y1), m_currentColor },
+			{ sf::Vector2f((float)x2, (float)y2), m_currentColor }
+		};
+		m_window.draw(line, 2, sf::PrimitiveType::Lines);
+	}
+
+	void DrawPolygon(const std::vector<std::pair<double,double>>& points, bool filled) override
+	{
+		if (points.size() < 3) return;
+		sf::ConvexShape shape(points.size());
+		for (size_t i = 0; i < points.size(); ++i)
+			shape.setPoint(i, sf::Vector2f((float)points[i].first, (float)points[i].second));
+
+		if (filled)
+		{
+			shape.setFillColor(m_currentColor);
+			shape.setOutlineThickness(0.f);
+		}
+		else
+		{
+			shape.setFillColor(sf::Color::Transparent);
+			shape.setOutlineColor(m_currentColor);
+			shape.setOutlineThickness(1.5f);
+		}
+		m_window.draw(shape);
+	}
+
 private:
 	static float F(double v) { return static_cast<float>(v); }
 	static sf::Vector2f V(double x, double y) { return { F(x), F(y) }; }

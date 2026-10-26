@@ -86,6 +86,23 @@ private:
 				throw std::runtime_error("Invalid triangle params");
 			geo = std::make_unique<shapes::Triangle>(x1, y1, x2, y2, x3, y3);
 		}
+		else if (type == "line")
+		{
+			double x1, y1, x2, y2;
+			if (!(iss >> x1 >> y1 >> x2 >> y2))
+				throw std::runtime_error("Invalid line params");
+			geo = std::make_unique<shapes::Line>(x1, y1, x2, y2);
+		}
+		else if (type == "polygon")
+		{
+			double cx, cy, radius, rotation;
+			int sides;
+			if (!(iss >> cx >> cy >> radius >> sides >> rotation))
+				throw std::runtime_error("Invalid polygon params");
+			if (radius < 0 || sides < 3)
+				throw std::runtime_error("Invalid polygon values");
+			geo = std::make_unique<shapes::Polygon>(cx, cy, radius, sides, rotation);
+		}
 		else
 		{
 			throw std::runtime_error("Unknown type: " + type);

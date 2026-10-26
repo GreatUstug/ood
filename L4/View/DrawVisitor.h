@@ -35,6 +35,18 @@ public:
 		m_canvas.DrawTriangle(t.GetX1(), t.GetY1(), t.GetX2(), t.GetY2(), t.GetX3(), t.GetY3());
 	}
 
+	void Visit(const Line& l) override
+	{
+		m_canvas.SetColor(m_color);
+		m_canvas.DrawLine(l.GetX1(), l.GetY1(), l.GetX2(), l.GetY2());
+	}
+
+	void Visit(const Polygon& p) override
+	{
+		m_canvas.SetColor(m_color);
+		m_canvas.DrawPolygon(p.Vertices(), false);
+	}
+
 private:
 	gfx::ICanvas& m_canvas;
 	gfx::Color m_color;

@@ -12,6 +12,8 @@ enum class ToolbarAction
 	AddRectangle,
 	AddEllipse,
 	AddTriangle,
+	AddLine,
+	AddPolygon,
 	Delete
 };
 
@@ -37,6 +39,8 @@ public:
 			{ { x, y, w, h }, "Rect", ToolbarAction::AddRectangle },
 			{ { x + (w + gap), y, w, h }, "Ellipse", ToolbarAction::AddEllipse },
 			{ { x + (w + gap) * 2, y, w, h }, "Triangle", ToolbarAction::AddTriangle },
+			{ { x + (w + gap) * 3, y, w, h }, "Line", ToolbarAction::AddLine },
+			{ { x + (w + gap) * 4, y, w, h }, "Polygon", ToolbarAction::AddPolygon },
 			{ { x, y + h + gap, w, h }, "Delete", ToolbarAction::Delete },
 		};
 	}

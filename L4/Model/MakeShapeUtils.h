@@ -9,6 +9,8 @@
 #include "Figures/Rectangle.h"
 #include "Figures/Ellipse.h"
 #include "Figures/Triangle.h"
+#include "Figures/Line.h"
+#include "Figures/Polygon.h"
 
 #include <memory>
 #include <string>
@@ -60,6 +62,23 @@ inline std::unique_ptr<Figure> MakeTriangle(const std::string& id, const Bounds&
 			bounds.x, bot));
 }
 
+inline std::unique_ptr<Figure> MakeLine(const std::string& id, const Bounds& b)
+{
+	return std::make_unique<Figure>(id, defaults::COLOR,
+		std::make_unique<Line>(b.x, b.y + b.height / 2.0,
+			b.x + b.width, b.y + b.height / 2.0));
+}
+
+inline std::unique_ptr<Figure> MakePolygon(const std::string& id, const Bounds& b)
+{
+	constexpr double PI = 3.14159265358979323846;
+	double r = std::min(b.width, b.height) / 2.0;
+	return std::make_unique<Figure>(id, defaults::COLOR,
+		std::make_unique<Polygon>(b.x + b.width / 2.0, b.y + b.height / 2.0,
+			r, 6, PI / 6.0));
+}
+
+
 inline std::unique_ptr<Figure> MakeShape(const std::string& type,
 	const std::string& id,
 	const Bounds& bounds)
@@ -70,6 +89,10 @@ inline std::unique_ptr<Figure> MakeShape(const std::string& type,
 		return MakeEllipse(id, bounds);
 	if (type == "triangle")
 		return MakeTriangle(id, bounds);
+	if (type == "line")
+		return MakeLine(id, bounds);
+	if (type == "polygon")
+		return MakePolygon(id, bounds);
 	return nullptr;
 }
 
