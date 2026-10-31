@@ -45,15 +45,15 @@ public:
 
 	void HandleEvent(const sf::Event& event)
 	{
-		AppCommand cmd = m_router.HandleEvent(event);
-		if (cmd != AppCommand::None)
+		AppState cmd = m_router.HandleEvent(event);
+		if (cmd != AppState::None)
 			m_pendingCommand = cmd;
 	}
 
-	AppCommand TakePendingCommand()
+	AppState TakePendingCommand()
 	{
-		AppCommand c = m_pendingCommand;
-		m_pendingCommand = AppCommand::None;
+		AppState c = m_pendingCommand;
+		m_pendingCommand = AppState::None;
 		return c;
 	}
 
@@ -65,7 +65,7 @@ private:
 	DocumentController m_document;
 	ShortcutController m_shortcuts;
 	InputRouter m_router;
-	AppCommand m_pendingCommand;
+	AppState m_pendingCommand;
 };
 
 #endif

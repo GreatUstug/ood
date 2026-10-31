@@ -32,10 +32,10 @@ int main()
 			}
 			switch (window->TakePendingCommand())
 			{
-			case AppCommand::NewWindow:
+			case AppState::NewWindow:
 				toAdd.push_back(std::make_unique<EditorWindowController>(font, dialog));
 				break;
-			case AppCommand::OpenInNewWindow: {
+			case AppState::OpenInNewWindow: {
 				auto path = dialog.AskOpenPath();
 				if (path)
 				{
@@ -47,7 +47,7 @@ int main()
 				}
 				break;
 			}
-			case AppCommand::None:
+			case AppState::None:
 			default:
 				break;
 			}

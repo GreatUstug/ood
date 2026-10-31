@@ -45,7 +45,7 @@ public:
     {
     }
 
-    AppCommand HandleEvent(const sf::Event& event)
+    AppState HandleEvent(const sf::Event& event)
     {
         if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>())
         {
@@ -65,7 +65,7 @@ public:
             if (rel->button == sf::Mouse::Button::Left)
                 OnMouseReleased();
         }
-    	return AppCommand::None;
+    	return AppState::None;
     }
 
 private:

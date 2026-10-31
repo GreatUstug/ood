@@ -5,7 +5,7 @@
 #ifndef L3_SHORTCUTCONTROLLER_H
 #define L3_SHORTCUTCONTROLLER_H
 
-#include "AppCommand.h"
+#include "AppState.h"
 #include "Commands/DeleteCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
@@ -32,27 +32,27 @@ public:
 	{
 	}
 
-	AppCommand OnKeyPressed(const sf::Event::KeyPressed& key)
+	AppState OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
 		if (key.code == sf::Keyboard::Key::Escape &&
 			m_state.mode == EditorState::Mode::Creating)
 		{
 			m_create.Cancel();
-			return AppCommand::None;
+			return AppState::None;
 		}
 
 		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
 			m_document.Save();
-			return AppCommand::None;
+			return AppState::None;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::O)
 		{
-			return AppCommand::OpenInNewWindow;
+			return AppState::OpenInNewWindow;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
-			return AppCommand::NewWindow;
+			return AppState::NewWindow;
 		}
 
 		if (key.code == sf::Keyboard::Key::Delete)
@@ -68,16 +68,16 @@ public:
 		{
 			m_commandHistory.Undo();
 			PruneSelection();
-			return AppCommand::None;
+			return AppState::None;
 		}
 		if (key.control && (key.code == sf::Keyboard::Key::Y ||
 			(key.code == sf::Keyboard::Key::Z && key.shift)))
 		{
 			m_commandHistory.Redo();
 			PruneSelection();
-			return AppCommand::None;
+			return AppState::None;
 		}
-		return AppCommand::None;
+		return AppState::None;
 	}
 
 private:

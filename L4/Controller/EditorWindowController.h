@@ -67,7 +67,7 @@ public:
 		m_window.display();
 	}
 
-	AppCommand TakePendingCommand()
+	AppState TakePendingCommand()
 	{
 		return m_controller.TakePendingCommand();
 	}
