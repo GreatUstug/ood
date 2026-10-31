@@ -35,7 +35,7 @@ public:
 	{
 		for (auto & [id, index, figure] : std::ranges::reverse_view(m_removed))
 		{
-			m_picture.InsertShape(index, std::move(figure), id);
+			m_picture.AddShape(index, std::move(figure), id);
 		}
 		m_removed.clear();
 	};

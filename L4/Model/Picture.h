@@ -26,14 +26,18 @@ public:
 	void Subscribe(PictureObserver* obs) { m_observers.AddObserver(obs); }
 	void Unsubscribe(PictureObserver* obs) { m_observers.RemoveObserver(obs); }
 
-	void AddShape(std::unique_ptr<Figure> figure)
+	void AddShape(std::unique_ptr<Figure> figure, std::optional<size_t> index = std::nullopt)
 	{
 		const std::string id = figure->GetId();
 		if (m_shapes.contains(id))
 		{
 			throw std::invalid_argument("Shape with this ID already exists");
 		}
-		m_order.push_back(id);
+
+		const size_t pos = index.value_or(m_order.size());
+		const size_t clamped = std::min(pos, m_order.size());
+
+		m_order.insert(m_order.begin() + clamped, id);
 		m_shapes[id] = std::move(figure);
 		NotifyPictureObservers();
 	}
@@ -144,18 +148,6 @@ public:
 			throw std::invalid_argument("Shape not found. IndexOf isn't available");
 		}
 		return std::distance(m_order.begin(), it);
-	}
-
-	void InsertShape(size_t index, std::unique_ptr<Figure> figure, const std::string& id)
-	{
-		if (m_shapes.contains(id))
-		{
-			throw std::invalid_argument("Shape with this id already exists.");
-		}
-		if (index > m_order.size()) index = m_order.size();
-		m_order.insert(m_order.begin() + index, id);
-		m_shapes[id] = std::move(figure);
-		NotifyPictureObservers();
 	}
 
 private:
