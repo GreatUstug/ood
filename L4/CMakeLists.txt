@@ -45,7 +45,7 @@ add_executable(L4 main.cpp
         Controller/ShortcutController.h
         Controller/InputRouter.h
         Controller/EditorWindowController.h
-        Controller/AppCommand.h
+        Controller/AppState.h
         Commands/ICommand.h
         Commands/AddCommand.h
         Commands/CommandHistory.h
@@ -55,7 +55,9 @@ add_executable(L4 main.cpp
         IO/SaveService.h
         IO/LoadService.h
         IO/DocumentIO.h
-        Observers/EditorStateObserver.h)
+        Observers/EditorStateObserver.h
+        Model/Document.h
+        Model/DocumentRegistry.h)
 
 target_include_directories(L4 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L4 PRIVATE

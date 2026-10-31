@@ -14,13 +14,13 @@
 class AddCommand : public ICommand
 {
 public:
-	AddCommand(shapes::Picture& picture, std::unique_ptr<shapes::Figure> figure):
-	m_picture(picture), m_figure(std::move(figure)), m_id(m_figure->GetId())
+	AddCommand(shapes::Picture& picture, std::unique_ptr<shapes::Figure> figure)
+		: m_picture(picture), m_figure(std::move(figure))
 	{
 
 	};
 
-	virtual ~AddCommand() = default;
+	~AddCommand() override = default;
 
 	void Execute() override
 	{
@@ -29,12 +29,11 @@ public:
 
 	void Unexecute() override
 	{
-		m_figure = m_picture.ExtractFigure(m_id);
+		m_figure = m_picture.ExtractFigure(m_figure->GetId());
 	};
 
 private:
 	shapes::Picture& m_picture;
 	std::unique_ptr<shapes::Figure> m_figure;
-	std::string m_id;
 };
 #endif //L4_ADDCOMMAND_H

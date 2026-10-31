@@ -23,25 +23,24 @@ public:
 		m_redoList.clear();
 	}
 
-	bool Undo()
+	void Undo()
 	{
 		if (m_undoList.empty())
-			return false;
+			return;
 		auto cmd = std::move(m_undoList.back());
 		m_undoList.pop_back();
 		cmd->Unexecute();
 		m_redoList.push_back(std::move(cmd));
-		return true;
 	}
 
-	bool Redo()
+	void Redo()
 	{
-		if (m_redoList.empty()) return false;
+		if (m_redoList.empty())
+			return;
 		auto cmd = std::move(m_redoList.back());
 		m_redoList.pop_back();
-		cmd -> Execute();
+		cmd->Execute();
 		m_undoList.push_back(std::move(cmd));
-		return true;
 	}
 
 	void Clear()

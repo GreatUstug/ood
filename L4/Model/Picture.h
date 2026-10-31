@@ -26,7 +26,7 @@ public:
 	void Subscribe(PictureObserver* obs) { m_observers.AddObserver(obs); }
 	void Unsubscribe(PictureObserver* obs) { m_observers.RemoveObserver(obs); }
 
-	void AddShape(std::unique_ptr<Figure> figure, std::optional<size_t> index = std::nullopt)
+	void AddShape(std::unique_ptr<Figure> figure, const std::optional<size_t> index = std::nullopt)
 	{
 		const std::string id = figure->GetId();
 		if (m_shapes.contains(id))

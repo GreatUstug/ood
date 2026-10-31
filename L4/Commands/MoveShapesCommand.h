@@ -14,6 +14,7 @@ public:
 		: m_picture(picture), m_ids(std::move(ids)), m_dx(dx), m_dy(dy), m_alreadyApplied(alreadyApplied)
 	{
 	};
+
 	void Execute() override
 	{
 		if (m_alreadyApplied)

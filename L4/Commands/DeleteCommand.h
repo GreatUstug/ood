@@ -27,21 +27,21 @@ public:
 		m_removed.reserve(m_ids.size());
 		for (const auto& id : m_ids)
 		{
-			m_removed.push_back({id, m_picture.IndexOf(id), std::move(m_picture.ExtractFigure(id))});;
+			m_removed.push_back({m_picture.IndexOf(id), std::move(m_picture.ExtractFigure(id))});;
 		}
 	};
 
 	void Unexecute() override
 	{
-		for (auto & [id, index, figure] : std::ranges::reverse_view(m_removed))
+		for (auto & [ index, figure] : std::ranges::reverse_view(m_removed))
 		{
-			m_picture.AddShape(index, std::move(figure), id);
+			m_picture.AddShape(std::move(figure), index);
 		}
 		m_removed.clear();
 	};
 
 private:
-	struct Removed { std::string id; size_t index; std::unique_ptr<shapes::Figure> figure; };
+	struct Removed { size_t index; std::unique_ptr<shapes::Figure> figure; };
 	shapes::Picture& m_picture;
 	std::vector<std::string> m_ids;
 	std::vector<Removed> m_removed;
