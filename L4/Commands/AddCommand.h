@@ -32,6 +32,11 @@ public:
 		m_figure = m_picture.ExtractFigure(m_figure->GetId());
 	};
 
+	std::vector<std::string> AffectedIds() const override
+	{
+		return { m_figure->GetId() };
+	};
+
 private:
 	shapes::Picture& m_picture;
 	std::unique_ptr<shapes::Figure> m_figure;

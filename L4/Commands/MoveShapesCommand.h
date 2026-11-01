@@ -28,7 +28,10 @@ public:
 	{
 		m_picture.MoveShapes(m_ids, -m_dx, -m_dy);
 	};
-
+	std::vector<std::string> AffectedIds() const override
+	{
+		return { m_ids };
+	};
 private:
 	shapes::Picture& m_picture;
 	std::vector<std::string> m_ids;

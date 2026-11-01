@@ -16,8 +16,8 @@ class ResizeCommand : public ICommand
 public:
 	ResizeCommand(shapes::Picture& picture,
 				  std::string id,
-				  shapes::Bounds oldBounds,
-				  shapes::Bounds newBounds,
+				  const shapes::Bounds& oldBounds,
+				  const shapes::Bounds& newBounds,
 				  bool alreadyApplied)
 		: m_picture(picture)
 		, m_id(std::move(id))
@@ -42,6 +42,11 @@ public:
 	void Unexecute() override
 	{
 		m_picture.SetShapeBounds(m_id, m_oldBounds);
+	}
+
+	std::vector<std::string> AffectedIds() const override
+	{
+		return {m_id};
 	}
 
 private:

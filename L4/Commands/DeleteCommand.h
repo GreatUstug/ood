@@ -40,6 +40,10 @@ public:
 		m_removed.clear();
 	};
 
+	std::vector<std::string> AffectedIds() const override
+	{
+		return { m_ids };
+	};
 private:
 	struct Removed { size_t index; std::unique_ptr<shapes::Figure> figure; };
 	shapes::Picture& m_picture;
