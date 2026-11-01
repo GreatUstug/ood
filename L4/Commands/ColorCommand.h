@@ -20,7 +20,7 @@ public:
 
 	};
 
-	~ColorCommand() override;
+	~ColorCommand() override = default;
 
 	void Execute() override
 	{

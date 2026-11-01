@@ -22,6 +22,20 @@ struct Color
 	{
 	}
 
+	bool operator==(const Color& other) const
+	{
+
+		return r == other.r
+			&& g == other.g
+			&& b == other.b
+			&& a == other.a;
+	}
+
+	bool operator!=(const Color& other) const
+	{
+		return !(*this == other);
+	}
+
 	static Color ParseToRGB(const std::string& str)
 	{
 		if (str.empty() || str[0] != '#' || str.length() != 7)
