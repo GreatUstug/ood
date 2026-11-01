@@ -14,7 +14,7 @@ class AddCommand : public ICommand
 {
 public:
 	AddCommand(shapes::Picture& picture, std::unique_ptr<shapes::Figure> figure)
-		: m_picture(picture), m_figure(std::move(figure)), m_id(figure->GetId())
+		: m_picture(picture), m_figure(std::move(figure)), m_id(m_figure->GetId())
 	{
 
 	};
