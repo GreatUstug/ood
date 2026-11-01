@@ -5,7 +5,6 @@
 #ifndef L3_WINDOWCONTROLLER_H
 #define L3_WINDOWCONTROLLER_H
 #include "EditorController.h"
-#include "Commands/CommandHistory.h"
 #include "Model/Document.h"
 #include "Model/EditorState.h"
 #include "Model/Picture.h"

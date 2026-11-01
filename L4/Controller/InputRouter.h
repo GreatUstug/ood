@@ -118,6 +118,12 @@ private:
 
 	bool HandleToolbarClick(const sf::Vector2f& pos)
 	{
+		int idx = m_toolbar.PaletteIndexAt(pos.x, pos.y);
+		if (idx >= 0)
+		{
+			ApplyColorToSelection(m_toolbar.Palette()[idx]);
+			return true;
+		}
 		auto btn = m_toolbar.HitTest(pos.x, pos.y);
 		if (!btn)
 			return false;

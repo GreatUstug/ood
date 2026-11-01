@@ -70,8 +70,6 @@ class ICanvas
 public:
 	virtual ~ICanvas() = default;
 
-	virtual void SetColor(const Color& c) = 0;
-
 	virtual void DrawEllipse(double cx, double cy, double rx, double ry,
 		const Color& fill, const Color& outline) = 0;
 

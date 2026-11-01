@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-	~SFMLCanvas() override;
+	~SFMLCanvas() override = default;
 
 	void DrawEllipse(double cx, double cy, double rx, double ry,
 		const gfx::Color& fill, const gfx::Color& outline) override

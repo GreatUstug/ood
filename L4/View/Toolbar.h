@@ -44,6 +44,8 @@ public:
 			{ { x + (w + gap) * 3, y, w, h }, "Line", ToolbarAction::AddLine },
 			{ { x + (w + gap) * 4, y, w, h }, "Polygon", ToolbarAction::AddPolygon },
 			{ { x, y + h + gap, w, h }, "Delete", ToolbarAction::Delete },
+			{ { x, y + (h + gap) * 2, w, h }, "Fill", ToolbarAction::SetFillMode },
+			{ { x + (w + gap), y + (h + gap) * 2, w, h }, "Stroke", ToolbarAction::SetStrokeMode },
 		};
 		m_palette = {
 			gfx::Color(198, 120, 255, 255),
@@ -51,6 +53,7 @@ public:
 			gfx::Color( 80, 200,  80, 255),
 			gfx::Color( 80, 120, 255, 255),
 			gfx::Color(255, 200,  60, 255),
+			gfx::Color( 40,  40,  40, 255),
 		};
 	}
 

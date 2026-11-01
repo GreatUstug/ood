@@ -16,8 +16,12 @@ public:
 	{
 		m_oldColors.reserve(m_ids.size());
 		for (const auto& id : m_ids)
-			m_oldColors.push_back(m_picture.GetShape(id).GetFillColor());
-
+		{
+			if (target == shapes::ColorTarget::Fill)
+				m_oldColors.push_back(m_picture.GetShape(id).GetFillColor());
+			else
+				m_oldColors.push_back(m_picture.GetShape(id).GetStrokeColor());
+		}
 	};
 
 	~ColorCommand() override = default;
