@@ -15,8 +15,8 @@ enum class ToolbarAction
 	AddLine,
 	AddPolygon,
 	Delete,
-	SetColorFill,
-	SetColorStroke,
+	SetFillMode,
+	SetStrokeMode,
 };
 
 struct ToolbarButton
@@ -45,23 +45,47 @@ public:
 			{ { x + (w + gap) * 4, y, w, h }, "Polygon", ToolbarAction::AddPolygon },
 			{ { x, y + h + gap, w, h }, "Delete", ToolbarAction::Delete },
 		};
-		const std::vector<gfx::Color> palette = {
+		m_palette = {
 			gfx::Color(198, 120, 255, 255),
 			gfx::Color(255,  80,  80, 255),
 			gfx::Color( 80, 200,  80, 255),
 			gfx::Color( 80, 120, 255, 255),
 			gfx::Color(255, 200,  60, 255),
 		};
-		double px = x;
-		constexpr double py = y + (h + gap) * 2;
-		for (const auto& c : palette)
-		{
-			m_buttons.push_back({ { px, py, h, h }, "", ToolbarAction::SetColorFill, c });
-			px += h + gap;
-		}
 	}
 
 	const std::vector<ToolbarButton>& Buttons() const { return m_buttons; }
+	const std::vector<gfx::Color>& Palette() const { return m_palette; }
+
+
+	std::vector<shapes::Bounds> PaletteBounds() const
+	{
+		constexpr double x = 10;
+		constexpr double y = 10 + 3 * (30 + 5);
+		constexpr double size = 30;
+		constexpr double gap = 5;
+		std::vector<shapes::Bounds> result;
+		result.reserve(m_palette.size());
+		double px = x;
+		for (std::size_t i = 0; i < m_palette.size(); ++i)
+		{
+			result.push_back({ px, y, size, size });
+			px += size + gap;
+		}
+		return result;
+	}
+
+	int PaletteIndexAt(double px, double py) const
+	{
+		auto bounds = PaletteBounds();
+		for (std::size_t i = 0; i < bounds.size(); ++i)
+		{
+			if (px >= bounds[i].x && px <= bounds[i].x + bounds[i].width &&
+				py >= bounds[i].y && py <= bounds[i].y + bounds[i].height)
+				return static_cast<int>(i);
+		}
+		return -1;
+	}
 
 	const ToolbarButton* HitTest(double px, double py) const
 	{
@@ -78,6 +102,7 @@ public:
 
 private:
 	std::vector<ToolbarButton> m_buttons;
+	std::vector<gfx::Color> m_palette;
 };
 
 #endif //L3_TOOLBAR_H

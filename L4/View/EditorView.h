@@ -32,7 +32,7 @@ public:
 		for (const auto& id : m_picture.GetOrder())
 		{
 			const auto& f = m_picture.GetShape(id);
-			shapes::DrawVisitor v(m_canvas, f.GetFillColor());
+			shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
 			f.Accept(v);
 		}
 		DrawPreview();
@@ -112,11 +112,14 @@ private:
 		{
 			sf::RectangleShape rect({ (float)b.bounds.width, (float)b.bounds.height });
 			rect.setPosition({ (float)b.bounds.x, (float)b.bounds.y });
-			if (b.color)
-				rect.setFillColor(sf::Color(b.color->r, b.color->g,
-					b.color->b, b.color->a));
-			else
-				rect.setFillColor(sf::Color(220, 220, 220));
+
+			bool active =
+				(b.action == ToolbarAction::SetFillMode
+					&& m_state.colorMode == EditorState::ColorMode::Fill) ||
+				(b.action == ToolbarAction::SetStrokeMode
+					&& m_state.colorMode == EditorState::ColorMode::Stroke);
+
+			rect.setFillColor(active ? sf::Color(160, 200, 255) : sf::Color(220, 220, 220));
 			rect.setOutlineColor(sf::Color::Black);
 			rect.setOutlineThickness(1.f);
 			m_window.draw(rect);
@@ -127,6 +130,19 @@ private:
 			text.setFillColor(sf::Color::Black);
 			text.setPosition({ (float)b.bounds.x + 5, (float)b.bounds.y + 5 });
 			m_window.draw(text);
+		}
+
+		auto bounds = m_toolbar.PaletteBounds();
+		const auto& palette = m_toolbar.Palette();
+		for (std::size_t i = 0; i < bounds.size() && i < palette.size(); ++i)
+		{
+			sf::RectangleShape sq({ (float)bounds[i].width, (float)bounds[i].height });
+			sq.setPosition({ (float)bounds[i].x, (float)bounds[i].y });
+			const auto& c = palette[i];
+			sq.setFillColor(sf::Color(c.r, c.g, c.b, c.a));
+			sq.setOutlineColor(sf::Color::Black);
+			sq.setOutlineThickness(1.f);
+			m_window.draw(sq);
 		}
 	}
 

@@ -152,26 +152,41 @@ private:
 				m_state.ClearSelection();
 			}
 			break;
-		case ToolbarAction::SetColorFill:
-		{
-			if (!m_state.HasValidSelection(m_document.GetPicture())) break;
-			std::vector<std::string> ids(m_state.GetSelectedIds().begin(),
-										 m_state.GetSelectedIds().end());
-			gfx::Color target = btn.color.value();
-
-			bool changed = false;
-			for (const auto& id : ids)
-				if (m_document.GetPicture().GetShape(id).GetFillColor() != target)
-				{ changed = true; break; }
-			if (!changed) break;
-
-			m_document.GetHistory().Execute(
-				std::make_unique<ColorCommand>(m_document.GetPicture(), ids, target));
+		case ToolbarAction::SetFillMode:
+			m_state.colorMode = EditorState::ColorMode::Fill;
 			break;
-		}
+		case ToolbarAction::SetStrokeMode:
+			m_state.colorMode = EditorState::ColorMode::Stroke;
+			break;
 		default:
 			break;
 		}
+	}
+
+	void ApplyColorToSelection(const gfx::Color& c)
+	{
+		if (!m_state.HasValidSelection(m_document.GetPicture()))
+			return;
+
+		std::vector<std::string> ids(m_state.GetSelectedIds().begin(),
+									 m_state.GetSelectedIds().end());
+
+		shapes::ColorTarget target = (m_state.colorMode == EditorState::ColorMode::Fill)
+			? shapes::ColorTarget::Fill
+			: shapes::ColorTarget::Stroke;
+
+		bool changed = false;
+		for (const auto& id : ids)
+		{
+			const auto& f = m_document.GetPicture().GetShape(id);
+			gfx::Color current = (target == shapes::ColorTarget::Fill)
+				? f.GetFillColor() : f.GetStrokeColor();
+			if (current != c) { changed = true; break; }
+		}
+		if (!changed) return;
+
+		m_document.GetHistory().Execute(
+			std::make_unique<ColorCommand>(m_document.GetPicture(), ids, c, target));
 	}
 
 	Document& m_document;

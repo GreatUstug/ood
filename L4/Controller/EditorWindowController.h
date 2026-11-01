@@ -85,7 +85,7 @@ public:
 private:
 	std::shared_ptr<Document> m_document;
 	sf::RenderWindow m_window;
-	SFMLCanvas m_canvas;
+	gfx::SFMLCanvas m_canvas;
 	sf::Font& m_font;
 
 	EditorState m_state;
