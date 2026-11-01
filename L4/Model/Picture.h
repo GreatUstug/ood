@@ -189,6 +189,21 @@ public:
 		NotifyPictureObservers();
 	}
 
+	void SetShapeTimes(const std::vector<std::string>& ids,
+				   const std::vector<double>& times)
+	{
+		if (ids.size() != times.size())
+			throw std::invalid_argument("SetShapeTimes: size mismatch");
+		for (std::size_t i = 0; i < ids.size(); ++i)
+		{
+			auto it = m_shapes.find(ids[i]);
+			if (it == m_shapes.end())
+				throw std::invalid_argument("Shape not found");
+			it->second->SetTime(times[i]);
+		}
+		NotifyPictureObservers();
+	}
+
 private:
 	void NotifyPictureObservers()
 	{
