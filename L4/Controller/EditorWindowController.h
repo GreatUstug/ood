@@ -10,6 +10,7 @@
 #include "Model/Picture.h"
 #include "View/EditorView.h"
 #include "View/ShapeListView.h"
+#include "View/TimelineView.h"
 #include "View/Toolbar.h"
 #include "View/gfx/SFMLCanvas.h"
 
@@ -18,6 +19,7 @@ class EditorWindowController
 	constexpr static unsigned CANVAS_W = 800;
 	constexpr static unsigned CANVAS_H = 600;
 	constexpr static unsigned PANEL_W = 200;
+	constexpr static unsigned TIMELINE_H = 150;
 	constexpr static std::string APP_NAME = "Editor: File ";
 	constexpr static std::string DEFAULT_FILE_NAME = "Unsaved";
 
@@ -32,7 +34,8 @@ public:
 		  , m_listView(m_document->GetPicture(), m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
 		  , m_controller(m_document, m_state, m_view, m_window, m_toolbar,
-			  m_listView, dialog, CANVAS_W, CANVAS_H)
+			  m_listView, dialog, CANVAS_W, CANVAS_H, m_timeline)
+		  , m_timeline(m_document->GetPicture(), m_state, m_window, m_font, 0.f, (float)CANVAS_H, (float)(CANVAS_W + PANEL_W), (float)TIMELINE_H)
 	{
 		m_window.setPosition(pos);
 	}
@@ -65,6 +68,7 @@ public:
 		m_window.clear();
 		m_view.Render();
 		m_listView.Render();
+		m_timeline.Render();
 		m_window.display();
 	}
 
@@ -93,5 +97,6 @@ private:
 	EditorView m_view;
 	ShapeListView m_listView;
 	EditorController m_controller;
+	TimelineView m_timeline;
 };
 #endif //L3_WINDOWCONTROLLER_H

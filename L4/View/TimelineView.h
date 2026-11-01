@@ -1,6 +1,7 @@
 #ifndef L4_TIMELINEVIEW_H
 #define L4_TIMELINEVIEW_H
 #include "Commands/ICommand.h"
+#include "Commands/SetTimeCommand.h"
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/ShapeInfo.h"
@@ -127,13 +128,11 @@ public:
 		return std::make_unique<SetTimeCommand>(
 			m_pic, std::vector<std::string>{m_dragId}, std::vector<double>{m_dragCurrentTime}, true);
 	}
-
+	bool IsDragging() const { return m_draggingTime; }
 private:
 	double TimeToX(double t) const { return m_x + t * m_pixelsPerSecond; }
 	double XToTime(double px) const { return (px - m_x) / m_pixelsPerSecond; }
 	float RowY(int index) const { return m_y + ROW_PAD + index * ROW_H; }
-
-	int RowAt(float py) const;
 
 	shapes::Picture& m_pic;
 	EditorState& m_state;

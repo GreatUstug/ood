@@ -28,14 +28,15 @@ public:
 		ShapeListView& listView,
 		FileDialog& fileDialog,
 		int canvasWidth,
-		int canvasHeight)
+		int canvasHeight,
+		TimelineView& timelineView)
 		: m_fileDialog(fileDialog)
 		  , m_create(*document, state, canvasWidth, canvasHeight)
 		  , m_transform(*document, state, canvasWidth, canvasHeight)
 		  , m_documentCtrl(*document, state, fileDialog)
 		  , m_shortcuts(*document, state, m_documentCtrl, m_create)
 		  , m_router(*document, state, view, window, toolbar, listView,
-			  m_create, m_transform, m_shortcuts)
+			  m_create, m_transform, m_shortcuts, timelineView)
 	{
 	}
 

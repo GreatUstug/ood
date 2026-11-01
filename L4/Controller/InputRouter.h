@@ -19,6 +19,7 @@
 
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Event.hpp"
+#include "View/TimelineView.h"
 
 class InputRouter
 {
@@ -31,7 +32,8 @@ public:
 		ShapeListView& listView,
 		ShapeCreateController& create,
 		ShapeTransformController& transform,
-		ShortcutController& shortcuts)
+		ShortcutController& shortcuts,
+		TimelineView& timelineView)
 		: m_document(document)
 		  , m_state(state)
 		  , m_view(view)
@@ -41,6 +43,7 @@ public:
 		  , m_create(create)
 		  , m_transform(transform)
 		  , m_shortcuts(shortcuts)
+		  , m_timeline(timelineView)
 	{
 	}
 
@@ -71,7 +74,11 @@ private:
 	void OnMousePressed(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-
+		if (m_timeline.HitTest(pos.x, pos.y))
+		{
+			if (m_timeline.HandleClick(pos.x, pos.y))
+				return;
+		}
 		if (m_listView.HitTest(pos.x, pos.y))
 		{
 			m_listView.HandleClick(pos.x, pos.y);
@@ -92,6 +99,10 @@ private:
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
+		if (m_timeline.HitTest(pos.x, pos.y) || m_timeline.IsDragging()) {
+			m_timeline.UpdatePreview(pos.x, pos.y);
+			return;
+		}
 		switch (m_state.mode)
 		{
 		case EditorState::Mode::Dragging:
@@ -108,6 +119,10 @@ private:
 
 	void OnMouseReleased()
 	{
+		if (auto cmd = m_timeline.Release()) {
+			m_document.GetHistory().Execute(std::move(cmd));
+			return;
+		}
 		if (m_state.mode == EditorState::Mode::Creating)
 		{
 			m_create.Commit();
@@ -175,7 +190,7 @@ private:
 			return;
 
 		std::vector<std::string> ids(m_state.GetSelectedIds().begin(),
-									 m_state.GetSelectedIds().end());
+			m_state.GetSelectedIds().end());
 
 		shapes::ColorTarget target = (m_state.colorMode == EditorState::ColorMode::Fill)
 			? shapes::ColorTarget::Fill
@@ -186,10 +201,16 @@ private:
 		{
 			const auto& f = m_document.GetPicture().GetShape(id);
 			gfx::Color current = (target == shapes::ColorTarget::Fill)
-				? f.GetFillColor() : f.GetStrokeColor();
-			if (current != c) { changed = true; break; }
+				? f.GetFillColor()
+				: f.GetStrokeColor();
+			if (current != c)
+			{
+				changed = true;
+				break;
+			}
 		}
-		if (!changed) return;
+		if (!changed)
+			return;
 
 		m_document.GetHistory().Execute(
 			std::make_unique<ColorCommand>(m_document.GetPicture(), ids, c, target));
@@ -204,6 +225,7 @@ private:
 	ShapeCreateController& m_create;
 	ShapeTransformController& m_transform;
 	ShortcutController& m_shortcuts;
+	TimelineView& m_timeline;
 };
 
 #endif //L3_INPUTROUTER_H
