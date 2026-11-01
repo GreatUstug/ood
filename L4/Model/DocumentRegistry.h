@@ -12,7 +12,7 @@
 class DocumentRegistry
 {
 public:
-	static std::shared_ptr<Document> Create()
+	std::shared_ptr<Document> Create()
 	{
 		auto d = std::make_shared<Document>();
 		m_docs.push_back(d);

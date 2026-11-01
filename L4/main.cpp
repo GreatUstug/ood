@@ -1,5 +1,6 @@
 #include "Controller/EditorController.h"
 #include "Controller/EditorWindowController.h"
+#include "Model/DocumentRegistry.h"
 #include "View/gfx/SFMLCanvas.h"
 #include <SFML/Graphics.hpp>
 #include "Model/Picture.h"
@@ -13,8 +14,9 @@ int main()
 	{
 		throw std::runtime_error("Font not found: arial.ttf");
 	}
+	DocumentRegistry registry;
 	std::vector<std::unique_ptr<EditorWindowController> > windows;
-	windows.push_back(std::make_unique<EditorWindowController>(font, dialog));
+	windows.push_back(std::make_unique<EditorWindowController>(font, dialog, registry.Create()));
 
 	while (!windows.empty())
 	{
@@ -33,18 +35,24 @@ int main()
 			switch (window->TakePendingCommand())
 			{
 			case AppState::NewWindow:
-				toAdd.push_back(std::make_unique<EditorWindowController>(font, dialog));
+				toAdd.push_back(std::make_unique<EditorWindowController>(font, dialog, registry.Create()));
 				break;
 			case AppState::OpenInNewWindow: {
-				auto path = dialog.AskOpenPath();
-				if (path)
+				if (auto path = dialog.AskOpenPath())
 				{
 					auto picture = DocumentIO::Load(*path);
 					// FIXME: пофиксить 43 строчку и добавить легкое смещение на создание.
-					auto newWindow = std::make_unique<EditorWindowController>(font, dialog, sf::Vector2i{0, 0}, *path);
+					auto newWindow = std::make_unique<EditorWindowController>(font, dialog, registry.CreateFrom(std::move(picture), *path), sf::Vector2i{0, 0}, *path);
 					newWindow->ReplaceDocument(std::move(picture));
 					toAdd.push_back(std::move(newWindow));
 				}
+				break;
+			}
+			case AppState::DuplicateWindow: {
+				auto newWin = std::make_unique<EditorWindowController>(
+					font, dialog, window->GetDocument(),
+					sf::Vector2i{0, 0});
+				toAdd.push_back(std::move(newWin));
 				break;
 			}
 			case AppState::None:
@@ -61,20 +69,8 @@ int main()
 			std::ranges::remove_if(windows,
 				[](const auto& w) { return !w->IsOpen(); }).begin(),
 			windows.end());
+		registry.Prune();
 	}
 
 	return 0;
 }
-
-// int main()
-// {
-// 	std::string str;
-// 	std::getline(std::cin, str);
-// 	std::unordered_map<size_t, size_t> actors;
-// 	size_t id = 0;
-// 	actors.reserve(std::stoull(str));
-// 	while (std::getline(std::cin, str))
-// 	{
-// 		actors[++id]
-// 	}
-// }
