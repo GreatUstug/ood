@@ -68,6 +68,12 @@ public:
 	{
 		return m_colorRGB;
 	}
+
+	void SetColor(const gfx::Color& color)
+	{
+		m_colorRGB = color;
+	}
+
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;

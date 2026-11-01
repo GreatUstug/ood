@@ -150,6 +150,19 @@ public:
 		return std::distance(m_order.begin(), it);
 	}
 
+	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color)
+	{
+		for (const auto& id : ids)
+		{
+			if (!m_shapes.contains(id))
+			{
+				throw std::invalid_argument("Shape with this id not found.");
+			}
+			m_shapes[id]->SetColor(color);
+		}
+		NotifyPictureObservers();
+	}
+
 private:
 	void NotifyPictureObservers()
 	{
