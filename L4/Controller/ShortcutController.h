@@ -52,6 +52,10 @@ public:
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
+			if (key.shift)
+			{
+				return AppState::DuplicateWindow;
+			}
 			return AppState::NewWindow;
 		}
 
@@ -66,28 +70,27 @@ public:
 		}
 		if (key.control && key.code == sf::Keyboard::Key::Z && !key.shift)
 		{
-			m_commandHistory.Undo();
-			PruneSelection();
+			std::vector<std::string> affected = m_commandHistory.Undo();
+			ApplySelection(affected);
 			return AppState::None;
 		}
 		if (key.control && (key.code == sf::Keyboard::Key::Y ||
 			(key.code == sf::Keyboard::Key::Z && key.shift)))
 		{
-			m_commandHistory.Redo();
-			PruneSelection();
+			auto affected = m_commandHistory.Redo();
+			ApplySelection(affected);
 			return AppState::None;
 		}
 		return AppState::None;
 	}
 
 private:
-	void PruneSelection() const
+	void ApplySelection(const std::vector<std::string>& ids) const
 	{
 		std::set<std::string> valid;
-		for (const auto& id : m_state.GetSelectedIds())
+		for (const auto& id : ids)
 			if (m_picture.HasShape(id)) valid.insert(id);
-		if (valid != m_state.GetSelectedIds())
-			m_state.SetSelectedIds(valid);
+		m_state.SetSelectedIds(valid);
 	}
 
 	shapes::Picture&      m_picture;

@@ -5,6 +5,6 @@
 #ifndef L3_APPSTATE_H
 #define L3_APPSTATE_H
 
-enum class AppState { None, NewWindow, OpenInNewWindow };
+enum class AppState { None, NewWindow, OpenInNewWindow, DuplicateWindow };
 
 #endif //L3_APPSTATE_H

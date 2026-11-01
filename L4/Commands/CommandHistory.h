@@ -23,24 +23,28 @@ public:
 		m_redoList.clear();
 	}
 
-	void Undo()
+	std::vector<std::string> Undo()
 	{
 		if (m_undoList.empty())
-			return;
+			return {};
 		auto cmd = std::move(m_undoList.back());
 		m_undoList.pop_back();
+		auto ids = cmd->AffectedIds();
 		cmd->Unexecute();
 		m_redoList.push_back(std::move(cmd));
+		return ids;
 	}
 
-	void Redo()
+	std::vector<std::string> Redo()
 	{
 		if (m_redoList.empty())
-			return;
+			return {};
 		auto cmd = std::move(m_redoList.back());
 		m_redoList.pop_back();
+		auto ids = cmd->AffectedIds();
 		cmd->Execute();
 		m_undoList.push_back(std::move(cmd));
+		return ids;
 	}
 
 	void Clear()
