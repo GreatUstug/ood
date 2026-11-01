@@ -12,6 +12,7 @@
 #include "Model/MakeShapeUtils.h"
 #include "Commands/CommandHistory.h"
 #include "Commands/AddCommand.h"
+#include "Commands/ColorCommand.h"
 #include "Commands/DeleteCommand.h"
 #include "Commands/MoveShapesCommand.h"
 #include "Commands/ResizeCommand.h"
@@ -233,5 +234,53 @@ TEST(UndoRedo, SaveLoadRoundtrip)
 
     EXPECT_EQ(restored.GetOrder()[0], a);
     EXPECT_EQ(restored.GetOrder()[1], e);
+}
+
+TEST(Color, UndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	gfx::Color oldA = pic.GetShape(a).GetFillColor();
+	gfx::Color oldB = pic.GetShape(b).GetFillColor();
+	gfx::Color red(255, 0, 0, 255);
+
+	h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a, b}, red));
+	EXPECT_EQ(pic.GetShape(a).GetFillColor().ParseToString(), red.ParseToString());
+	EXPECT_EQ(pic.GetShape(b).GetFillColor().ParseToString(), red.ParseToString());
+
+	h.Undo();
+	EXPECT_EQ(pic.GetShape(a).GetFillColor().ParseToString(), oldA.ParseToString());
+	EXPECT_EQ(pic.GetShape(b).GetFillColor().ParseToString(), oldB.ParseToString());
+
+	h.Redo();
+	EXPECT_EQ(pic.GetShape(a).GetFillColor().ParseToString(), red.ParseToString());
+}
+
+TEST(Color, SaveLoadRoundtrip)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	gfx::Color red(255, 0, 0, 255);
+	h.Execute(std::make_unique<ColorCommand>(pic, {a}, red));
+
+	std::stringstream ss;
+	SaveService::Save(pic, ss);
+	shapes::Picture restored = LoadService::Load(ss);
+	EXPECT_EQ(restored.GetShape(a).GetFillColor().ParseToString(), red.ParseToString());
+}
+
+TEST(Color, MultiSelectionIsOneOperation)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a, b}, gfx::Color(1,2,3,255)));
+	h.Undo();
+	// одной Undo должны вернуться оба, c не тронут
+	EXPECT_NE(pic.GetShape(a).GetFillColor().ParseToString(),
+			  pic.GetShape(c).GetFillColor().ParseToString());
 }
 #endif //L4_TESTUNDOREDO_H
