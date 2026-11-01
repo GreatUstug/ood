@@ -5,6 +5,7 @@
 #ifndef L3_INPUTROUTER_H
 #define L3_INPUTROUTER_H
 
+#include "Commands/ColorCommand.h"
 #include "Controller/ShapeCreateController.h"
 #include "Controller/ShapeTransformController.h"
 #include "Controller/ShortcutController.h"
@@ -117,16 +118,16 @@ private:
 
 	bool HandleToolbarClick(const sf::Vector2f& pos)
 	{
-		auto action = m_toolbar.HitTest(pos.x, pos.y);
-		if (action == ToolbarAction::None)
+		auto btn = m_toolbar.HitTest(pos.x, pos.y);
+		if (!btn)
 			return false;
-		HandleToolbarAction(action);
+		HandleToolbarAction(*btn);
 		return true;
 	}
 
-	void HandleToolbarAction(ToolbarAction action)
+	void HandleToolbarAction(const ToolbarButton& btn)
 	{
-		switch (action)
+		switch (btn.action)
 		{
 		case ToolbarAction::AddRectangle:
 			m_create.Start("rectangle");
@@ -151,6 +152,23 @@ private:
 				m_state.ClearSelection();
 			}
 			break;
+		case ToolbarAction::SetColorFill:
+		{
+			if (!m_state.HasValidSelection(m_document.GetPicture())) break;
+			std::vector<std::string> ids(m_state.GetSelectedIds().begin(),
+										 m_state.GetSelectedIds().end());
+			gfx::Color target = btn.color.value();
+
+			bool changed = false;
+			for (const auto& id : ids)
+				if (m_document.GetPicture().GetShape(id).GetFillColor() != target)
+				{ changed = true; break; }
+			if (!changed) break;
+
+			m_document.GetHistory().Execute(
+				std::make_unique<ColorCommand>(m_document.GetPicture(), ids, target));
+			break;
+		}
 		default:
 			break;
 		}

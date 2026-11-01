@@ -12,6 +12,8 @@
 struct EditorState
 {
 	enum class Mode { Idle, Dragging, Resizing, Creating };
+	enum class ColorMode { Fill, Stroke };
+	ColorMode colorMode = ColorMode::Fill;
 
 	void Subscribe(EditorStateObserver* obs) { m_observers.AddObserver(obs); }
 	void Unsubscribe(EditorStateObserver* obs) { m_observers.RemoveObserver(obs); }

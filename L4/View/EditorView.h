@@ -32,14 +32,15 @@ public:
 		for (const auto& id : m_picture.GetOrder())
 		{
 			const auto& f = m_picture.GetShape(id);
-			shapes::DrawVisitor v(m_canvas, f.GetColor());
+			shapes::DrawVisitor v(m_canvas, f.GetFillColor());
 			f.Accept(v);
 		}
 		DrawPreview();
 		auto primary = m_state.GetPrimarySelectedId();
 		for (const auto& id : m_state.GetSelectedIds())
 		{
-			if (!m_picture.HasShape(id)) continue;
+			if (!m_picture.HasShape(id))
+				continue;
 			DrawSelectionFrame(m_canvas, m_picture.GetShape(id).GetBounds(), id == primary);
 		}
 		RenderToolbar();
@@ -47,15 +48,18 @@ public:
 
 	void DrawPreview()
 	{
-		if (m_state.mode != EditorState::Mode::Creating) return;
-		if (!m_state.hasCreateStart) return;
+		if (m_state.mode != EditorState::Mode::Creating)
+			return;
+		if (!m_state.hasCreateStart)
+			return;
 		shapes::Bounds bounds = shapes::BoundsFromPoints(m_state.createStartX, m_state.createStartY,
 			m_state.createCurrentX, m_state.createCurrentY);
 		bounds = shapes::ClampToCanvas(bounds, (double)m_window.getSize().x, (double)m_window.getSize().y);
 
 		auto figure = shapes::MakeShape(m_state.creatingType, "__preview__", bounds);
-		if (!figure) return;
-		shapes::DrawVisitor v(m_canvas, figure->GetColor());
+		if (!figure)
+			return;
+		shapes::DrawVisitor v(m_canvas, figure->GetFillColor());
 		figure->Accept(v);
 		m_canvas.SetColor(gfx::Color(100, 100, 255, 180));
 		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
@@ -106,7 +110,11 @@ private:
 		{
 			sf::RectangleShape rect({ (float)b.bounds.width, (float)b.bounds.height });
 			rect.setPosition({ (float)b.bounds.x, (float)b.bounds.y });
-			rect.setFillColor(sf::Color(220, 220, 220));
+			if (b.color)
+				rect.setFillColor(sf::Color(b.color->r, b.color->g,
+					b.color->b, b.color->a));
+			else
+				rect.setFillColor(sf::Color(220, 220, 220));
 			rect.setOutlineColor(sf::Color::Black);
 			rect.setOutlineThickness(1.f);
 			m_window.draw(rect);

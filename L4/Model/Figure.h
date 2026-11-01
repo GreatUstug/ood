@@ -12,9 +12,9 @@ class Figure
 {
 public:
 	Figure(const std::string& id,
-		const std::string& color,
+		const std::string& fillColor,
 		std::unique_ptr<IShapeGeometry> geometry)
-		: m_id(id), m_colorRGB(gfx::Color::ParseToRGB(color)), m_geometry(std::move(geometry))
+		: m_id(id), m_fillColor(gfx::Color::ParseToRGB(fillColor)), m_strokeColor(gfx::Color::ParseToRGB(fillColor)), m_geometry(std::move(geometry))
 	{
 	}
 
@@ -36,7 +36,7 @@ public:
 	{
 		std::string geo = m_geometry->GetInfo();
 		auto sp = geo.find(' ');
-		return geo.substr(0, sp) + " " + m_id + " " + m_colorRGB.ParseToString() + geo.substr(sp);
+		return geo.substr(0, sp) + " " + m_id + " " + m_fillColor.ParseToString() + " " + m_strokeColor.ParseToString() + geo.substr(sp);
 	}
 
 	Bounds GetBounds() const
@@ -64,19 +64,18 @@ public:
 		m_geometry->Accept(v);
 	}
 
-	gfx::Color GetColor() const
+	gfx::Color GetFillColor() const
 	{
-		return m_colorRGB;
+		return m_fillColor;
 	}
 
-	void SetColor(const gfx::Color& color)
-	{
-		m_colorRGB = color;
-	}
+	void SetFillColor(const gfx::Color& color) { m_fillColor = color; }
+	void SetStrokeColor(const gfx::Color& color) { m_strokeColor = color; }
 
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;
-	gfx::Color m_colorRGB;
+	gfx::Color m_fillColor;
+	gfx::Color m_strokeColor;
 };
 }

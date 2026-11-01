@@ -16,7 +16,7 @@ public:
 	{
 		m_oldColors.reserve(m_ids.size());
 		for (const auto& id : m_ids)
-			m_oldColors.push_back(m_picture.GetShape(id).GetColor());
+			m_oldColors.push_back(m_picture.GetShape(id).GetFillColor());
 
 	};
 
