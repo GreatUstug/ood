@@ -11,6 +11,7 @@
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/Bounds.h"
+#include "Model/Document.h"
 #include "Model/Handle.h"
 #include "Model/ResizePolicy.h"
 #include "SFML/System/Vector2.hpp"
@@ -20,14 +21,12 @@
 class ShapeTransformController
 {
 public:
-	ShapeTransformController(shapes::Picture& picture,
+	ShapeTransformController(Document& document,
 		EditorState& state,
-		CommandHistory& history,
 		int canvasWidth,
 		int canvasHeight)
-		: m_picture(picture)
+		: m_document(document)
 		  , m_state(state)
-		  , m_commandHistory(history)
 		  , m_canvasWidth(canvasWidth)
 		  , m_canvasHeight(canvasHeight)
 	{
@@ -35,12 +34,12 @@ public:
 
 	bool TryStartResize(const sf::Vector2f& pos)
 	{
-		if (!m_state.HasValidSelection(m_picture) || m_state.GetSelectedIds().size() > 1)
+		if (!m_state.HasValidSelection(m_document.GetPicture()) || m_state.GetSelectedIds().size() > 1)
 		{
 			return false;
 		}
 
-		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
+		auto bounds = m_document.GetPicture().GetShape(m_state.GetPrimarySelectedId()).GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None)
 		{
@@ -65,7 +64,7 @@ public:
 
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
-		std::string hit = m_picture.HitTest(pos.x, pos.y);
+		std::string hit = m_document.GetPicture().HitTest(pos.x, pos.y);
 
 		if (IsAdditive())
 		{
@@ -94,8 +93,8 @@ public:
 		m_state.dragStartBounds.clear();
 		for (const auto& id : m_state.GetSelectedIds())
 		{
-			if (m_picture.HasShape(id))
-				m_state.dragStartBounds[id] = m_picture.GetShape(id).GetBounds();
+			if (m_document.GetPicture().HasShape(id))
+				m_state.dragStartBounds[id] = m_document.GetPicture().GetShape(id).GetBounds();
 		}
 		m_state.lastAppliedDx = 0;
 		m_state.lastAppliedDy = 0;
@@ -104,7 +103,7 @@ public:
 
 	void Update(const sf::Vector2f& pos)
 	{
-		if (!m_state.HasValidSelection(m_picture))
+		if (!m_state.HasValidSelection(m_document.GetPicture()))
 			return;
 
 		switch (m_state.mode)
@@ -130,16 +129,16 @@ public:
 			{
 				std::vector<std::string> ids(
 					m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-				m_commandHistory.Execute(std::make_unique<MoveShapesCommand>(
-					m_picture, ids, dx, dy, true));
+				m_document.GetHistory().Execute(std::make_unique<MoveShapesCommand>(
+					m_document.GetPicture(), ids, dx, dy, true));
 			}
 		} else if (m_state.mode == EditorState::Mode::Resizing)
 		{
 			const std::string& id = m_state.GetPrimarySelectedId();
-			if (!id.empty() && m_picture.HasShape(id))
+			if (!id.empty() && m_document.GetPicture().HasShape(id))
 			{
 				shapes::Bounds oldB = m_state.resizeStartBounds;
-				shapes::Bounds newB = m_picture.GetShape(id).GetBounds();
+				shapes::Bounds newB = m_document.GetPicture().GetShape(id).GetBounds();
 
 				constexpr double EPS = 1e-9;
 				bool changed =
@@ -150,8 +149,8 @@ public:
 
 				if (changed)
 				{
-					m_commandHistory.Execute(std::make_unique<ResizeCommand>(
-						m_picture, id, oldB, newB, /*alreadyApplied=*/true));
+					m_document.GetHistory().Execute(std::make_unique<ResizeCommand>(
+						m_document.GetPicture(), id, oldB, newB, /*alreadyApplied=*/true));
 				}
 			}
 		}
@@ -193,7 +192,7 @@ private:
 			return;
 
 		std::vector idsVec(ids.begin(), ids.end());
-		m_picture.MoveShapes(idsVec, deltaDx, deltaDy);
+		m_document.GetPicture().MoveShapes(idsVec, deltaDx, deltaDy);
 		m_state.lastAppliedDx = dx;
 		m_state.lastAppliedDy = dy;
 	}
@@ -207,12 +206,11 @@ private:
 			m_state.activeHandle,
 			dx, dy,
 			m_canvasWidth, m_canvasHeight);
-		m_picture.SetShapeBounds(m_state.GetPrimarySelectedId(), b);
+		m_document.GetPicture().SetShapeBounds(m_state.GetPrimarySelectedId(), b);
 	}
 
-	shapes::Picture& m_picture;
+	Document& m_document;
 	EditorState& m_state;
-	CommandHistory& m_commandHistory;
 	int m_canvasWidth;
 	int m_canvasHeight;
 };

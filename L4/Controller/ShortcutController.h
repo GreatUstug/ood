@@ -19,15 +19,13 @@
 class ShortcutController
 {
 public:
-	ShortcutController(shapes::Picture& picture,
+	ShortcutController(Document& document,
 					   EditorState& state,
-					   CommandHistory& commandHistory,
-					   DocumentController& document,
+					   DocumentController& documentCtrl,
 					   ShapeCreateController& create)
-		: m_picture(picture)
+		: m_document(document)
 		, m_state(state)
-		, m_commandHistory(commandHistory)
-		, m_document(document)
+		, m_documentCtrl(documentCtrl)
 		, m_create(create)
 	{
 	}
@@ -43,7 +41,7 @@ public:
 
 		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
-			m_document.Save();
+			m_documentCtrl.Save();
 			return AppState::None;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::O)
@@ -61,23 +59,23 @@ public:
 
 		if (key.code == sf::Keyboard::Key::Delete)
 		{
-			if (m_state.HasValidSelection(m_picture))
+			if (m_state.HasValidSelection(m_document.GetPicture()))
 			{
 				std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-				m_commandHistory.Execute(std::make_unique<DeleteCommand>(m_picture, selectedIds));
+				m_document.GetHistory().Execute(std::make_unique<DeleteCommand>(m_document.GetPicture(), selectedIds));
 				m_state.ClearSelection();
 			}
 		}
 		if (key.control && key.code == sf::Keyboard::Key::Z && !key.shift)
 		{
-			std::vector<std::string> affected = m_commandHistory.Undo();
+			std::vector<std::string> affected = m_document.GetHistory().Undo();
 			ApplySelection(affected);
 			return AppState::None;
 		}
 		if (key.control && (key.code == sf::Keyboard::Key::Y ||
 			(key.code == sf::Keyboard::Key::Z && key.shift)))
 		{
-			auto affected = m_commandHistory.Redo();
+			auto affected = m_document.GetHistory().Redo();
 			ApplySelection(affected);
 			return AppState::None;
 		}
@@ -89,14 +87,13 @@ private:
 	{
 		std::set<std::string> valid;
 		for (const auto& id : ids)
-			if (m_picture.HasShape(id)) valid.insert(id);
+			if (m_document.GetPicture().HasShape(id)) valid.insert(id);
 		m_state.SetSelectedIds(valid);
 	}
 
-	shapes::Picture&      m_picture;
+	Document& m_document;
 	EditorState&          m_state;
-	CommandHistory&       m_commandHistory;
-	DocumentController&   m_document;
+	DocumentController&   m_documentCtrl;
 	ShapeCreateController& m_create;
 };
 

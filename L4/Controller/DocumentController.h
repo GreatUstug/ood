@@ -15,13 +15,11 @@
 class DocumentController
 {
 public:
-	DocumentController(shapes::Picture& picture,
+	DocumentController(Document& document,
 					   EditorState& state,
-					   CommandHistory& commandHistory,
 					   FileDialog& dialog)
-		: m_picture(picture)
+		: m_document(document)
 		, m_state(state)
-		, m_commandHistory(commandHistory)
 		, m_dialog(dialog)
 	{
 	}
@@ -33,7 +31,7 @@ public:
 			return;
 		try
 		{
-			DocumentIO::Save(m_picture, *path);
+			DocumentIO::Save(m_document.GetPicture(), *path);
 		}
 		catch (const std::exception& e)
 		{
@@ -49,9 +47,9 @@ public:
 		try
 		{
 			auto newPicture = DocumentIO::Load(*path);
-			m_picture.ReplaceWith(std::move(newPicture));
+			m_document.GetPicture().ReplaceWith(std::move(newPicture));
 			m_state.ClearSelection();
-			m_commandHistory.Clear();
+			m_document.GetHistory().Clear();
 		}
 		catch (const std::exception& e)
 		{
@@ -62,15 +60,14 @@ public:
 	void New()
 	{
 		shapes::Picture empty;
-		m_picture.ReplaceWith(std::move(empty));
+		m_document.GetPicture().ReplaceWith(std::move(empty));
 		m_state.ClearSelection();
-		m_commandHistory.Clear();
+		m_document.GetHistory().Clear();
 	}
 
 private:
-	shapes::Picture& m_picture;
+	Document& m_document;
 	EditorState&     m_state;
-	CommandHistory& m_commandHistory;
 	FileDialog&      m_dialog;
 };
 

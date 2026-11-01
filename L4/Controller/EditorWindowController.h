@@ -32,7 +32,7 @@ public:
 		  , m_view(m_document->GetPicture(), m_state, m_canvas, m_window, m_font, m_toolbar)
 		  , m_listView(m_document->GetPicture(), m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
-		  , m_controller(m_document->GetPicture(), m_state, m_document->GetHistory(), m_view, m_window, m_toolbar,
+		  , m_controller(m_document, m_state, m_view, m_window, m_toolbar,
 			  m_listView, dialog, CANVAS_W, CANVAS_H)
 	{
 		m_window.setPosition(pos);

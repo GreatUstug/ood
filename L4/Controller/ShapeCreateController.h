@@ -11,6 +11,7 @@
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/Bounds.h"
+#include "Model/Document.h"
 #include "Model/ResizePolicy.h"
 #include "Model/MakeShapeUtils.h"
 
@@ -21,14 +22,12 @@
 class ShapeCreateController
 {
 public:
-    ShapeCreateController(shapes::Picture& picture,
+    ShapeCreateController(Document& document,
                           EditorState& state,
-                          CommandHistory& commandHistory,
                           int canvasWidth,
                           int canvasHeight)
-        : m_picture(picture)
+        : m_document(document)
         , m_state(state)
-		, m_commandHistory(commandHistory)
         , m_canvasWidth(canvasWidth)
         , m_canvasHeight(canvasHeight)
     {
@@ -89,7 +88,7 @@ public:
             return;
         }
 
-        m_commandHistory.Execute(std::make_unique<AddCommand>(m_picture, std::move(figure)));
+        m_document.GetHistory().Execute(std::make_unique<AddCommand>(m_document.GetPicture(), std::move(figure)));
         m_state.SetPrimarySelectedId(id);
         m_state.CancelCreating();
     }
@@ -100,9 +99,8 @@ public:
     }
 
 private:
-    shapes::Picture& m_picture;
+    Document& m_document;
     EditorState&     m_state;
-	CommandHistory& m_commandHistory;
     int m_canvasWidth;
     int m_canvasHeight;
 };

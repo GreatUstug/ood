@@ -8,6 +8,7 @@
 #include "Controller/ShapeCreateController.h"
 #include "Controller/ShapeTransformController.h"
 #include "Controller/ShortcutController.h"
+#include "Model/Document.h"
 
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
@@ -22,9 +23,8 @@
 class EditorController
 {
 public:
-	EditorController(shapes::Picture& picture,
+	EditorController(std::shared_ptr<Document> document,
 		EditorState& state,
-		CommandHistory& commandHistory,
 		EditorView& view,
 		sf::RenderWindow& window,
 		Toolbar& toolbar,
@@ -33,12 +33,11 @@ public:
 		int canvasWidth,
 		int canvasHeight)
 		: m_fileDialog(fileDialog)
-			,m_commandHistory(commandHistory)
-		  , m_create(picture, state, commandHistory, canvasWidth, canvasHeight)
-		  , m_transform(picture, state, commandHistory, canvasWidth, canvasHeight)
-		  , m_document(picture, state, commandHistory, fileDialog)
-		  , m_shortcuts(picture, state, commandHistory, m_document, m_create)
-		  , m_router(picture, state, view, commandHistory, window, toolbar, listView,
+		  , m_create(*document, state, canvasWidth, canvasHeight)
+		  , m_transform(*document, state, canvasWidth, canvasHeight)
+		  , m_documentCtrl(*document, state, fileDialog)
+		  , m_shortcuts(*document, state, m_documentCtrl, m_create)
+		  , m_router(*document, state, view, window, toolbar, listView,
 			  m_create, m_transform, m_shortcuts)
 	{
 	}
@@ -58,14 +57,14 @@ public:
 	}
 
 private:
+	std::shared_ptr<Document> m_document;
 	FileDialog& m_fileDialog;
-	CommandHistory& m_commandHistory;
 	ShapeCreateController m_create;
 	ShapeTransformController m_transform;
-	DocumentController m_document;
+	DocumentController m_documentCtrl;
 	ShortcutController m_shortcuts;
 	InputRouter m_router;
-	AppState m_pendingCommand;
+	AppState m_pendingCommand = AppState::None;
 };
 
 #endif
