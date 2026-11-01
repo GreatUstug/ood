@@ -163,6 +163,19 @@ public:
 		NotifyPictureObservers();
 	}
 
+	void ColorShapes(const std::vector<std::string>& ids, const std::vector<gfx::Color>& color)
+	{
+		for (size_t i = 0; i < ids.size(); i++)
+		{
+			if (!m_shapes.contains(ids[i]))
+			{
+				throw std::invalid_argument("Shape with this id not found.");
+			}
+			m_shapes[ids[i]]->SetColor(color[i]);
+		}
+		NotifyPictureObservers();
+	}
+
 private:
 	void NotifyPictureObservers()
 	{

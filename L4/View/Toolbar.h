@@ -14,7 +14,9 @@ enum class ToolbarAction
 	AddTriangle,
 	AddLine,
 	AddPolygon,
-	Delete
+	Delete,
+	SetColorFill,
+	SetColorStroke,
 };
 
 struct ToolbarButton
@@ -22,6 +24,7 @@ struct ToolbarButton
 	shapes::Bounds bounds;
 	std::string label;
 	ToolbarAction action;
+	std::optional<gfx::Color> color;
 };
 
 class Toolbar
