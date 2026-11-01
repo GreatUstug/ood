@@ -95,6 +95,7 @@ struct EditorState
 	double createCurrentX = 0;
 	double createCurrentY = 0;
 	bool hasCreateStart = false;
+	double currentTime = 0;
 
 	void CancelCreating()
 	{

@@ -204,6 +204,19 @@ public:
 		NotifyPictureObservers();
 	}
 
+	void MoveShapeToIndex(const std::string& id, std::size_t newIndex)
+	{
+		const auto it = std::ranges::find(m_order, id);
+		if (it == m_order.end())
+			throw std::invalid_argument("Shape not found");
+		const std::size_t oldIndex = std::distance(m_order.begin(), it);
+		if (oldIndex == newIndex) return;
+		m_order.erase(it);
+		if (newIndex > oldIndex) newIndex--;
+		m_order.insert(m_order.begin() + std::min(newIndex, m_order.size()), id);
+		NotifyPictureObservers();
+	}
+
 private:
 	void NotifyPictureObservers()
 	{

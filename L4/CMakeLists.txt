@@ -59,7 +59,8 @@ add_executable(L4 main.cpp
         Model/Document.h
         Model/DocumentRegistry.h
         Commands/ColorCommand.h
-        Commands/SetTimeCommand.h)
+        Commands/SetTimeCommand.h
+        Commands/ReorderCommand.h)
 
 target_include_directories(L4 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L4 PRIVATE
