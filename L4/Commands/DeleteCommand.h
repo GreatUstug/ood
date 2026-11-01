@@ -42,7 +42,7 @@ public:
 
 	std::vector<std::string> AffectedIds() const override
 	{
-		return { m_ids };
+		return m_ids;
 	};
 private:
 	struct Removed { size_t index; std::unique_ptr<shapes::Figure> figure; };

@@ -30,7 +30,7 @@ public:
 	};
 	std::vector<std::string> AffectedIds() const override
 	{
-		return { m_ids };
+		return m_ids;
 	};
 private:
 	shapes::Picture& m_picture;
