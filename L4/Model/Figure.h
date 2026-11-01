@@ -13,8 +13,9 @@ class Figure
 public:
 	Figure(const std::string& id,
 		const std::string& fillColor,
-		std::unique_ptr<IShapeGeometry> geometry)
-		: m_id(id), m_fillColor(gfx::Color::ParseToRGB(fillColor)), m_strokeColor(gfx::Color::ParseToRGB(fillColor)), m_geometry(std::move(geometry))
+		std::unique_ptr<IShapeGeometry> geometry,
+		const std::string& strokeColor = "#000000")
+		: m_id(id), m_fillColor(gfx::Color::ParseToRGB(fillColor)), m_strokeColor(gfx::Color::ParseToRGB(strokeColor)), m_geometry(std::move(geometry))
 	{
 	}
 

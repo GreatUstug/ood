@@ -10,6 +10,8 @@
 #include "../Model/Figures/Rectangle.h"
 #include "../Model/Figures/Ellipse.h"
 #include "../Model/Figures/Triangle.h"
+#include "../Model/Figures/Line.h"
+#include "../Model/Figures/Polygon.h"
 
 #include <istream>
 #include <sstream>
@@ -51,13 +53,14 @@ private:
 	static std::unique_ptr<shapes::Figure> ParseLine(const std::string& line)
 	{
 		std::istringstream iss(line);
-		std::string type, id, color;
-		if (!(iss >> type >> id >> color))
+		std::string type, id, fill, stroke;
+		if (!(iss >> type >> id >> fill >> stroke))
 		{
-			throw std::runtime_error("Invalid line format");
+			throw std::runtime_error("Invalid line format (expected: type id fill stroke ...)");
 		}
 
-		(void)gfx::Color::ParseToRGB(color);
+		(void)gfx::Color::ParseToRGB(fill);
+		(void)gfx::Color::ParseToRGB(stroke);
 
 		std::unique_ptr<shapes::IShapeGeometry> geo;
 
@@ -108,7 +111,7 @@ private:
 			throw std::runtime_error("Unknown type: " + type);
 		}
 
-		return std::make_unique<shapes::Figure>(id, color, std::move(geo));
+		return std::make_unique<shapes::Figure>(id, fill, std::move(geo), stroke);
 	}
 };
 
