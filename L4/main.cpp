@@ -43,7 +43,6 @@ int main()
 					auto picture = DocumentIO::Load(*path);
 					// FIXME: пофиксить 43 строчку и добавить легкое смещение на создание.
 					auto newWindow = std::make_unique<EditorWindowController>(font, dialog, registry.CreateFrom(std::move(picture), *path), sf::Vector2i{0, 0}, *path);
-					newWindow->ReplaceDocument(std::move(picture));
 					toAdd.push_back(std::move(newWindow));
 				}
 				break;

@@ -2,15 +2,12 @@
 #define L3_EDITCONTROLLER_H
 
 #include "InputRouter.h"
-#include "Commands/CommandHistory.h"
-#include "Controller/DocumentController.h"
-#include "Controller/InputRouter.h"
-#include "Controller/ShapeCreateController.h"
-#include "Controller/ShapeTransformController.h"
-#include "Controller/ShortcutController.h"
-#include "Model/Document.h"
+#include "DocumentController.h"
+#include "ShapeCreateController.h"
+#include "ShapeTransformController.h"
+#include "ShortcutController.h"
 
-#include "Model/Picture.h"
+#include "Model/Document.h"
 #include "Model/EditorState.h"
 
 #include "View/EditorView.h"
@@ -57,7 +54,6 @@ public:
 	}
 
 private:
-	std::shared_ptr<Document> m_document;
 	FileDialog& m_fileDialog;
 	ShapeCreateController m_create;
 	ShapeTransformController m_transform;

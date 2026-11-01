@@ -50,11 +50,11 @@ public:
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
-			if (key.shift)
-			{
-				return AppState::DuplicateWindow;
-			}
 			return AppState::NewWindow;
+		}
+		if (key.control && key.code == sf::Keyboard::Key::D)
+		{
+			return AppState::DuplicateWindow;
 		}
 
 		if (key.code == sf::Keyboard::Key::Delete)
