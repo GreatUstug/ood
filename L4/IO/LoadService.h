@@ -111,7 +111,12 @@ private:
 			throw std::runtime_error("Unknown type: " + type);
 		}
 
-		return std::make_unique<shapes::Figure>(id, fill, std::move(geo), stroke);
+		double t = 0.0;
+		iss >> t;
+
+		auto fig = std::make_unique<shapes::Figure>(id, fill, std::move(geo), stroke);
+		fig->SetTime(t);
+		return fig;
 	}
 };
 

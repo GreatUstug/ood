@@ -37,7 +37,9 @@ public:
 	{
 		std::string geo = m_geometry->GetInfo();
 		auto sp = geo.find(' ');
-		return geo.substr(0, sp) + " " + m_id + " " + m_fillColor.ParseToString() + " " + m_strokeColor.ParseToString() + geo.substr(sp);
+		return geo.substr(0, sp) + " " + m_id + " "
+			 + m_fillColor.ParseToString() + " " + m_strokeColor.ParseToString()
+			 + geo.substr(sp) + " " + std::to_string(m_time);
 	}
 
 	Bounds GetBounds() const
@@ -78,10 +80,14 @@ public:
 	void SetFillColor(const gfx::Color& color) { m_fillColor = color; }
 	void SetStrokeColor(const gfx::Color& color) { m_strokeColor = color; }
 
+	double GetTime() const { return m_time; }
+	void SetTime(double t) { m_time = t; }
+
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;
 	gfx::Color m_fillColor;
 	gfx::Color m_strokeColor;
+	double m_time = 0.0;
 };
 }
