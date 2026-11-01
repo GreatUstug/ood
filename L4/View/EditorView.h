@@ -59,10 +59,12 @@ public:
 		auto figure = shapes::MakeShape(m_state.creatingType, "__preview__", bounds);
 		if (!figure)
 			return;
-		shapes::DrawVisitor v(m_canvas, figure->GetFillColor());
+		shapes::DrawVisitor v(m_canvas, figure->GetFillColor(), figure->GetStrokeColor());
 		figure->Accept(v);
-		m_canvas.SetColor(gfx::Color(100, 100, 255, 180));
-		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
+		const gfx::Color previewFrame(100, 100, 255, 180);
+		const gfx::Color transparent(0, 0, 0, 0);
+		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height,
+							   transparent, previewFrame);
 	}
 
 	void UpdateCursor(const sf::Vector2f& pos)

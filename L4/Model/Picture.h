@@ -16,6 +16,8 @@
 
 namespace shapes
 {
+enum class ColorTarget { Fill, Stroke };
+
 class Picture
 {
 public:
@@ -150,7 +152,7 @@ public:
 		return std::distance(m_order.begin(), it);
 	}
 
-	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color)
+	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color, ColorTarget target)
 	{
 		for (const auto& id : ids)
 		{
@@ -158,12 +160,20 @@ public:
 			{
 				throw std::invalid_argument("Shape with this id not found.");
 			}
-			m_shapes[id]->SetColor(color);
+			if (target == ColorTarget::Fill)
+			{
+				m_shapes[id]->SetFillColor(color);
+			}
+			else
+			{
+				m_shapes[id]->SetStrokeColor(color);
+			}
+
 		}
 		NotifyPictureObservers();
 	}
 
-	void ColorShapes(const std::vector<std::string>& ids, const std::vector<gfx::Color>& color)
+	void ColorShapes(const std::vector<std::string>& ids, const std::vector<gfx::Color>& colors, ColorTarget target)
 	{
 		for (size_t i = 0; i < ids.size(); i++)
 		{
@@ -171,7 +181,10 @@ public:
 			{
 				throw std::invalid_argument("Shape with this id not found.");
 			}
-			m_shapes[ids[i]]->SetColor(color[i]);
+			if (target == ColorTarget::Fill)
+				m_shapes[ids[i]]->SetFillColor(colors[i]);
+			else
+				m_shapes[ids[i]]->SetStrokeColor(colors[i]);
 		}
 		NotifyPictureObservers();
 	}

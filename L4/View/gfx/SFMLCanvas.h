@@ -6,22 +6,21 @@
 #include <algorithm>
 #include <cmath>
 
-//посмотреть по поводу буфера из сфмл
-class SFMLCanvas : public gfx::ICanvas
+namespace gfx
+{
+class SFMLCanvas : public ICanvas
 {
 public:
 	SFMLCanvas(sf::RenderWindow& window)
 		: m_window(window),
-		  m_currentPos{ 0.f, 0.f }, m_currentColor(0, 0, 0, 255)
+		  m_currentPos{ 0.f, 0.f }
 	{
 	}
 
-	void SetColor(const gfx::Color& c) override
-	{
-		m_currentColor = sf::Color(c.r, c.g, c.b, c.a);
-	}
+	~SFMLCanvas() override;
 
-	void DrawEllipse(double cx, double cy, double rx, double ry, bool isTransparent = false) override
+	void DrawEllipse(double cx, double cy, double rx, double ry,
+		const gfx::Color& fill, const gfx::Color& outline) override
 	{
 		float maxR = std::max(F(rx), F(ry));
 		if (maxR <= 0)
@@ -32,62 +31,58 @@ public:
 		circle.setOrigin({ maxR, maxR });
 		circle.setPosition({ F(cx), F(cy) });
 		circle.setScale({ F(rx) / maxR, F(ry) / maxR });
-		circle.setFillColor(!isTransparent ? m_currentColor : sf::Color::Transparent);
-		circle.setOutlineColor(m_currentColor);
-		circle.setOutlineThickness(1.0f);
+		circle.setFillColor(sf::Color(fill.r, fill.g, fill.b, fill.a));
+		circle.setOutlineColor(sf::Color(outline.r, outline.g, outline.b, outline.a));
+		circle.setOutlineThickness(outline.a > 0 ? 1.f : 0.f);
 		m_window.draw(circle);
 	}
 
-	void DrawRectangle(double x, double y, double w, double h, bool isTransparent = false) override
+	void DrawRectangle(double x, double y, double w, double h,
+		const gfx::Color& fill, const gfx::Color& outline) override
 	{
-		sf::RectangleShape rectangle({ static_cast<float>(w), static_cast<float>(h) });
-		rectangle.setPosition({ static_cast<float>(x), static_cast<float>(y) });
-		rectangle.setFillColor(!isTransparent ? m_currentColor : sf::Color::Transparent);
-		rectangle.setOutlineColor(m_currentColor);
-		rectangle.setOutlineThickness(1.f);
-		m_window.draw(rectangle);
+		sf::RectangleShape rect({ F(w), F(h) });
+		rect.setPosition({ F(x), F(y) });
+		rect.setFillColor(sf::Color(fill.r, fill.g, fill.b, fill.a));
+		rect.setOutlineColor(sf::Color(outline.r, outline.g, outline.b, outline.a));
+		rect.setOutlineThickness(outline.a > 0 ? 1.f : 0.f);
+		m_window.draw(rect);
 	}
 
 	void DrawTriangle(double x1, double y1, double x2, double y2,
-		double x3, double y3, bool isTransparent = false) override
+		double x3, double y3,
+		const gfx::Color& fill, const gfx::Color& outline) override
 	{
-		sf::ConvexShape triangle(3);
-		triangle.setPoint(0, { static_cast<float>(x1), static_cast<float>(y1) });
-		triangle.setPoint(1, { static_cast<float>(x2), static_cast<float>(y2) });
-		triangle.setPoint(2, { static_cast<float>(x3), static_cast<float>(y3) });
-		triangle.setFillColor(!isTransparent ? m_currentColor : sf::Color::Transparent);;
-		triangle.setOutlineColor(m_currentColor);
-		triangle.setOutlineThickness(1.f);
-		m_window.draw(triangle);
+		sf::ConvexShape tri(3);
+		tri.setPoint(0, { F(x1), F(y1) });
+		tri.setPoint(1, { F(x2), F(y2) });
+		tri.setPoint(2, { F(x3), F(y3) });
+		tri.setFillColor(sf::Color(fill.r, fill.g, fill.b, fill.a));
+		tri.setOutlineColor(sf::Color(outline.r, outline.g, outline.b, outline.a));
+		tri.setOutlineThickness(outline.a > 0 ? 1.f : 0.f);
+		m_window.draw(tri);
 	}
 
-	void DrawLine(double x1, double y1, double x2, double y2) override
+	void DrawLine(double x1, double y1, double x2, double y2,
+		const gfx::Color& color) override
 	{
 		sf::Vertex line[2] = {
-			{ sf::Vector2f((float)x1, (float)y1), m_currentColor },
-			{ sf::Vector2f((float)x2, (float)y2), m_currentColor }
+			{ sf::Vector2f(F(x1), F(y1)), sf::Color(color.r, color.g, color.b, color.a) },
+			{ sf::Vector2f(F(x2), F(y2)), sf::Color(color.r, color.g, color.b, color.a) }
 		};
 		m_window.draw(line, 2, sf::PrimitiveType::Lines);
 	}
 
-	void DrawPolygon(const std::vector<std::pair<double,double>>& points, bool filled) override
+	void DrawPolygon(const std::vector<std::pair<double, double> >& points,
+		const gfx::Color& fill, const gfx::Color& outline) override
 	{
-		if (points.size() < 3) return;
+		if (points.size() < 3)
+			return;
 		sf::ConvexShape shape(points.size());
-		for (size_t i = 0; i < points.size(); ++i)
-			shape.setPoint(i, sf::Vector2f((float)points[i].first, (float)points[i].second));
-
-		if (filled)
-		{
-			shape.setFillColor(m_currentColor);
-			shape.setOutlineThickness(0.f);
-		}
-		else
-		{
-			shape.setFillColor(sf::Color::Transparent);
-			shape.setOutlineColor(m_currentColor);
-			shape.setOutlineThickness(1.5f);
-		}
+		for (std::size_t i = 0; i < points.size(); ++i)
+			shape.setPoint(i, sf::Vector2f(F(points[i].first), F(points[i].second)));
+		shape.setFillColor(sf::Color(fill.r, fill.g, fill.b, fill.a));
+		shape.setOutlineColor(sf::Color(outline.r, outline.g, outline.b, outline.a));
+		shape.setOutlineThickness(outline.a > 0 ? 1.5f : 0.f);
 		m_window.draw(shape);
 	}
 
@@ -96,6 +91,6 @@ private:
 	static sf::Vector2f V(double x, double y) { return { F(x), F(y) }; }
 	sf::RenderWindow& m_window;
 	sf::Vector2f m_currentPos;
-	sf::Color m_currentColor;
 };
+}
 #endif //FIGURES_SFMLCANVAS_H

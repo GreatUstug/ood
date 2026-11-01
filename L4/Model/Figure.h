@@ -69,6 +69,11 @@ public:
 		return m_fillColor;
 	}
 
+	gfx::Color GetStrokeColor() const
+	{
+		return m_strokeColor;
+	}
+
 	void SetFillColor(const gfx::Color& color) { m_fillColor = color; }
 	void SetStrokeColor(const gfx::Color& color) { m_strokeColor = color; }
 

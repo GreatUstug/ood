@@ -55,18 +55,20 @@ inline Handle GetActualHitTestHandle(const shapes::Bounds& b, double px, double 
 
 inline void DrawSelectionFrame(gfx::ICanvas& canvas, const shapes::Bounds& bounds, bool drawWithHandlers)
 {
-	canvas.SetColor(gfx::Color(0, 0, 255, 255));
-	canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, true);
-	if (!drawWithHandlers)
-	{
-		return;
-	}
+	const gfx::Color blue(0, 0, 255, 255);
+	const gfx::Color transparent(0, 0, 0, 0);
+
+	canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, transparent, blue);
+
+	if (!drawWithHandlers) return;
+
 	for (const auto& i : HandlesOf(bounds))
 	{
 		canvas.DrawRectangle(i.first - SIZE_OF_MARKER / 2,
 			i.second - SIZE_OF_MARKER / 2,
 			SIZE_OF_MARKER,
-			SIZE_OF_MARKER);
+			SIZE_OF_MARKER,
+			blue, transparent);
 	}
 }
 #endif //L3_DRAWSELECTIONFRAME_H
