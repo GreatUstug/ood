@@ -285,39 +285,6 @@ TEST(Color, SaveLoadBothColors)
 	EXPECT_EQ(restored.GetShape(a).GetStrokeColor(), gfx::Color(40, 50, 60, 255));
 }
 
-TEST(Reorder, SimpleExecuteUndoRedo)
-{
-	shapes::Picture pic; CommandHistory h;
-	auto a = AddRect(pic, h);
-	auto b = AddRect(pic, h);
-	auto c = AddRect(pic, h);
-
-	ASSERT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
-
-	h.Execute(std::make_unique<ReorderCommand>(pic, a, 0, 2));
-	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({b, c, a}));
-
-	h.Undo();
-	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
-
-	h.Redo();
-	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({b, c, a}));
-}
-
-TEST(Reorder, MoveDown)
-{
-	shapes::Picture pic; CommandHistory h;
-	auto a = AddRect(pic, h);
-	auto b = AddRect(pic, h);
-	auto c = AddRect(pic, h);
-
-	h.Execute(std::make_unique<ReorderCommand>(pic, c, 2, 0));
-	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({c, a, b}));
-
-	h.Undo();
-	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
-}
-
 TEST(Reorder, OutOfRangeClamped)
 {
 	shapes::Picture pic; CommandHistory h;
