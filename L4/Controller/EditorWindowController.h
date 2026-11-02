@@ -27,15 +27,15 @@ public:
 	explicit EditorWindowController(sf::Font& font, FileDialog& dialog, std::shared_ptr<Document> document,
 		sf::Vector2i pos = { 0, 0 }, const std::string& fileName = DEFAULT_FILE_NAME)
 		: m_document(std::move(document))
-		  , m_window(sf::VideoMode(sf::Vector2u(CANVAS_W + PANEL_W, CANVAS_H)), APP_NAME + fileName)
+		  , m_window(sf::VideoMode(sf::Vector2u(CANVAS_W + PANEL_W, CANVAS_H + TIMELINE_H)), APP_NAME + fileName)
 		  , m_canvas(m_window)
 		  , m_font(font)
 		  , m_view(m_document->GetPicture(), m_state, m_canvas, m_window, m_font, m_toolbar)
 		  , m_listView(m_document->GetPicture(), m_state, m_window, m_font,
 			  (float)CANVAS_W, 0.f, (float)PANEL_W, (float)CANVAS_H)
+		  , m_timeline(m_document->GetPicture(), m_state, m_window, m_font, 0.f, (float)CANVAS_H, (float)(CANVAS_W + PANEL_W), (float)TIMELINE_H)
 		  , m_controller(m_document, m_state, m_view, m_window, m_toolbar,
 			  m_listView, dialog, CANVAS_W, CANVAS_H, m_timeline)
-		  , m_timeline(m_document->GetPicture(), m_state, m_window, m_font, 0.f, (float)CANVAS_H, (float)(CANVAS_W + PANEL_W), (float)TIMELINE_H)
 	{
 		m_window.setPosition(pos);
 	}
@@ -96,7 +96,7 @@ private:
 
 	EditorView m_view;
 	ShapeListView m_listView;
-	EditorController m_controller;
 	TimelineView m_timeline;
+	EditorController m_controller;
 };
 #endif //L3_WINDOWCONTROLLER_H
