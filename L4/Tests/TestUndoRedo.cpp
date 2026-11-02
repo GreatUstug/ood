@@ -15,7 +15,9 @@
 #include "Commands/ColorCommand.h"
 #include "Commands/DeleteCommand.h"
 #include "Commands/MoveShapesCommand.h"
+#include "Commands/ReorderCommand.h"
 #include "Commands/ResizeCommand.h"
+#include "Commands/SetTimeCommand.h"
 #include "IO/SaveService.h"
 #include "IO/LoadService.h"
 
@@ -166,21 +168,21 @@ TEST(UndoRedo, ResizeUndo)
     EXPECT_NEAR(redone.height, newB.height, 1e-9);
 }
 
-// TEST(UndoRedo, HistoryBoundaries)
-// {
-//     shapes::Picture pic;
-//     CommandHistory h;
-//
-//     EXPECT_FALSE(h.Undo());
-//     EXPECT_FALSE(h.Redo());
-//
-//     auto a = AddRect(pic, h);
-//     h.Undo();
-//     EXPECT_FALSE(h.Undo());
-//     h.Redo();
-//     EXPECT_FALSE(h.Redo());
-//     EXPECT_TRUE(pic.HasShape(a));
-// }
+TEST(UndoRedo, HistoryBoundaries)
+{
+	shapes::Picture pic; CommandHistory h;
+
+	EXPECT_TRUE(h.Undo().empty());
+	EXPECT_TRUE(h.Redo().empty());
+
+	auto a = AddRect(pic, h);
+	EXPECT_TRUE(h.Redo().empty());
+	EXPECT_FALSE(h.Undo().empty());
+	EXPECT_TRUE(h.Undo().empty());
+	EXPECT_FALSE(h.Redo().empty());
+	EXPECT_TRUE(h.Redo().empty());
+	EXPECT_TRUE(pic.HasShape(a));
+}
 
 TEST(UndoRedo, DeleteUndoPreservesZOrder)
 {
@@ -281,5 +283,148 @@ TEST(Color, SaveLoadBothColors)
 
 	EXPECT_EQ(restored.GetShape(a).GetFillColor(),   gfx::Color(10, 20, 30, 255));
 	EXPECT_EQ(restored.GetShape(a).GetStrokeColor(), gfx::Color(40, 50, 60, 255));
+}
+
+TEST(Reorder, SimpleExecuteUndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	ASSERT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
+
+	h.Execute(std::make_unique<ReorderCommand>(pic, a, 0, 2));
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({b, c, a}));
+
+	h.Undo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
+
+	h.Redo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({b, c, a}));
+}
+
+TEST(Reorder, MoveDown)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	h.Execute(std::make_unique<ReorderCommand>(pic, c, 2, 0));
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({c, a, b}));
+
+	h.Undo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c}));
+}
+
+TEST(Reorder, OutOfRangeClamped)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+
+	h.Execute(std::make_unique<ReorderCommand>(pic, a, 0, 100));
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({b, a}));
+
+	h.Undo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b}));
+}
+
+TEST(SetTime, UndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	ASSERT_DOUBLE_EQ(pic.GetShape(a).GetTime(), 0.0);
+
+	h.Execute(std::make_unique<SetTimeCommand>(
+		pic, std::vector<std::string>{a}, std::vector<double>{3.5}, false));
+	EXPECT_DOUBLE_EQ(pic.GetShape(a).GetTime(), 3.5);
+
+	h.Undo();
+	EXPECT_DOUBLE_EQ(pic.GetShape(a).GetTime(), 0.0);
+
+	h.Redo();
+	EXPECT_DOUBLE_EQ(pic.GetShape(a).GetTime(), 3.5);
+}
+
+TEST(SetTime, SaveLoadPreservesTime)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	h.Execute(std::make_unique<SetTimeCommand>(
+		pic, std::vector<std::string>{a}, std::vector<double>{7.25}, false));
+
+	std::stringstream ss;
+	SaveService::Save(pic, ss);
+	auto restored = LoadService::Load(ss);
+
+	EXPECT_NEAR(restored.GetShape(a).GetTime(), 7.25, 1e-9);
+}
+
+TEST(AffectedIds, AddReturnsId)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto ids = h.Undo();
+	ASSERT_EQ(ids.size(), 1u);
+	EXPECT_EQ(ids[0], a);
+}
+
+TEST(AffectedIds, MoveReturnsAllIds)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	h.Execute(std::make_unique<MoveShapesCommand>(
+		pic, std::vector<std::string>{a, b}, 10, 10, false));
+
+	auto ids = h.Undo();
+	EXPECT_EQ(ids.size(), 2u);
+	EXPECT_NE(std::find(ids.begin(), ids.end(), a), ids.end());
+	EXPECT_NE(std::find(ids.begin(), ids.end(), b), ids.end());
+}
+
+TEST(Delete, MultipleShapesRestoreOrder)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+	auto d = AddRect(pic, h);
+
+	h.Execute(std::make_unique<DeleteCommand>(
+		pic, std::vector<std::string>{b, d}));
+
+	ASSERT_EQ(pic.GetOrder(), std::vector<std::string>({a, c}));
+
+	h.Undo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, b, c, d}));
+
+	h.Redo();
+	EXPECT_EQ(pic.GetOrder(), std::vector<std::string>({a, c}));
+}
+
+TEST(Color, MultipleShapesOneCommand)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	gfx::Color oldA = pic.GetShape(a).GetFillColor();
+	gfx::Color oldB = pic.GetShape(b).GetFillColor();
+	gfx::Color red(255, 0, 0, 255);
+
+	h.Execute(std::make_unique<ColorCommand>(
+		pic, std::vector<std::string>{a, b}, red, shapes::ColorTarget::Fill));
+
+	EXPECT_EQ(pic.GetShape(a).GetFillColor(), red);
+	EXPECT_EQ(pic.GetShape(b).GetFillColor(), red);
+	EXPECT_EQ(pic.GetShape(c).GetFillColor(), oldA); // c не тронута
+
+	h.Undo();
+	EXPECT_EQ(pic.GetShape(a).GetFillColor(), oldA);
+	EXPECT_EQ(pic.GetShape(b).GetFillColor(), oldB);
 }
 #endif //L4_TESTUNDOREDO_H

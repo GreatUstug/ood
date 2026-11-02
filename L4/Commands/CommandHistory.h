@@ -1,60 +1,64 @@
-//
-// Created by maxim on 25.10.2026.
-//
-
 #ifndef L4_COMMANDHISTORY_H
 #define L4_COMMANDHISTORY_H
 #include "ICommand.h"
 
 #include <memory>
 #include <vector>
+#include <string>
 
 class CommandHistory
 {
 public:
 	CommandHistory() = default;
-
 	virtual ~CommandHistory() = default;
 
 	void Execute(std::unique_ptr<ICommand> command)
 	{
 		command->Execute();
-		m_undoList.push_back(std::move(command));
-		m_redoList.clear();
+
+		if (m_commandIndex < m_commands.size())
+		{
+			m_commands.erase(
+				m_commands.begin() + static_cast<std::ptrdiff_t>(m_commandIndex),
+				m_commands.end());
+		}
+
+		m_commands.push_back(std::move(command));
+		m_commandIndex++;
 	}
 
 	std::vector<std::string> Undo()
 	{
-		if (m_undoList.empty())
+		if (m_commandIndex == 0)
 			return {};
-		auto cmd = std::move(m_undoList.back());
-		m_undoList.pop_back();
+
+		m_commandIndex--;
+		auto& cmd = m_commands[m_commandIndex];
 		auto ids = cmd->AffectedIds();
 		cmd->Unexecute();
-		m_redoList.push_back(std::move(cmd));
 		return ids;
 	}
 
 	std::vector<std::string> Redo()
 	{
-		if (m_redoList.empty())
+		if (m_commandIndex >= m_commands.size())
 			return {};
-		auto cmd = std::move(m_redoList.back());
-		m_redoList.pop_back();
+
+		auto& cmd = m_commands[m_commandIndex];
 		auto ids = cmd->AffectedIds();
 		cmd->Execute();
-		m_undoList.push_back(std::move(cmd));
+		m_commandIndex++;
 		return ids;
 	}
 
 	void Clear()
 	{
-		m_undoList.clear();
-		m_redoList.clear();
+		m_commandIndex = 0;
+		m_commands.clear();
 	}
 
 private:
-	std::vector<std::unique_ptr<ICommand> > m_undoList;
-	std::vector<std::unique_ptr<ICommand> > m_redoList;
+	std::size_t m_commandIndex = 0;
+	std::vector<std::unique_ptr<ICommand>> m_commands;
 };
 #endif //L4_COMMANDHISTORY_H

@@ -23,7 +23,6 @@ public:
 
 	void Execute() override
 	{
-		m_removed.clear();
 		m_removed.reserve(m_ids.size());
 		for (const auto& id : m_ids)
 		{
