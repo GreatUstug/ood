@@ -67,6 +67,19 @@ public:
 			if (rel->button == sf::Mouse::Button::Left)
 				OnMouseReleased();
 		}
+		if (const auto* wheel = event.getIf<sf::Event::MouseWheelScrolled>())
+		{
+			const bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
+							  sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl);
+
+			if (ctrl)
+			{
+				if (const sf::Vector2f pos = m_window.mapPixelToCoords(wheel->position); m_timeline.HitTest(pos.x, pos.y))
+				{
+					m_timeline.Zoom(wheel->delta > 0 ? 1.2 : 1.0 / 1.2, pos.x);
+				}
+			}
+		}
 		return AppState::None;
 	}
 
