@@ -9,10 +9,18 @@
 #include <set>
 #include <string>
 
+struct PreviewShape
+{
+	std::optional<shapes::Bounds> bounds;
+	std::optional<double> time;
+};
+
 struct EditorState
 {
 	enum class Mode { Idle, Dragging, Resizing, Creating };
+
 	enum class ColorMode { Fill, Stroke };
+
 	ColorMode colorMode = ColorMode::Fill;
 
 	void Subscribe(EditorStateObserver* obs) { m_observers.AddObserver(obs); }
@@ -102,6 +110,18 @@ struct EditorState
 		mode = Mode::Idle;
 		creatingType.clear();
 		hasCreateStart = false;
+	}
+
+	std::unordered_map<std::string, PreviewShape> preview;
+
+	std::unique_ptr<shapes::Figure> createPreviewFigure;
+
+	bool HasPreview(const std::string& id) const { return preview.contains(id); }
+
+	void ClearPreview()
+	{
+		preview.clear();
+		createPreviewFigure.reset();
 	}
 
 private:
