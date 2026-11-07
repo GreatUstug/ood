@@ -65,6 +65,9 @@ public:
 	double GetY() const { return m_y; }
 	double GetW() const { return m_width; }
 	double GetH() const { return m_height; }
+	std::unique_ptr<IShapeGeometry> Clone() const override {
+		return std::make_unique<Rectangle>(*this);
+	}
 private:
 	double m_x = 0;
 	double m_y = 0;

@@ -93,6 +93,9 @@ public:
 	double GetY2() const { return m_y2; }
 	double GetX3() const { return m_x3; }
 	double GetY3() const { return m_y3; }
+	std::unique_ptr<IShapeGeometry> Clone() const override {
+		return std::make_unique<Triangle>(*this);
+	}
 private:
 	double m_x = 0;
 	double m_y = 0;

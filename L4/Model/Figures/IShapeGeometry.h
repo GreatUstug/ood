@@ -7,6 +7,7 @@
 #include "IShapeGeometryVisitor.h"
 #include "Model/Bounds.h"
 
+#include <memory>
 #include <string>
 
 namespace shapes
@@ -31,6 +32,8 @@ public:
 	virtual void SetBounds(const Bounds& bounds) = 0;
 
 	virtual bool HitTest(double x, double y) const = 0;
+
+	virtual std::unique_ptr<IShapeGeometry> Clone() const = 0;
 };
 }
 

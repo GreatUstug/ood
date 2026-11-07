@@ -62,7 +62,9 @@ public:
     double GetY1() const { return m_y1; }
     double GetX2() const { return m_x2; }
     double GetY2() const { return m_y2; }
-
+	std::unique_ptr<IShapeGeometry> Clone() const override {
+    	return std::make_unique<Line>(*this);
+    }
 private:
     double m_x1 = 0, m_y1 = 0, m_x2 = 0, m_y2 = 0;
 };

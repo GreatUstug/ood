@@ -83,6 +83,8 @@ public:
 	double GetTime() const { return m_time; }
 	void SetTime(double t) { m_time = t; }
 
+	const IShapeGeometry* GetGeometry() const { return m_geometry.get(); }
+
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;

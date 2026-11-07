@@ -66,6 +66,9 @@ public:
 	double GetCy() const { return m_y; }
 	double GetRx() const { return m_radiusX; }
 	double GetRy() const { return m_radiusY; }
+	std::unique_ptr<IShapeGeometry> Clone() const override {
+		return std::make_unique<Ellipse>(*this);
+	}
 private:
 	double m_radiusX;
 	double m_radiusY;

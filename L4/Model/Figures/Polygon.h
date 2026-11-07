@@ -79,7 +79,9 @@ public:
     double GetRadius() const { return m_radius; }
     int    GetSides() const { return m_sides; }
     double GetRotation() const { return m_rotation; }
-
+	std::unique_ptr<IShapeGeometry> Clone() const override {
+    	return std::make_unique<Polygon>(*this);
+    }
 private:
     double m_cx = 0, m_cy = 0, m_radius = 50;
     int    m_sides = 6;
