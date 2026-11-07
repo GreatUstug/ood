@@ -18,6 +18,8 @@
 #include "SFML/Window/Keyboard.hpp"
 #include "View/DrawSelectionFrame.h"
 
+#include <ranges>
+
 class ShapeTransformController
 {
 public:
@@ -129,36 +131,35 @@ public:
 			{
 				std::vector<std::string> ids(
 					m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
+
 				m_document.GetHistory().Execute(std::make_unique<MoveShapesCommand>(
-					m_document.GetPicture(), ids, dx, dy, true));
+					m_document.GetPicture(), ids, dx, dy));
 			}
-		} else if (m_state.mode == EditorState::Mode::Resizing)
+		}
+		else if (m_state.mode == EditorState::Mode::Resizing)
 		{
 			const std::string& id = m_state.GetPrimarySelectedId();
 			if (!id.empty() && m_document.GetPicture().HasShape(id))
 			{
 				shapes::Bounds oldB = m_state.resizeStartBounds;
-				shapes::Bounds newB = m_document.GetPicture().GetShape(id).GetBounds();
+				auto pvIt = m_state.preview.find(id);
 
-				constexpr double EPS = 1e-9;
-				bool changed =
-					std::abs(oldB.x      - newB.x)      > EPS ||
-					std::abs(oldB.y      - newB.y)      > EPS ||
-					std::abs(oldB.width  - newB.width)  > EPS ||
-					std::abs(oldB.height - newB.height) > EPS;
-
-				if (changed)
+				if (pvIt != m_state.preview.end() && pvIt->second.bounds)
 				{
-					m_document.GetHistory().Execute(std::make_unique<ResizeCommand>(
-						m_document.GetPicture(), id, oldB, newB, /*alreadyApplied=*/true));
+					shapes::Bounds newB = *pvIt->second.bounds;
+
+					constexpr double EPS = 1e-9;
+					if (std::abs(oldB.x - newB.x) > EPS || std::abs(oldB.y - newB.y) > EPS ||
+						std::abs(oldB.width - newB.width) > EPS || std::abs(oldB.height - newB.height) > EPS)
+					{
+						m_document.GetHistory().Execute(std::make_unique<ResizeCommand>(
+							m_document.GetPicture(), id, oldB, newB));
+					}
 				}
 			}
 		}
 
-		m_state.activeHandle = Handle::None;
-		m_state.dragStartBounds.clear();
-		m_state.lastAppliedDx = 0;
-		m_state.lastAppliedDy = 0;
+		m_state.ClearPreview();
 		m_state.mode = EditorState::Mode::Idle;
 	}
 
@@ -175,24 +176,24 @@ private:
 		double rawDy = position.y - m_state.dragAnchorY;
 
 		double minDx = -1e9, maxDx = 1e9, minDy = -1e9, maxDy = 1e9;
-		for (const auto& [id, b] : m_state.dragStartBounds)
+		for (const auto& [x, y, width, height] : m_state.dragStartBounds | std::views::values)
 		{
-			minDx = std::max(minDx, -b.x);
-			maxDx = std::min(maxDx, (double)m_canvasWidth - (b.x + b.width));
-			minDy = std::max(minDy, -b.y);
-			maxDy = std::min(maxDy, (double)m_canvasHeight - (b.y + b.height));
+			minDx = std::max(minDx, -x);
+			maxDx = std::min(maxDx, (double)m_canvasWidth - (x + width));
+			minDy = std::max(minDy, -y);
+			maxDy = std::min(maxDy, (double)m_canvasHeight - (y + height));
 		}
 
 		double dx = std::clamp(rawDx, minDx, maxDx);
 		double dy = std::clamp(rawDy, minDy, maxDy);
 
-		double deltaDx = dx - m_state.lastAppliedDx;
-		double deltaDy = dy - m_state.lastAppliedDy;
-		if (deltaDx == 0.0 && deltaDy == 0.0)
-			return;
-
-		std::vector idsVec(ids.begin(), ids.end());
-		m_document.GetPicture().MoveShapes(idsVec, deltaDx, deltaDy);
+		for (const auto& id : ids)
+		{
+			shapes::Bounds newB = m_state.dragStartBounds.at(id);
+			newB.x += dx;
+			newB.y += dy;
+			m_state.preview[id].bounds = newB;
+		}
 		m_state.lastAppliedDx = dx;
 		m_state.lastAppliedDy = dy;
 	}
@@ -206,7 +207,7 @@ private:
 			m_state.activeHandle,
 			dx, dy,
 			m_canvasWidth, m_canvasHeight);
-		m_document.GetPicture().SetShapeBounds(m_state.GetPrimarySelectedId(), b);
+		m_state.preview[m_state.GetPrimarySelectedId()].bounds = b;
 	}
 
 	Document& m_document;

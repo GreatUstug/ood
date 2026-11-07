@@ -10,18 +10,13 @@
 class MoveShapesCommand : public ICommand
 {
 public:
-	MoveShapesCommand(shapes::Picture& picture, std::vector<std::string> ids, double dx, double dy, bool alreadyApplied)
-		: m_picture(picture), m_ids(std::move(ids)), m_dx(dx), m_dy(dy), m_alreadyApplied(alreadyApplied)
+	MoveShapesCommand(shapes::Picture& picture, std::vector<std::string> ids, double dx, double dy)
+		: m_picture(picture), m_ids(std::move(ids)), m_dx(dx), m_dy(dy)
 	{
 	};
 
 	void Execute() override
 	{
-		if (m_alreadyApplied)
-		{
-			m_alreadyApplied = false;
-			return;
-		}
 		m_picture.MoveShapes(m_ids, m_dx, m_dy);
 	};
 	void Unexecute() override
@@ -37,6 +32,5 @@ private:
 	std::vector<std::string> m_ids;
 	double m_dx;
 	double m_dy;
-	bool m_alreadyApplied;
 };
 #endif //L4_MOVESHAPESCOMMAND_H

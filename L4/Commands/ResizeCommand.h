@@ -17,13 +17,11 @@ public:
 	ResizeCommand(shapes::Picture& picture,
 				  std::string id,
 				  const shapes::Bounds& oldBounds,
-				  const shapes::Bounds& newBounds,
-				  bool alreadyApplied)
+				  const shapes::Bounds& newBounds)
 		: m_picture(picture)
 		, m_id(std::move(id))
 		, m_oldBounds(oldBounds)
 		, m_newBounds(newBounds)
-		, m_alreadyApplied(alreadyApplied)
 	{
 	}
 
@@ -31,11 +29,6 @@ public:
 
 	void Execute() override
 	{
-		if (m_alreadyApplied)
-		{
-			m_alreadyApplied = false;
-			return;
-		}
 		m_picture.SetShapeBounds(m_id, m_newBounds);
 	}
 
@@ -54,7 +47,6 @@ private:
 	std::string      m_id;
 	shapes::Bounds   m_oldBounds;
 	shapes::Bounds   m_newBounds;
-	bool             m_alreadyApplied;
 };
 
 #endif //L4_RESIZECOMMAND_H
