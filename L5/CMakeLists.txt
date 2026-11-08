@@ -62,7 +62,8 @@ add_executable(L5 main.cpp
         Commands/SetTimeCommand.h
         Commands/ReorderCommand.h
         View/TimelineView.h
-        Commands/SetDurationCommand.h)
+        Commands/SetDurationCommand.h
+        Model/Figure.h)
 
 target_include_directories(L5 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L5 PRIVATE

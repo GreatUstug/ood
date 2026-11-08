@@ -6,7 +6,7 @@
 #define L3_LOADSERVICE_H
 
 #include "../Model/Picture.h"
-#include "../Model/Figure.h"
+#include "../Model/PrimitiveFigure.h"
 #include "../Model/Figures/Rectangle.h"
 #include "../Model/Figures/Ellipse.h"
 #include "../Model/Figures/Triangle.h"
@@ -50,7 +50,7 @@ public:
 	}
 
 private:
-	static std::unique_ptr<shapes::Figure> ParseLine(const std::string& line)
+	static std::unique_ptr<shapes::PrimitiveFigure> ParseLine(const std::string& line)
 	{
 		std::istringstream iss(line);
 		std::string type, id, fill, stroke;
@@ -115,7 +115,7 @@ private:
 		iss >> t;
 		double d = 1.0;
 		iss >> d;
-		auto fig = std::make_unique<shapes::Figure>(id, fill, std::move(geo), stroke);
+		auto fig = std::make_unique<shapes::PrimitiveFigure>(id, fill, std::move(geo), stroke);
 		fig->SetTime(t);
 		fig->SetDuration(d);
 		return fig;

@@ -115,7 +115,7 @@ struct EditorState
 
 	std::unordered_map<std::string, PreviewShape> preview;
 
-	std::unique_ptr<shapes::Figure> createPreviewFigure;
+	std::unique_ptr<shapes::PrimitiveFigure> createPreviewFigure;
 
 	bool HasPreview(const std::string& id) const { return preview.contains(id); }
 

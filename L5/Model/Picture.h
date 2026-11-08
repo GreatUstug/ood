@@ -1,7 +1,7 @@
 // Shapes/Picture.h
 #pragma once
 #include "Bounds.h"
-#include "Figure.h"
+#include "PrimitiveFigure.h"
 #include "ShapeInfo.h"
 #include "Observers/ObserverList.h"
 #include "Observers/PictureObserver.h"
@@ -28,7 +28,7 @@ public:
 	void Subscribe(PictureObserver* obs) { m_observers.AddObserver(obs); }
 	void Unsubscribe(PictureObserver* obs) { m_observers.RemoveObserver(obs); }
 
-	void AddShape(std::unique_ptr<Figure> figure, const std::optional<size_t> index = std::nullopt)
+	void AddShape(std::unique_ptr<PrimitiveFigure> figure, const std::optional<size_t> index = std::nullopt)
 	{
 		const std::string id = figure->GetId();
 		if (m_shapes.contains(id))
@@ -86,7 +86,7 @@ public:
 
 	const std::vector<std::string>& GetOrder() const { return m_order; }
 
-	Figure& GetShape(const std::string& id) const
+	PrimitiveFigure& GetShape(const std::string& id) const
 	{
 		auto it = m_shapes.find(id);
 		if (it == m_shapes.end())
@@ -128,7 +128,7 @@ public:
 		NotifyPictureObservers();
 	}
 
-	std::unique_ptr<Figure> ExtractFigure(const std::string& id)
+	std::unique_ptr<PrimitiveFigure> ExtractFigure(const std::string& id)
 	{
 		const auto it = m_shapes.find(id);
 		if (it == m_shapes.end())
@@ -258,7 +258,7 @@ private:
 	}
 
 	ObserverList<PictureObserver> m_observers;
-	std::unordered_map<std::string, std::unique_ptr<Figure> > m_shapes;
+	std::unordered_map<std::string, std::unique_ptr<PrimitiveFigure> > m_shapes;
 	std::vector<std::string> m_order;
 };
 }
