@@ -12,6 +12,7 @@ class Ellipse;
 class Triangle;
 class Line;
 class Polygon;
+class GroupFigure;
 
 class IShapeGeometryVisitor
 {
@@ -22,6 +23,7 @@ public:
 	virtual void Visit(const Triangle& t) = 0;
 	virtual void Visit(const Line& l) = 0;
 	virtual void Visit(const Polygon& p) = 0;
+	virtual void Visit(const GroupFigure& gp) = 0;
 };
 }
 

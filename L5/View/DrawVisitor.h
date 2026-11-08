@@ -1,6 +1,7 @@
 #ifndef L3_DRAWVISITOR_H
 #define L3_DRAWVISITOR_H
 
+#include "Model/GroupFigure.h"
 #include "Model/Figures/IShapeGeometryVisitor.h"
 #include "Model/Figures/Rectangle.h"
 #include "Model/Figures/Ellipse.h"
@@ -39,6 +40,13 @@ public:
 		m_canvas.DrawPolygon(p.Vertices(), m_fill, m_stroke);
 	}
 
+	void Visit(const GroupFigure& gp) override
+	{
+		for (const auto& child : gp.GetChildren())
+		{
+			child->Accept(*this);
+		}
+	}
 private:
 	gfx::ICanvas& m_canvas;
 	gfx::Color m_fill;

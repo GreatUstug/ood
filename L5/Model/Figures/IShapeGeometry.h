@@ -4,7 +4,6 @@
 
 #ifndef FIGURES_SHAPE_H
 #define FIGURES_SHAPE_H
-#include "IShapeGeometryVisitor.h"
 #include "Model/Bounds.h"
 
 #include <memory>
