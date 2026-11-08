@@ -113,9 +113,11 @@ private:
 
 		double t = 0.0;
 		iss >> t;
-
+		double d = 1.0;
+		iss >> d;
 		auto fig = std::make_unique<shapes::Figure>(id, fill, std::move(geo), stroke);
 		fig->SetTime(t);
+		fig->SetDuration(d);
 		return fig;
 	}
 };

@@ -82,7 +82,7 @@ public:
 
 			float rowY = RowY((int)i);
 			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
-				continue; // вне экрана
+				continue;
 
 			double t = m_pic.GetShape(id).GetTime();
 			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.time)
