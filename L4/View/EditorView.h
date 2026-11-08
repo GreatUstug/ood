@@ -84,7 +84,7 @@ public:
 		const gfx::Color previewFrame(100, 100, 255, 180);
 		const gfx::Color transparent(0, 0, 0, 0);
 		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height,
-							   transparent, previewFrame);
+			transparent, previewFrame);
 	}
 
 	void UpdateCursor(const sf::Vector2f& pos)
@@ -134,11 +134,17 @@ private:
 			rect.setPosition({ (float)b.bounds.x, (float)b.bounds.y });
 
 			bool active =
-				(b.action == ToolbarAction::SetFillMode
-					&& m_state.colorMode == EditorState::ColorMode::Fill) ||
-				(b.action == ToolbarAction::SetStrokeMode
-					&& m_state.colorMode == EditorState::ColorMode::Stroke);
-
+				b.action == ToolbarAction::SetFillMode && m_state.colorMode == EditorState::ColorMode::Fill
+				|| b.action == ToolbarAction::SetStrokeMode && m_state.colorMode == EditorState::ColorMode::Stroke;
+			if (m_state.mode == EditorState::Mode::Creating)
+			{
+				const std::string type = m_state.creatingType;
+				active = (b.action == ToolbarAction::AddRectangle && type == "rectangle")
+					|| b.action == ToolbarAction::AddEllipse && type == "ellipse"
+					|| b.action == ToolbarAction::AddTriangle && type == "triangle"
+					|| b.action == ToolbarAction::AddLine && type == "line"
+					|| b.action == ToolbarAction::AddPolygon && type == "polygon";
+			}
 			rect.setFillColor(active ? sf::Color(160, 200, 255) : sf::Color(220, 220, 220));
 			rect.setOutlineColor(sf::Color::Black);
 			rect.setOutlineThickness(1.f);
