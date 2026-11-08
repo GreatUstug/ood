@@ -5,7 +5,7 @@
 #ifndef L3_SHORTCUTCONTROLLER_H
 #define L3_SHORTCUTCONTROLLER_H
 
-#include "AppState.h"
+#include "WindowAction.h"
 #include "Commands/DeleteCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
@@ -30,31 +30,31 @@ public:
 	{
 	}
 
-	AppState OnKeyPressed(const sf::Event::KeyPressed& key)
+	WindowAction OnKeyPressed(const sf::Event::KeyPressed& key)
 	{
 		if (key.code == sf::Keyboard::Key::Escape &&
 			m_state.mode == EditorState::Mode::Creating)
 		{
 			m_create.Cancel();
-			return AppState::None;
+			return WindowAction::None;
 		}
 
 		if (key.control && key.code == sf::Keyboard::Key::S)
 		{
 			m_documentCtrl.Save();
-			return AppState::None;
+			return WindowAction::None;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::O)
 		{
-			return AppState::OpenInNewWindow;
+			return WindowAction::OpenInNewWindow;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::N)
 		{
-			return AppState::NewWindow;
+			return WindowAction::NewWindow;
 		}
 		if (key.control && key.code == sf::Keyboard::Key::D)
 		{
-			return AppState::DuplicateWindow;
+			return WindowAction::DuplicateWindow;
 		}
 
 		if (key.code == sf::Keyboard::Key::Delete)
@@ -70,16 +70,16 @@ public:
 		{
 			std::vector<std::string> affected = m_document.GetHistory().Undo();
 			ApplySelection(affected);
-			return AppState::None;
+			return WindowAction::None;
 		}
 		if (key.control && (key.code == sf::Keyboard::Key::Y ||
 			(key.code == sf::Keyboard::Key::Z && key.shift)))
 		{
 			auto affected = m_document.GetHistory().Redo();
 			ApplySelection(affected);
-			return AppState::None;
+			return WindowAction::None;
 		}
-		return AppState::None;
+		return WindowAction::None;
 	}
 
 private:

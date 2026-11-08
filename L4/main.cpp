@@ -34,10 +34,10 @@ int main()
 			}
 			switch (window->TakePendingCommand())
 			{
-			case AppState::NewWindow:
+			case WindowAction::NewWindow:
 				toAdd.push_back(std::make_unique<EditorWindowController>(font, dialog, registry.Create()));
 				break;
-			case AppState::OpenInNewWindow: {
+			case WindowAction::OpenInNewWindow: {
 				if (auto path = dialog.AskOpenPath())
 				{
 					auto picture = DocumentIO::Load(*path);
@@ -47,14 +47,14 @@ int main()
 				}
 				break;
 			}
-			case AppState::DuplicateWindow: {
+			case WindowAction::DuplicateWindow: {
 				auto newWin = std::make_unique<EditorWindowController>(
 					font, dialog, window->GetDocument(),
 					sf::Vector2i{0, 0});
 				toAdd.push_back(std::move(newWin));
 				break;
 			}
-			case AppState::None:
+			case WindowAction::None:
 			default:
 				break;
 			}

@@ -47,7 +47,7 @@ public:
 	{
 	}
 
-	AppState HandleEvent(const sf::Event& event)
+	WindowAction HandleEvent(const sf::Event& event)
 	{
 		if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>())
 		{
@@ -80,7 +80,7 @@ public:
 				}
 			}
 		}
-		return AppState::None;
+		return WindowAction::None;
 	}
 
 private:
