@@ -50,29 +50,61 @@ public:
 		bg.setOutlineThickness(1.f);
 		m_window.draw(bg);
 
+		double startT = XToTime(m_x);
+		double endT = XToTime(m_x + m_w);
+		double step = (m_pixelsPerSecond > 150) ? 0.5 : 1.0;
+
+		for (double t = std::floor(startT / step) * step; t <= endT; t += step)
+		{
+			float gx = (float)TimeToX(t);
+			if (gx < m_x || gx > m_x + m_w)
+				continue;
+
+			sf::RectangleShape gridLine({ 1.f, m_h });
+			gridLine.setPosition({ gx, m_y });
+			gridLine.setFillColor(sf::Color(220, 220, 220));
+			m_window.draw(gridLine);
+
+			sf::Text label(m_font);
+			label.setString(std::to_string((int)t) + "s");
+			label.setCharacterSize(10);
+			label.setFillColor(sf::Color(120, 120, 120));
+			label.setPosition({ gx + 2.f, m_y + 2.f });
+			m_window.draw(label);
+		}
+
 		const auto& order = m_pic.GetOrder();
 		for (std::size_t i = 0; i < order.size(); ++i)
 		{
 			const auto& id = order[i];
-			if (!m_pic.HasShape(id)) continue;
+			if (!m_pic.HasShape(id))
+				continue;
 
 			float rowY = RowY((int)i);
-			if (rowY + ROW_H < m_y || rowY > m_y + m_h) continue;
+			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
+				continue; // вне экрана
 
 			double t = m_pic.GetShape(id).GetTime();
+			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.time)
+				t = *pv->second.time;
+
 			bool selected = m_selected.contains(id);
 
-			float barLeft  = (float)TimeToX(t);
+			float barLeft = (float)TimeToX(t);
 			float barRight = barLeft + (float)(DURATION * m_pixelsPerSecond);
 
-			float clipLeft  = std::max(barLeft,  m_x);
+			float clipLeft = std::max(barLeft, m_x);
 			float clipRight = std::min(barRight, m_x + m_w);
-			if (clipRight <= clipLeft) continue;
+			if (clipRight <= clipLeft)
+				continue;
 
-			sf::RectangleShape bar({ clipRight - clipLeft, ROW_H - 4.f });
-			bar.setPosition({ clipLeft, rowY });
-			bar.setFillColor(selected ? sf::Color(198, 120, 255) : sf::Color(180, 180, 220));
-			bar.setOutlineColor(sf::Color::Black);
+			sf::RectangleShape bar({ clipRight - clipLeft, ROW_H - 6.f });
+			bar.setPosition({ clipLeft, rowY + 2.f });
+
+			sf::Color fillColor = selected ? sf::Color(198, 120, 255) : sf::Color(160, 170, 210);
+			sf::Color outlineColor = selected ? sf::Color(100, 50, 150) : sf::Color(100, 100, 120);
+			bar.setFillColor(fillColor);
+			bar.setOutlineColor(outlineColor);
 			bar.setOutlineThickness(1.f);
 			m_window.draw(bar);
 
@@ -81,8 +113,8 @@ public:
 				sf::Text text(m_font);
 				text.setString(id.substr(0, 10));
 				text.setCharacterSize(11);
-				text.setFillColor(sf::Color::Black);
-				text.setPosition({ barLeft + 5.f, rowY + 2.f });
+				text.setFillColor(sf::Color::White);
+				text.setPosition({ barLeft + 5.f, rowY + 4.f });
 				m_window.draw(text);
 			}
 		}
@@ -163,9 +195,12 @@ public:
 		{
 			double clickTime = XToTime(px);
 			double newTime = m_dragStartShapeTime + (clickTime - m_dragStartMouseTime);
-			if (newTime < 0) newTime = 0;
+			if (newTime < 0)
+				newTime = 0;
 			m_dragCurrentTime = newTime;
-			m_pic.SetShapeTimes({ m_dragId }, { newTime });
+
+			// ВАЖНО: пишем в EditorState::preview, а не в модель!
+			m_state.preview[m_dragId].time = newTime;
 		}
 		else
 		{
@@ -196,7 +231,9 @@ public:
 		{
 			if (std::abs(m_dragCurrentTime - m_dragStartShapeTime) < 1e-9)
 				return nullptr;
-			m_pic.SetShapeTimes({ m_dragId }, { m_dragStartShapeTime });
+
+			m_state.preview.erase(m_dragId);
+
 			return std::make_unique<SetTimeCommand>(
 				m_pic, std::vector<std::string>{ m_dragId },
 				std::vector<double>{ m_dragCurrentTime }, false);
@@ -226,7 +263,8 @@ public:
 		double tAtCursor = XToTime(anchorX);
 		m_pixelsPerSecond = newPps;
 		m_timeOffset = tAtCursor - (anchorX - m_x) / m_pixelsPerSecond;
-		if (m_timeOffset < 0) m_timeOffset = 0;
+		if (m_timeOffset < 0)
+			m_timeOffset = 0;
 	}
 
 private:
@@ -236,7 +274,7 @@ private:
 
 	double TimeToX(double t) const { return m_x + (t - m_timeOffset) * m_pixelsPerSecond; }
 	double XToTime(double px) const { return m_timeOffset + (px - m_x) / m_pixelsPerSecond; }
-	float  RowY(int index) const { return m_y + ROW_PAD + index * ROW_H; }
+	float RowY(int index) const { return m_y + ROW_PAD + index * ROW_H; }
 
 	shapes::Picture& m_pic;
 	EditorState& m_state;
