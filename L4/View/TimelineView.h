@@ -75,16 +75,17 @@ public:
 		}
 
 		const auto& order = m_pic.GetOrder();
-		for (order.rbegin(); order.rbegin() != order.rend())
+		for (int i = (int)order.size() - 1; i >= 0; --i)
 		{
 			const auto& id = order[i];
 			if (!m_pic.HasShape(id))
 				continue;
 
-			float rowY = RowY((int)i);
+			int visualRow = (int)order.size() - 1 - i;
+			float rowY = RowY(visualRow);
 			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
 				continue;
-Gth
+
 			double t = m_pic.GetShape(id).GetTime();
 			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.time)
 				t = *pv->second.time;
@@ -139,26 +140,28 @@ Gth
 		return px >= m_x && px <= m_x + m_w && py >= m_y && py <= m_y + m_h;
 	}
 
-	int RowAt(float py) const
+	int VisualRowAt(float py) const
 	{
 		int idx = (int)((py - m_y - ROW_PAD) / ROW_H);
 		int count = (int)m_pic.GetOrder().size();
 		return (idx >= 0 && idx < count) ? idx : -1;
 	}
 
-		bool HandleClick(float px, float py)
+	bool HandleClick(float px, float py)
 	{
 		if (!HitTest(px, py))
 			return false;
 
-		int row = RowAt(py);
-		if (row < 0)
+		int visualRow = VisualRowAt(py);
+		if (visualRow < 0)
 		{
 			m_state.currentTime = std::max(0.0, XToTime(px));
 			return true;
 		}
 
-		const std::string& id = m_pic.GetOrder()[row];
+		int modelRow = (int)m_pic.GetOrder().size() - 1 - visualRow;
+		const std::string& id = m_pic.GetOrder()[modelRow];
+
 		double t = m_pic.GetShape(id).GetTime();
 		double clickTime = XToTime(px);
 		double duration = m_pic.GetShape(id).GetDuration();
@@ -186,8 +189,8 @@ Gth
 			m_dragStartMouseTime = clickTime;
 			m_dragStartShapeTime = t;
 			m_dragCurrentTime = t;
-			m_dragStartRow = row;
-			m_dragCurrentRow = row;
+			m_dragStartRow = modelRow;
+			m_dragCurrentRow = modelRow;
 			m_dragStartMouseY = py;
 			return true;
 		}
@@ -215,20 +218,22 @@ Gth
 		{
 			double clickTime = XToTime(px);
 			double newTime = m_dragStartShapeTime + (clickTime - m_dragStartMouseTime);
-			if (newTime < 0)
-				newTime = 0;
+			if (newTime < 0) newTime = 0;
 			m_dragCurrentTime = newTime;
 			m_state.preview[m_dragId].time = newTime;
 		}
 		else if (m_dragMode == DragMode::Layer)
 		{
-			int targetRow = RowAt(py);
-			if (targetRow < 0)
-				targetRow = (py < m_y) ? 0 : (int)m_pic.GetOrder().size() - 1;
-			if (targetRow != m_dragCurrentRow)
+			int visualRow = VisualRowAt(py);
+			if (visualRow < 0)
+				visualRow = (py < m_y) ? 0 : (int)m_pic.GetOrder().size() - 1;
+
+			int targetModelRow = (int)m_pic.GetOrder().size() - 1 - visualRow;
+
+			if (targetModelRow != m_dragCurrentRow)
 			{
-				m_pic.MoveShapeToIndex(m_dragId, static_cast<std::size_t>(targetRow));
-				m_dragCurrentRow = targetRow;
+				m_pic.MoveShapeToIndex(m_dragId, static_cast<std::size_t>(targetModelRow));
+				m_dragCurrentRow = targetModelRow;
 			}
 		}
 		else if (m_dragMode == DragMode::Duration)
@@ -257,9 +262,7 @@ Gth
 		{
 			if (std::abs(m_dragCurrentTime - m_dragStartShapeTime) < 1e-9)
 				return nullptr;
-
 			m_state.preview.erase(m_dragId);
-
 			return std::make_unique<SetTimeCommand>(
 				m_pic, std::vector<std::string>{ m_dragId },
 				std::vector<double>{ m_dragCurrentTime }, false);
