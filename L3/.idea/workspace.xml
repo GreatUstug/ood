@@ -67,11 +67,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="270ecacc-b966-4bc2-8ff8-68b435b2b0ee" name="Changes" comment="Лабораторная работа 3. Правки. Убрал отрисовку из модели">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_10_2026_12_29_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_12_10_2026_12_29__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/EditorWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/EditorWindowController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/ShapeTransformController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ShapeTransformController.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/todo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,11 +310,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="freetype" type="CMakeRunConfiguration" factoryName="Application" folderName="Dependencies" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="L3" TARGET_NAME="freetype" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -354,7 +347,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.Continuous" />
+      <item itemvalue="CMake Debug.Figures" />
       <item itemvalue="CMake Application.ContinuousBuild" />
       <item itemvalue="CMake Application.ContinuousConfigure" />
       <item itemvalue="CMake Application.ContinuousCoverage" />
@@ -363,7 +356,7 @@
       <item itemvalue="CMake Application.ContinuousSubmit" />
       <item itemvalue="CMake Application.ContinuousTest" />
       <item itemvalue="CMake Application.ContinuousUpdate" />
-      <item itemvalue="CMake Application.Experimental" />
+      <item itemvalue="CMake Application.Continuous" />
       <item itemvalue="CMake Application.ExperimentalBuild" />
       <item itemvalue="CMake Application.ExperimentalConfigure" />
       <item itemvalue="CMake Application.ExperimentalCoverage" />
@@ -372,7 +365,8 @@
       <item itemvalue="CMake Application.ExperimentalSubmit" />
       <item itemvalue="CMake Application.ExperimentalTest" />
       <item itemvalue="CMake Application.ExperimentalUpdate" />
-      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.Experimental" />
+      <item itemvalue="CMake Application.L3" />
       <item itemvalue="CMake Application.NightlyBuild" />
       <item itemvalue="CMake Application.NightlyConfigure" />
       <item itemvalue="CMake Application.NightlyCoverage" />
@@ -382,15 +376,14 @@
       <item itemvalue="CMake Application.NightlySubmit" />
       <item itemvalue="CMake Application.NightlyTest" />
       <item itemvalue="CMake Application.NightlyUpdate" />
+      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.SheenBidi" />
       <item itemvalue="CMake Application.freetype" />
       <item itemvalue="CMake Application.harfbuzz" />
-      <item itemvalue="CMake Application.SheenBidi" />
-      <item itemvalue="CMake Application.sfml-window" />
       <item itemvalue="CMake Application.sfml-graphics" />
       <item itemvalue="CMake Application.sfml-main" />
       <item itemvalue="CMake Application.sfml-system" />
-      <item itemvalue="CMake Application.L3" />
-      <item itemvalue="CMake Debug.Figures" />
+      <item itemvalue="CMake Application.sfml-window" />
       <item itemvalue="CTest Application.All CTest" />
     </list>
     <recent_temporary>
@@ -418,6 +411,7 @@
       <workItem from="1792316243548" duration="25146000" />
       <workItem from="1792387039097" duration="22000" />
       <workItem from="1792387106357" duration="484000" />
+      <workItem from="1794169105306" duration="466000" />
     </task>
     <task id="LOCAL-00001" summary="Лабораторная работа 3. Удалено лишнее со второй лабы">
       <option name="closed" value="true" />
