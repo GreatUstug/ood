@@ -44,12 +44,11 @@ public:
 
 			if (pvIt != m_state.preview.end() && pvIt->second.bounds)
 			{
-				auto cloneGeo = f.GetGeometry()->Clone();
-
-				cloneGeo->SetBounds(*pvIt->second.bounds);
+				auto clone = f.Clone();
+				clone->SetBounds(*pvIt->second.bounds);
 
 				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
-				cloneGeo->Accept(v);
+				clone->Accept(v);
 			}
 			else
 			{

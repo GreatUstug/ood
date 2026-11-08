@@ -44,7 +44,7 @@ public:
 		return m_ids;
 	};
 private:
-	struct Removed { size_t index; std::unique_ptr<shapes::PrimitiveFigure> figure; };
+	struct Removed { size_t index; std::unique_ptr<shapes::Figure> figure; };
 	shapes::Picture& m_picture;
 	std::vector<std::string> m_ids;
 	std::vector<Removed> m_removed;

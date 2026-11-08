@@ -3,6 +3,7 @@
 
 #include "Handle.h"
 #include "Bounds.h"
+#include "PrimitiveFigure.h"
 #include "Observers/ObserverList.h"
 #include "Observers/EditorStateObserver.h"
 

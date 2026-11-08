@@ -50,7 +50,7 @@ public:
 	}
 
 private:
-	static std::unique_ptr<shapes::PrimitiveFigure> ParseLine(const std::string& line)
+	static std::unique_ptr<shapes::Figure> ParseLine(const std::string& line)
 	{
 		std::istringstream iss(line);
 		std::string type, id, fill, stroke;
