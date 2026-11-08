@@ -32,8 +32,23 @@ public:
 		for (const auto& id : m_picture.GetOrder())
 		{
 			const auto& f = m_picture.GetShape(id);
-			shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
-			f.Accept(v);
+
+			auto pvIt = m_state.preview.find(id);
+
+			if (pvIt != m_state.preview.end() && pvIt->second.bounds)
+			{
+				auto cloneGeo = f.GetGeometry()->Clone();
+
+				cloneGeo->SetBounds(*pvIt->second.bounds);
+
+				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
+				cloneGeo->Accept(v);
+			}
+			else
+			{
+				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
+				f.Accept(v);
+			}
 		}
 		DrawPreview();
 		auto primary = m_state.GetPrimarySelectedId();
@@ -41,7 +56,12 @@ public:
 		{
 			if (!m_picture.HasShape(id))
 				continue;
-			DrawSelectionFrame(m_canvas, m_picture.GetShape(id).GetBounds(), id == primary);
+			shapes::Bounds drawBounds = m_picture.GetShape(id).GetBounds();
+			auto pvIt = m_state.preview.find(id);
+			if (pvIt != m_state.preview.end() && pvIt->second.bounds)
+			{
+				drawBounds = *pvIt->second.bounds;
+			}
 		}
 		RenderToolbar();
 	};
