@@ -217,6 +217,20 @@ public:
 		NotifyPictureObservers();
 	}
 
+	void SetShapeDurations(const std::vector<std::string>& ids, const std::vector<double>& durations)
+	{
+		if (ids.size() != durations.size())
+			throw std::invalid_argument("SetShapeDurations: size mismatch");
+		for (std::size_t i = 0; i < ids.size(); ++i)
+		{
+			auto it = m_shapes.find(ids[i]);
+			if (it == m_shapes.end())
+				throw std::invalid_argument("Shape not found");
+			it->second->SetDuration(durations[i]);
+		}
+		NotifyPictureObservers();
+	}
+
 private:
 	void NotifyPictureObservers()
 	{

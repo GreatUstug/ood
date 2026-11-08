@@ -39,7 +39,7 @@ public:
 		auto sp = geo.find(' ');
 		return geo.substr(0, sp) + " " + m_id + " "
 			 + m_fillColor.ParseToString() + " " + m_strokeColor.ParseToString()
-			 + geo.substr(sp) + " " + std::to_string(m_time);
+			 + geo.substr(sp) + " " + std::to_string(m_time) + " " + std::to_string(m_duration);
 	}
 
 	Bounds GetBounds() const
@@ -82,12 +82,14 @@ public:
 
 	double GetTime() const { return m_time; }
 	void SetTime(double t) { m_time = t; }
-
+	double GetDuration() const { return m_duration; }
+	void SetDuration(double d) { m_duration = d; }
 	const IShapeGeometry* GetGeometry() const { return m_geometry.get(); }
 
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;
+	double m_duration = 1.0;
 	gfx::Color m_fillColor;
 	gfx::Color m_strokeColor;
 	double m_time = 0.0;
