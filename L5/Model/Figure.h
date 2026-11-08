@@ -42,6 +42,7 @@ public:
 	virtual std::string GetType() const = 0;
 
 	virtual std::unique_ptr<Figure> Clone() const = 0;
+	virtual std::unique_ptr<Figure> ExtractChild(const std::string& id) { return nullptr; }
 };
 }
 #endif //L5_FIGURE_H

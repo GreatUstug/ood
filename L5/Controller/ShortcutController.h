@@ -7,6 +7,7 @@
 
 #include "WindowAction.h"
 #include "Commands/DeleteCommand.h"
+#include "Commands/GroupCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
 
@@ -20,13 +21,13 @@ class ShortcutController
 {
 public:
 	ShortcutController(Document& document,
-					   EditorState& state,
-					   DocumentController& documentCtrl,
-					   ShapeCreateController& create)
+		EditorState& state,
+		DocumentController& documentCtrl,
+		ShapeCreateController& create)
 		: m_document(document)
-		, m_state(state)
-		, m_documentCtrl(documentCtrl)
-		, m_create(create)
+		  , m_state(state)
+		  , m_documentCtrl(documentCtrl)
+		  , m_create(create)
 	{
 	}
 
@@ -79,6 +80,28 @@ public:
 			ApplySelection(affected);
 			return WindowAction::None;
 		}
+		if (key.control && (key.code == sf::Keyboard::Key::G))
+		{
+			if (key.shift)
+			{
+				if (m_state.GetSelectedIds().size() == 1)
+				{
+					std::string id = *m_state.GetSelectedIds().begin();
+					if (m_document.GetPicture().GetShape(id).GetType() == "group")
+					{
+					}
+				}
+			}
+			else
+			{
+				if (m_state.GetSelectedIds().size() >= 2)
+				{
+					std::vector<std::string> ids(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
+					auto cmd = std::make_unique<GroupCommand>(m_document.GetPicture(), ids);
+					m_document.GetHistory().Execute(std::move(cmd));
+				}
+			}
+		}
 		return WindowAction::None;
 	}
 
@@ -87,13 +110,14 @@ private:
 	{
 		std::set<std::string> valid;
 		for (const auto& id : ids)
-			if (m_document.GetPicture().HasShape(id)) valid.insert(id);
+			if (m_document.GetPicture().HasShape(id))
+				valid.insert(id);
 		m_state.SetSelectedIds(valid);
 	}
 
 	Document& m_document;
-	EditorState&          m_state;
-	DocumentController&   m_documentCtrl;
+	EditorState& m_state;
+	DocumentController& m_documentCtrl;
 	ShapeCreateController& m_create;
 };
 

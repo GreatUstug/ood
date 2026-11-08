@@ -64,7 +64,8 @@ add_executable(L5 main.cpp
         View/TimelineView.h
         Commands/SetDurationCommand.h
         Model/Figure.h
-        Model/GroupFigure.h)
+        Model/GroupFigure.h
+        Commands/GroupCommand.h)
 
 target_include_directories(L5 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L5 PRIVATE

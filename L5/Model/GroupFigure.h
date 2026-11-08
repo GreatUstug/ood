@@ -30,19 +30,27 @@ public:
 	gfx::Color GetFillColor() const override { return m_fillColor; }
 	gfx::Color GetStrokeColor() const override { return m_strokeColor; }
 
-	void SetFillColor(const gfx::Color& c) override {
+	void SetFillColor(const gfx::Color& c) override
+	{
 		m_fillColor = c;
-		for (auto& child : m_children) child->SetFillColor(c);
-	}
-	void SetStrokeColor(const gfx::Color& c) override {
-		m_strokeColor = c;
-		for (auto& child : m_children) child->SetStrokeColor(c);
+		for (auto& child : m_children)
+			child->SetFillColor(c);
 	}
 
-	Bounds GetBounds() const override {
-		if (m_children.empty()) return {0, 0, 0, 0};
+	void SetStrokeColor(const gfx::Color& c) override
+	{
+		m_strokeColor = c;
+		for (auto& child : m_children)
+			child->SetStrokeColor(c);
+	}
+
+	Bounds GetBounds() const override
+	{
+		if (m_children.empty())
+			return { 0, 0, 0, 0 };
 		Bounds total = m_children[0]->GetBounds();
-		for (size_t i = 1; i < m_children.size(); ++i) {
+		for (size_t i = 1; i < m_children.size(); ++i)
+		{
 			Bounds b = m_children[i]->GetBounds();
 			double minX = std::min(total.x, b.x);
 			double minY = std::min(total.y, b.y);
@@ -53,18 +61,23 @@ public:
 		return total;
 	}
 
-	void Move(double dx, double dy) override {
-		for (auto& child : m_children) child->Move(dx, dy);
+	void Move(double dx, double dy) override
+	{
+		for (auto& child : m_children)
+			child->Move(dx, dy);
 	}
 
-	void SetBounds(const Bounds& newB) override {
+	void SetBounds(const Bounds& newB) override
+	{
 		Bounds oldB = GetBounds();
-		if (oldB.width == 0 || oldB.height == 0) return;
+		if (oldB.width == 0 || oldB.height == 0)
+			return;
 
 		double sx = newB.width / oldB.width;
 		double sy = newB.height / oldB.height;
 
-		for (auto& child : m_children) {
+		for (auto& child : m_children)
+		{
 			Bounds cb = child->GetBounds();
 			Bounds newCb;
 			newCb.x = newB.x + (cb.x - oldB.x) * sx;
@@ -75,47 +88,58 @@ public:
 		}
 	}
 
-	bool HitTest(double x, double y) const override {
-		for (const auto& child : m_children) {
-			if (child->HitTest(x, y)) return true;
+	bool HitTest(double x, double y) const override
+	{
+		for (const auto& child : m_children)
+		{
+			if (child->HitTest(x, y))
+				return true;
 		}
 		return false;
 	}
 
-	void Accept(IShapeGeometryVisitor& v) const override {
-		v.Visit(*this); // Visitor сам рекурсивно нарисует детей
+	void Accept(IShapeGeometryVisitor& v) const override
+	{
+		v.Visit(*this);
 	}
 
-	std::string GetInfo() const override {
+	std::string GetInfo() const override
+	{
 		return "group " + m_id + " " + m_fillColor.ParseToString() + " " + m_strokeColor.ParseToString()
-			 + " " + std::to_string(m_time) + " " + std::to_string(m_duration);
+			+ " " + std::to_string(m_time) + " " + std::to_string(m_duration);
 	}
 
-	std::unique_ptr<Figure> Clone() const override {
+	std::unique_ptr<Figure> Clone() const override
+	{
 		auto clonedGroup = std::make_unique<GroupFigure>(m_id, m_fillColor.ParseToString(), m_strokeColor.ParseToString());
 		clonedGroup->SetTime(m_time);
 		clonedGroup->SetDuration(m_duration);
-		for (const auto& child : m_children) {
+		for (const auto& child : m_children)
+		{
 			clonedGroup->AddChild(child->Clone());
 		}
 		return clonedGroup;
 	}
 
 	void AddChild(std::unique_ptr<Figure> child) { m_children.push_back(std::move(child)); }
-	std::unique_ptr<Figure> ExtractChild(const std::string& id) {
+
+	const std::vector<std::unique_ptr<Figure> >& GetChildren() const { return m_children; }
+
+	std::unique_ptr<Figure> ExtractChild(const std::string& id) override
+	{
 		auto it = std::find_if(m_children.begin(), m_children.end(), [&](const auto& c) { return c->GetId() == id; });
-		if (it != m_children.end()) {
+		if (it != m_children.end())
+		{
 			auto fig = std::move(*it);
 			m_children.erase(it);
 			return fig;
 		}
 		return nullptr;
 	}
-	const std::vector<std::unique_ptr<Figure>>& GetChildren() const { return m_children; }
 
 private:
 	std::string m_id;
-	std::vector<std::unique_ptr<Figure>> m_children;
+	std::vector<std::unique_ptr<Figure> > m_children;
 	gfx::Color m_fillColor;
 	gfx::Color m_strokeColor;
 	double m_time = 0.0;
