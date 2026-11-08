@@ -62,6 +62,7 @@ public:
 			{
 				drawBounds = *pvIt->second.bounds;
 			}
+			DrawSelectionFrame(m_canvas, drawBounds, id == primary);
 		}
 		RenderToolbar();
 	};
@@ -194,7 +195,7 @@ private:
 		}
 	}
 
-	const Toolbar& GetToolbar() const { return m_toolbar; }
+	[[nodiscard]] const Toolbar& GetToolbar() const { return m_toolbar; }
 	const shapes::Picture& m_picture;
 	const EditorState& m_state;
 	gfx::ICanvas& m_canvas;
