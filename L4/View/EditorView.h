@@ -32,7 +32,14 @@ public:
 		for (const auto& id : m_picture.GetOrder())
 		{
 			const auto& f = m_picture.GetShape(id);
+			double startTime = f.GetTime();
+			double duration = f.GetDuration();
+			double endTime = startTime + duration;
 
+			if (m_state.currentTime < startTime || m_state.currentTime > endTime)
+			{
+				continue;
+			}
 			auto pvIt = m_state.preview.find(id);
 
 			if (pvIt != m_state.preview.end() && pvIt->second.bounds)
