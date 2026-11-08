@@ -212,8 +212,8 @@ public:
 		const std::size_t oldIndex = std::distance(m_order.begin(), it);
 		if (oldIndex == newIndex) return;
 		m_order.erase(it);
-		if (newIndex > oldIndex) newIndex--;
-		m_order.insert(m_order.begin() + std::min(newIndex, m_order.size()), id);
+		std::size_t insertPos = std::min(newIndex, m_order.size());
+		m_order.insert(m_order.begin() + insertPos, id);
 		NotifyPictureObservers();
 	}
 

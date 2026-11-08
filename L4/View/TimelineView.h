@@ -75,7 +75,7 @@ public:
 		}
 
 		const auto& order = m_pic.GetOrder();
-		for (std::size_t i = 0; i < order.size(); ++i)
+		for (order.rbegin(); order.rbegin() != order.rend())
 		{
 			const auto& id = order[i];
 			if (!m_pic.HasShape(id))
@@ -84,7 +84,7 @@ public:
 			float rowY = RowY((int)i);
 			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
 				continue;
-
+Gth
 			double t = m_pic.GetShape(id).GetTime();
 			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.time)
 				t = *pv->second.time;
