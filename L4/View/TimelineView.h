@@ -3,6 +3,7 @@
 #include "Commands/ICommand.h"
 #include "Commands/SetTimeCommand.h"
 #include "Commands/ReorderCommand.h"
+#include "Commands/SetDurationCommand.h"
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/ShapeInfo.h"
@@ -90,8 +91,12 @@ public:
 
 			bool selected = m_selected.contains(id);
 
+			double duration = m_pic.GetShape(id).GetDuration();
+			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.duration)
+				duration = *pv->second.duration;
+
 			float barLeft = (float)TimeToX(t);
-			float barRight = barLeft + (float)(DURATION * m_pixelsPerSecond);
+			float barRight = barLeft + (float)(duration * m_pixelsPerSecond);
 
 			float clipLeft = std::max(barLeft, m_x);
 			float clipRight = std::min(barRight, m_x + m_w);
@@ -141,7 +146,7 @@ public:
 		return (idx >= 0 && idx < count) ? idx : -1;
 	}
 
-	bool HandleClick(float px, float py)
+		bool HandleClick(float px, float py)
 	{
 		if (!HitTest(px, py))
 			return false;
@@ -156,8 +161,23 @@ public:
 		const std::string& id = m_pic.GetOrder()[row];
 		double t = m_pic.GetShape(id).GetTime();
 		double clickTime = XToTime(px);
+		double duration = m_pic.GetShape(id).GetDuration();
+		double rightEdge = t + duration;
 
-		if (clickTime >= t && clickTime <= t + DURATION)
+		if (std::abs(px - TimeToX(rightEdge)) < 10.0)
+		{
+			m_state.SetSelectedIds({ id });
+			m_dragMode = DragMode::Duration;
+			m_pendingDrag = true;
+			m_dragId = id;
+			m_dragStartMouseTime = clickTime;
+			m_dragStartShapeDuration = duration;
+			m_dragCurrentDuration = duration;
+			m_dragStartMouseY = py;
+			return true;
+		}
+
+		if (clickTime >= t && clickTime <= rightEdge)
 		{
 			m_state.SetSelectedIds({ id });
 			m_dragMode = DragMode::None;
@@ -198,20 +218,26 @@ public:
 			if (newTime < 0)
 				newTime = 0;
 			m_dragCurrentTime = newTime;
-
-			// ВАЖНО: пишем в EditorState::preview, а не в модель!
 			m_state.preview[m_dragId].time = newTime;
 		}
-		else
+		else if (m_dragMode == DragMode::Layer)
 		{
 			int targetRow = RowAt(py);
 			if (targetRow < 0)
 				targetRow = (py < m_y) ? 0 : (int)m_pic.GetOrder().size() - 1;
 			if (targetRow != m_dragCurrentRow)
 			{
-				m_pic.MoveShapeToIndex(m_dragId, (std::size_t)targetRow);
-				m_dragCurrentRow = (int)m_pic.IndexOf(m_dragId);
+				m_pic.MoveShapeToIndex(m_dragId, static_cast<std::size_t>(targetRow));
+				m_dragCurrentRow = targetRow;
 			}
+		}
+		else if (m_dragMode == DragMode::Duration)
+		{
+			double clickTime = XToTime(px);
+			double newDuration = m_dragStartShapeDuration + (clickTime - m_dragStartMouseTime);
+			if (newDuration < 0.1) newDuration = 0.1;
+			m_dragCurrentDuration = newDuration;
+			m_state.preview[m_dragId].duration = newDuration;
 		}
 	}
 
@@ -250,6 +276,15 @@ public:
 				(std::size_t)m_dragCurrentRow);
 		}
 
+		if (mode == DragMode::Duration)
+		{
+			if (std::abs(m_dragCurrentDuration - m_dragStartShapeDuration) < 1e-9)
+				return nullptr;
+			m_state.preview.erase(m_dragId);
+			return std::make_unique<SetDurationCommand>(
+				m_pic, std::vector<std::string>{m_dragId},
+				std::vector<double>{m_dragCurrentDuration});
+		}
 		return nullptr;
 	}
 
@@ -268,9 +303,7 @@ public:
 	}
 
 private:
-	enum class DragMode { None, Time, Layer };
-
-	static constexpr double DURATION = 1.0;
+	enum class DragMode { None, Time, Layer, Duration };
 
 	double TimeToX(double t) const { return m_x + (t - m_timeOffset) * m_pixelsPerSecond; }
 	double XToTime(double px) const { return m_timeOffset + (px - m_x) / m_pixelsPerSecond; }
@@ -297,5 +330,7 @@ private:
 	int m_dragStartRow = -1;
 	int m_dragCurrentRow = -1;
 	double m_dragStartMouseY = 0.0;
+	double m_dragStartShapeDuration = 0.0;
+	double m_dragCurrentDuration = 0.0;
 };
 #endif

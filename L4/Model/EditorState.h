@@ -13,6 +13,7 @@ struct PreviewShape
 {
 	std::optional<shapes::Bounds> bounds;
 	std::optional<double> time;
+	std::optional<double> duration;
 };
 
 struct EditorState

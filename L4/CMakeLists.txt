@@ -45,7 +45,7 @@ add_executable(L4 main.cpp
         Controller/ShortcutController.h
         Controller/InputRouter.h
         Controller/EditorWindowController.h
-        Controller/AppState.h
+        Controller/WindowAction.h
         Commands/ICommand.h
         Commands/AddCommand.h
         Commands/CommandHistory.h
