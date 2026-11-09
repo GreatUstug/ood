@@ -65,7 +65,8 @@ add_executable(L5 main.cpp
         Commands/SetDurationCommand.h
         Model/Figure.h
         Model/GroupFigure.h
-        Commands/GroupCommand.h)
+        Commands/GroupCommand.h
+        Commands/UngroupCommand.h)
 
 target_include_directories(L5 PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(L5 PRIVATE

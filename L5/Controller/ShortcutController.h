@@ -8,6 +8,7 @@
 #include "WindowAction.h"
 #include "Commands/DeleteCommand.h"
 #include "Commands/GroupCommand.h"
+#include "Commands/UngroupCommand.h"
 #include "Controller/DocumentController.h"
 #include "Controller/ShapeCreateController.h"
 
@@ -89,6 +90,12 @@ public:
 					std::string id = *m_state.GetSelectedIds().begin();
 					if (m_document.GetPicture().GetShape(id).GetType() == "group")
 					{
+						auto cmd = std::make_unique<UngroupCommand>(m_document.GetPicture(), id);
+						auto cmdPtr = cmd.get();
+						m_document.GetHistory().Execute(std::move(cmd));
+
+						auto children = cmdPtr->AffectedIds();
+						m_state.SetSelectedIds(std::set<std::string>(children.begin(), children.end()));
 					}
 				}
 			}

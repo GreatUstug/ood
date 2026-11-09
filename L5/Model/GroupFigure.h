@@ -137,6 +137,16 @@ public:
 		return nullptr;
 	}
 
+	std::vector<std::string> GetChildIds() const override
+	{
+		std::vector<std::string> ids;
+		for (const auto& child : m_children)
+		{
+			ids.push_back(child->GetId());
+		}
+		return ids;
+	}
+
 private:
 	std::string m_id;
 	std::vector<std::unique_ptr<Figure> > m_children;

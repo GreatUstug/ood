@@ -43,6 +43,7 @@ public:
 
 	virtual std::unique_ptr<Figure> Clone() const = 0;
 	virtual std::unique_ptr<Figure> ExtractChild(const std::string& id) { return nullptr; }
+	virtual std::vector<std::string> GetChildIds() const { return {}; }
 };
 }
 #endif //L5_FIGURE_H
