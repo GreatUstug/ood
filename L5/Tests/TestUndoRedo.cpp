@@ -405,14 +405,14 @@ TEST(GroupTests, GroupNonAdjacentAndZOrder)
 	auto c = AddRect(pic, h, {40, 40, 10, 10});
 	auto d = AddRect(pic, h, {60, 60, 10, 10});
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{b, d});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-	std::string gId = cmdPtr->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{b, d}));
+
+	std::string gId = FindFirstGroupId(pic);
+	ASSERT_FALSE(gId.empty());
 
 	ASSERT_EQ(pic.GetOrder().size(), 3);
 	EXPECT_EQ(pic.GetOrder()[0], a);
-	EXPECT_EQ(pic.GetOrder()[1], gId);
+	EXPECT_EQ(pic.GetOrder()[1], gId); // Группа заняла место B (самого нижнего)
 	EXPECT_EQ(pic.GetOrder()[2], c);
 
 	auto children = pic.GetShape(gId).GetChildIds();
@@ -428,10 +428,7 @@ TEST(GroupTests, UndoGroupRestoresIndices)
 	auto b = AddRect(pic, h);
 	auto c = AddRect(pic, h);
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, c});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, c}));
 	h.Undo();
 
 	ASSERT_EQ(pic.GetOrder().size(), 3);
@@ -447,10 +444,8 @@ TEST(GroupTests, UngroupAndUndoRedo)
 	auto b = AddRect(pic, h);
 	auto c = AddRect(pic, h);
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-	std::string gId = cmdPtr->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string gId = FindFirstGroupId(pic);
 
 	h.Execute(std::make_unique<UngroupCommand>(pic, gId));
 	ASSERT_EQ(pic.GetOrder().size(), 3);
@@ -473,10 +468,8 @@ TEST(GroupTests, MoveGroupMovesChildren)
 	auto a = AddRect(pic, h, {10, 10, 10, 10});
 	auto b = AddRect(pic, h, {50, 50, 10, 10});
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-	std::string gId = cmdPtr->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string gId = FindFirstGroupId(pic);
 
 	auto beforeA = pic.GetShape(a).GetBounds();
 	auto beforeB = pic.GetShape(b).GetBounds();
@@ -500,15 +493,22 @@ TEST(GroupTests, ResizeGroupAndNestedUndoRedo)
 	auto b = AddRect(pic, h, {20, 0, 10, 10});
 	auto c = AddRect(pic, h, {50, 0, 10, 10});
 
-	auto cmd1 = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
-	auto* ptr1 = cmd1.get();
-	h.Execute(std::move(cmd1));
-	std::string g1 = ptr1->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string g1 = FindFirstGroupId(pic);
 
-	auto cmd2 = std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c});
-	auto* ptr2 = cmd2.get();
-	h.Execute(std::move(cmd2));
-	std::string g2 = ptr2->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c}));
+
+	std::string g2 = "";
+	for (const auto& id : pic.GetOrder()) {
+		if (pic.GetShape(id).GetType() == "group") {
+			auto children = pic.GetShape(id).GetChildIds();
+			if (std::find(children.begin(), children.end(), g1) != children.end()) {
+				g2 = id;
+				break;
+			}
+		}
+	}
+	ASSERT_FALSE(g2.empty());
 
 	shapes::Bounds oldB = pic.GetShape(g2).GetBounds();
 	shapes::Bounds newB = {oldB.x, oldB.y, oldB.width * 2.0, oldB.height * 2.0};
@@ -528,10 +528,8 @@ TEST(GroupTests, DeleteGroupAndUndoRedo)
 	auto a = AddRect(pic, h);
 	auto b = AddRect(pic, h);
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-	std::string gId = cmdPtr->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string gId = FindFirstGroupId(pic);
 
 	h.Execute(std::make_unique<DeleteCommand>(pic, std::vector<std::string>{gId}));
 	EXPECT_FALSE(pic.HasShape(gId));
@@ -549,23 +547,22 @@ TEST(GroupTests, LongChainUndoRedo)
 	auto a = AddRect(pic, h, {0, 0, 10, 10});
 	auto b = AddRect(pic, h, {20, 20, 10, 10});
 
-	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
-	auto* cmdPtr = cmd.get();
-	h.Execute(std::move(cmd));
-	std::string gId = cmdPtr->GetGroupId();
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string gId = FindFirstGroupId(pic);
 
 	h.Execute(std::make_unique<MoveShapesCommand>(
 		pic, std::vector<std::string>{gId}, 50, 50));
 
 	auto bGroup = pic.GetShape(gId).GetBounds();
-	h.Execute(std::make_unique<ResizeCommand>((
-		pic, gId, bGroup, {bGroup.x, bGroup.y, bGroup.width + 100, bGroup.height + 100}));
+	shapes::Bounds newB = { bGroup.x, bGroup.y, bGroup.width + 100.0, bGroup.height + 100.0 };
+	h.Execute(std::make_unique<ResizeCommand>(pic, gId, bGroup, newB));
 
 	h.Undo();
 	h.Undo();
 	h.Undo();
 	ASSERT_FALSE(pic.HasShape(gId));
 	ASSERT_EQ(pic.GetOrder().size(), 2);
+
 	h.Redo();
 	h.Redo();
 	h.Redo();

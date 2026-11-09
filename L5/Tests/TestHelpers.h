@@ -17,7 +17,7 @@ namespace testhelp
 {
 
 inline std::string AddRect(shapes::Picture& pic, CommandHistory& h,
-						   const shapes::Bounds& b = {10,10,50,50})
+	const shapes::Bounds& b = { 10, 10, 50, 50 })
 {
 	auto id = shapes::MakeId("rect");
 	auto fig = shapes::MakeShape("rectangle", id, b);
@@ -26,7 +26,7 @@ inline std::string AddRect(shapes::Picture& pic, CommandHistory& h,
 }
 
 inline std::string AddEllipse(shapes::Picture& pic, CommandHistory& h,
-							  const shapes::Bounds& b = {100,100,60,40})
+	const shapes::Bounds& b = { 100, 100, 60, 40 })
 {
 	auto id = shapes::MakeId("ellipse");
 	auto fig = shapes::MakeShape("ellipse", id, b);
@@ -35,8 +35,8 @@ inline std::string AddEllipse(shapes::Picture& pic, CommandHistory& h,
 }
 
 inline std::string AddShape(shapes::Picture& pic, CommandHistory& h,
-							const std::string& type,
-							const shapes::Bounds& b)
+	const std::string& type,
+	const shapes::Bounds& b)
 {
 	auto id = shapes::MakeId(type);
 	auto fig = shapes::MakeShape(type, id, b);
@@ -44,6 +44,17 @@ inline std::string AddShape(shapes::Picture& pic, CommandHistory& h,
 	return id;
 }
 
+inline std::string FindFirstGroupId(const shapes::Picture& pic)
+{
+	for (const auto& id : pic.GetOrder())
+	{
+		if (pic.GetShape(id).GetType() == "group")
+		{
+			return id;
+		}
+	}
+	return "";
+}
 }
 
 #endif //L4_TESTHELPERS_CPP_H
