@@ -18,7 +18,7 @@ public:
 		m_groupId = shapes::MakeId("group");
 	}
 
-	~GroupCommand() override;
+	~GroupCommand() override = default;
 
 	void Execute() override
 	{
