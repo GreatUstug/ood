@@ -14,10 +14,12 @@
 #include "Commands/AddCommand.h"
 #include "Commands/ColorCommand.h"
 #include "Commands/DeleteCommand.h"
+#include "Commands/GroupCommand.h"
 #include "Commands/MoveShapesCommand.h"
 #include "Commands/ReorderCommand.h"
 #include "Commands/ResizeCommand.h"
 #include "Commands/SetTimeCommand.h"
+#include "Commands/UngroupCommand.h"
 #include "IO/SaveService.h"
 #include "IO/LoadService.h"
 
@@ -123,7 +125,7 @@ TEST(UndoRedo, MoveUndo)
     shapes::Bounds before = pic.GetShape(a).GetBounds();
 
     h.Execute(std::make_unique<MoveShapesCommand>(
-        pic, std::vector<std::string>{a}, 100.0, 50.0, /*alreadyApplied=*/false));
+        pic, std::vector<std::string>{a}, 100.0, 50.0));
 
     shapes::Bounds after = pic.GetShape(a).GetBounds();
     EXPECT_NEAR(after.x, before.x + 100.0, 1e-9);
@@ -150,7 +152,7 @@ TEST(UndoRedo, ResizeUndo)
     shapes::Bounds newB = {20, 20, 100, 80};
 
     h.Execute(std::make_unique<ResizeCommand>(
-        pic, a, oldB, newB, /*alreadyApplied=*/false));
+        pic, a, oldB, newB));
 
     shapes::Bounds after = pic.GetShape(a).GetBounds();
     EXPECT_NEAR(after.width,  100.0, 1e-9);
@@ -344,7 +346,7 @@ TEST(AffectedIds, MoveReturnsAllIds)
 	auto a = AddRect(pic, h);
 	auto b = AddRect(pic, h);
 	h.Execute(std::make_unique<MoveShapesCommand>(
-		pic, std::vector<std::string>{a, b}, 10, 10, false));
+		pic, std::vector<std::string>{a, b}, 10, 10));
 
 	auto ids = h.Undo();
 	EXPECT_EQ(ids.size(), 2u);
@@ -393,5 +395,180 @@ TEST(Color, MultipleShapesOneCommand)
 	h.Undo();
 	EXPECT_EQ(pic.GetShape(a).GetFillColor(), oldA);
 	EXPECT_EQ(pic.GetShape(b).GetFillColor(), oldB);
+}
+
+TEST(GroupTests, GroupNonAdjacentAndZOrder)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h, {0, 0, 10, 10});
+	auto b = AddRect(pic, h, {20, 20, 10, 10});
+	auto c = AddRect(pic, h, {40, 40, 10, 10});
+	auto d = AddRect(pic, h, {60, 60, 10, 10});
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{b, d});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+	std::string gId = cmdPtr->GetGroupId();
+
+	ASSERT_EQ(pic.GetOrder().size(), 3);
+	EXPECT_EQ(pic.GetOrder()[0], a);
+	EXPECT_EQ(pic.GetOrder()[1], gId);
+	EXPECT_EQ(pic.GetOrder()[2], c);
+
+	auto children = pic.GetShape(gId).GetChildIds();
+	ASSERT_EQ(children.size(), 2);
+	EXPECT_EQ(children[0], b);
+	EXPECT_EQ(children[1], d);
+}
+
+TEST(GroupTests, UndoGroupRestoresIndices)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, c});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+
+	h.Undo();
+
+	ASSERT_EQ(pic.GetOrder().size(), 3);
+	EXPECT_EQ(pic.GetOrder()[0], a);
+	EXPECT_EQ(pic.GetOrder()[1], b);
+	EXPECT_EQ(pic.GetOrder()[2], c);
+}
+
+TEST(GroupTests, UngroupAndUndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+	auto c = AddRect(pic, h);
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+	std::string gId = cmdPtr->GetGroupId();
+
+	h.Execute(std::make_unique<UngroupCommand>(pic, gId));
+	ASSERT_EQ(pic.GetOrder().size(), 3);
+	EXPECT_EQ(pic.GetOrder()[0], a);
+	EXPECT_EQ(pic.GetOrder()[1], b);
+	EXPECT_EQ(pic.GetOrder()[2], c);
+
+	h.Undo();
+	ASSERT_EQ(pic.GetOrder().size(), 2);
+	EXPECT_TRUE(pic.HasShape(gId));
+
+	h.Redo();
+	ASSERT_EQ(pic.GetOrder().size(), 3);
+	EXPECT_FALSE(pic.HasShape(gId));
+}
+
+TEST(GroupTests, MoveGroupMovesChildren)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h, {10, 10, 10, 10});
+	auto b = AddRect(pic, h, {50, 50, 10, 10});
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+	std::string gId = cmdPtr->GetGroupId();
+
+	auto beforeA = pic.GetShape(a).GetBounds();
+	auto beforeB = pic.GetShape(b).GetBounds();
+
+	h.Execute(std::make_unique<MoveShapesCommand>(
+		pic, std::vector<std::string>{gId}, 100.0, 50.0));
+
+	auto afterA = pic.GetShape(a).GetBounds();
+	auto afterB = pic.GetShape(b).GetBounds();
+
+	EXPECT_NEAR(afterA.x, beforeA.x + 100.0, 1e-9);
+	EXPECT_NEAR(afterA.y, beforeA.y + 50.0, 1e-9);
+	EXPECT_NEAR(afterB.x, beforeB.x + 100.0, 1e-9);
+	EXPECT_NEAR(afterB.y, beforeB.y + 50.0, 1e-9);
+}
+
+TEST(GroupTests, ResizeGroupAndNestedUndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h, {0, 0, 10, 10});
+	auto b = AddRect(pic, h, {20, 0, 10, 10});
+	auto c = AddRect(pic, h, {50, 0, 10, 10});
+
+	auto cmd1 = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
+	auto* ptr1 = cmd1.get();
+	h.Execute(std::move(cmd1));
+	std::string g1 = ptr1->GetGroupId();
+
+	auto cmd2 = std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c});
+	auto* ptr2 = cmd2.get();
+	h.Execute(std::move(cmd2));
+	std::string g2 = ptr2->GetGroupId();
+
+	shapes::Bounds oldB = pic.GetShape(g2).GetBounds();
+	shapes::Bounds newB = {oldB.x, oldB.y, oldB.width * 2.0, oldB.height * 2.0};
+
+	h.Execute(std::make_unique<ResizeCommand>(pic, g2, oldB, newB));
+
+	auto bA = pic.GetShape(a).GetBounds();
+	EXPECT_NEAR(bA.width, 20.0, 1e-9);
+
+	h.Undo();
+	EXPECT_NEAR(pic.GetShape(a).GetBounds().width, 10.0, 1e-9);
+}
+
+TEST(GroupTests, DeleteGroupAndUndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h);
+	auto b = AddRect(pic, h);
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+	std::string gId = cmdPtr->GetGroupId();
+
+	h.Execute(std::make_unique<DeleteCommand>(pic, std::vector<std::string>{gId}));
+	EXPECT_FALSE(pic.HasShape(gId));
+	EXPECT_FALSE(pic.HasShape(a));
+	EXPECT_EQ(pic.GetOrder().size(), 0);
+
+	h.Undo();
+	EXPECT_TRUE(pic.HasShape(gId));
+	EXPECT_TRUE(pic.HasShape(a));
+}
+
+TEST(GroupTests, LongChainUndoRedo)
+{
+	shapes::Picture pic; CommandHistory h;
+	auto a = AddRect(pic, h, {0, 0, 10, 10});
+	auto b = AddRect(pic, h, {20, 20, 10, 10});
+
+	auto cmd = std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b});
+	auto* cmdPtr = cmd.get();
+	h.Execute(std::move(cmd));
+	std::string gId = cmdPtr->GetGroupId();
+
+	h.Execute(std::make_unique<MoveShapesCommand>(
+		pic, std::vector<std::string>{gId}, 50, 50));
+
+	auto bGroup = pic.GetShape(gId).GetBounds();
+	h.Execute(std::make_unique<ResizeCommand>((
+		pic, gId, bGroup, {bGroup.x, bGroup.y, bGroup.width + 100, bGroup.height + 100}));
+
+	h.Undo();
+	h.Undo();
+	h.Undo();
+	ASSERT_FALSE(pic.HasShape(gId));
+	ASSERT_EQ(pic.GetOrder().size(), 2);
+	h.Redo();
+	h.Redo();
+	h.Redo();
+	ASSERT_TRUE(pic.HasShape(gId));
 }
 #endif //L4_TESTUNDOREDO_H
