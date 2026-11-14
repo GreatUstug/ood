@@ -74,7 +74,7 @@ public:
 
         b = shapes::ClampToCanvas(b, m_canvasWidth, m_canvasHeight);
 
-        if (b.width < 1.0 || b.height < 1.0)
+        if (b.width < shapes::MIN_SHAPE_SIZE || b.height < shapes::MIN_SHAPE_SIZE)
         {
             m_state.CancelCreating();
             return;
