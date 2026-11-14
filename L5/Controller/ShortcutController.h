@@ -91,7 +91,7 @@ public:
 					if (m_document.GetPicture().GetShape(id).GetType() == "group")
 					{
 						auto cmd = std::make_unique<UngroupCommand>(m_document.GetPicture(), id);
-						auto cmdPtr = cmd.get();
+						const auto cmdPtr = cmd.get();
 						m_document.GetHistory().Execute(std::move(cmd));
 
 						auto children = cmdPtr->AffectedIds();
@@ -105,7 +105,10 @@ public:
 				{
 					std::vector<std::string> ids(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
 					auto cmd = std::make_unique<GroupCommand>(m_document.GetPicture(), ids);
+					const auto cmdPtr = cmd.get();
 					m_document.GetHistory().Execute(std::move(cmd));
+					auto affectedIds = cmdPtr->AffectedIds();
+					m_state.SetSelectedIds({affectedIds[0]});
 				}
 			}
 		}
