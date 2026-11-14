@@ -23,7 +23,7 @@ public:
 	void Execute() override
 	{
 		std::vector<std::string> sortedIds = m_ids;
-		std::sort(sortedIds.begin(), sortedIds.end(), [this](const std::string& a, const std::string& b) {
+		std::ranges::sort(sortedIds, [this](const std::string& a, const std::string& b) {
 			return m_picture.IndexOf(a) < m_picture.IndexOf(b);
 		});
 		m_oldIndices.clear();
@@ -34,7 +34,7 @@ public:
 
 		std::size_t insertIndex = m_oldIndices[0];
 
-		auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#c678ff", "#000000");
+		auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#ffffff", "#000000");
 		for (const auto& id : sortedIds)
 		{
 			group->AddChild(m_picture.ExtractFigure(id));

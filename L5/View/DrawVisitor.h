@@ -42,10 +42,16 @@ public:
 
 	void Visit(const GroupFigure& gp) override
 	{
+		gfx::Color oldFill = m_fill;
+		gfx::Color oldStroke = m_stroke;
 		for (const auto& child : gp.GetChildren())
 		{
+			m_fill = child->GetFillColor();
+			m_stroke = child->GetStrokeColor();
 			child->Accept(*this);
 		}
+		m_fill = oldFill;
+		m_stroke = oldStroke;
 	}
 private:
 	gfx::ICanvas& m_canvas;
