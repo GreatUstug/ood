@@ -104,6 +104,15 @@ private:
 			m_create.Begin(pos);
 			return;
 		}
+		const std::string hitId = m_document.GetPicture().HitTest(pos.x, pos.y);
+		if (!hitId.empty())
+		{
+			if (!m_state.IsShapeVisible(m_document.GetPicture(), hitId, m_state.currentTime))
+			{
+				m_state.ClearSelection();
+				return;
+			}
+		}
 		if (m_transform.TryStartResize(pos))
 			return;
 		m_transform.HandleShapeClick(pos);

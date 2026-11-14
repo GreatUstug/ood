@@ -126,6 +126,21 @@ struct EditorState
 		createPreviewFigure.reset();
 	}
 
+	bool IsShapeVisible(const shapes::Picture& pic, const std::string& id, double currentTime) const {
+		if (!pic.HasShape(id)) return false;
+		const auto& f = pic.GetShape(id);
+
+		double start = f.GetTime();
+		double duration = f.GetDuration();
+
+		if (const auto pv = preview.find(id); pv != preview.end()) {
+			if (pv->second.time) start = *pv->second.time;
+			if (pv->second.duration) duration = *pv->second.duration;
+		}
+
+		return currentTime >= start && currentTime <= (start + duration);
+	}
+
 private:
 	void NotifySelectionChanged()
 	{

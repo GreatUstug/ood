@@ -196,6 +196,16 @@ public:
 		}
 
 		m_state.currentTime = std::max(0.0, clickTime);
+		bool anyVisible = false;
+		for (const auto& id : m_state.GetSelectedIds()) {
+			if (m_state.IsShapeVisible(m_pic, id, m_state.currentTime)) {
+				anyVisible = true;
+				break;
+			}
+		}
+		if (!anyVisible) {
+			m_state.ClearSelection();
+		}
 		return true;
 	}
 

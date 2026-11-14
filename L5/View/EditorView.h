@@ -62,9 +62,10 @@ public:
 		{
 			if (!m_picture.HasShape(id))
 				continue;
+			if (!m_state.IsShapeVisible(m_picture, id, m_state.currentTime))
+				continue;
 			shapes::Bounds drawBounds = m_picture.GetShape(id).GetBounds();
-			auto pvIt = m_state.preview.find(id);
-			if (pvIt != m_state.preview.end() && pvIt->second.bounds)
+			if (auto pvIt = m_state.preview.find(id); pvIt != m_state.preview.end() && pvIt->second.bounds)
 			{
 				drawBounds = *pvIt->second.bounds;
 			}
