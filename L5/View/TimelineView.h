@@ -86,13 +86,23 @@ public:
 			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
 				continue;
 
-			double t = m_pic.GetShape(id).GetTime();
+			double t, duration;
+			if (const auto& fig = m_pic.GetShape(id); fig.GetType() == "group")
+			{
+				auto [gt, ge] = GroupInterval(fig);
+				t = gt;
+				duration = ge - gt;
+			}
+			else
+			{
+				t = fig.GetTime();
+				duration = fig.GetDuration();
+			}
 			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.time)
 				t = *pv->second.time;
 
 			bool selected = m_selected.contains(id);
 
-			double duration = m_pic.GetShape(id).GetDuration();
 			if (auto pv = m_state.preview.find(id); pv != m_state.preview.end() && pv->second.duration)
 				duration = *pv->second.duration;
 
@@ -162,10 +172,27 @@ public:
 		int modelRow = (int)m_pic.GetOrder().size() - 1 - visualRow;
 		const std::string& id = m_pic.GetOrder()[modelRow];
 
-		double t = m_pic.GetShape(id).GetTime();
+		double t, duration;
+		const auto& fig = m_pic.GetShape(id);
+		if (fig.GetType() == "group")
+		{
+			auto [gt, ge] = GroupInterval(fig);
+			t = gt;
+			duration = ge - gt;
+		}
+		else
+		{
+			t = fig.GetTime();
+			duration = fig.GetDuration();
+		}
 		double clickTime = XToTime(px);
-		double duration = m_pic.GetShape(id).GetDuration();
 		double rightEdge = t + duration;
+		if (fig.GetType() == "group")
+		{
+			m_state.SetSelectedIds({ id });
+			m_state.currentTime = std::max(0.0, clickTime);
+			return true;
+		}
 
 		if (std::abs(px - TimeToX(rightEdge)) < 10.0)
 		{
@@ -316,6 +343,22 @@ public:
 	}
 
 private:
+	static std::pair<double, double> GroupInterval(const shapes::Figure& fig)
+	{
+		if (fig.GetType() != "group")
+			return { fig.GetTime(), fig.GetTime() + fig.GetDuration() };
+
+		double minT = 1e18, maxEnd = -1e18;
+		for (const auto& child : fig.GetChildren())
+		{
+			auto [t, e] = GroupInterval(*child);
+			minT = std::min(minT, t);
+			maxEnd = std::max(maxEnd, e);
+		}
+		if (minT > maxEnd)
+			return { fig.GetTime(), fig.GetTime() + fig.GetDuration() };
+		return { minT, maxEnd };
+	}
 	enum class DragMode { None, Time, Layer, Duration };
 
 	double TimeToX(double t) const { return m_x + (t - m_timeOffset) * m_pixelsPerSecond; }

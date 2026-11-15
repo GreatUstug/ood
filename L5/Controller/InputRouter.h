@@ -70,7 +70,7 @@ public:
 		if (const auto* wheel = event.getIf<sf::Event::MouseWheelScrolled>())
 		{
 			const bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
-							  sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl);
+				sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl);
 
 			if (ctrl)
 			{
@@ -89,8 +89,8 @@ private:
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
 		if (m_timeline.HitTest(pos.x, pos.y))
 		{
-			if (m_timeline.HandleClick(pos.x, pos.y))
-				return;
+			m_timeline.HandleClick(pos.x, pos.y);
+			return;
 		}
 		if (m_listView.HitTest(pos.x, pos.y))
 		{
@@ -121,7 +121,8 @@ private:
 	void OnMouseMoved(const sf::Vector2i& pixel)
 	{
 		sf::Vector2f pos = m_window.mapPixelToCoords(pixel);
-		if (m_timeline.HitTest(pos.x, pos.y) || m_timeline.IsDragging()) {
+		if (m_timeline.HitTest(pos.x, pos.y) || m_timeline.IsDragging())
+		{
 			m_timeline.UpdatePreview(pos.x, pos.y);
 			return;
 		}
@@ -141,9 +142,13 @@ private:
 
 	void OnMouseReleased()
 	{
-		if (auto cmd = m_timeline.Release()) {
-			m_document.GetHistory().Execute(std::move(cmd));
+		if (m_timeline.IsDragging())
+		{
+			if (auto cmd = m_timeline.Release())
+
+				m_document.GetHistory().Execute(std::move(cmd));
 			return;
+
 		}
 		if (m_state.mode == EditorState::Mode::Creating)
 		{
@@ -216,8 +221,8 @@ private:
 		if (const auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); !selectedIds.empty())
 		{
 			shapes::ColorTarget target = (m_state.colorMode == EditorState::ColorMode::Fill)
-			? shapes::ColorTarget::Fill
-			: shapes::ColorTarget::Stroke;
+				? shapes::ColorTarget::Fill
+				: shapes::ColorTarget::Stroke;
 
 			bool changed = false;
 			for (const auto& id : selectedIds)
