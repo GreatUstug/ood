@@ -129,11 +129,13 @@ public:
 			double dy = m_state.lastAppliedDy;
 			if (dx != 0.0 || dy != 0.0)
 			{
-				std::vector<std::string> ids(
-					m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
+				std::vector<std::string> ids(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
 
-				m_document.GetHistory().Execute(std::make_unique<MoveShapesCommand>(
-					m_document.GetPicture(), ids, dx, dy));
+				if (auto ids = m_state.GetValidSelectedIds(m_document.GetPicture()); !ids.empty())
+				{
+					m_document.GetHistory().Execute(std::make_unique<MoveShapesCommand>(
+						m_document.GetPicture(), ids, dx, dy));
+				}
 			}
 		}
 		else if (m_state.mode == EditorState::Mode::Resizing)

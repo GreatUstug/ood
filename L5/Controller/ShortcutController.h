@@ -61,9 +61,8 @@ public:
 
 		if (key.code == sf::Keyboard::Key::Delete)
 		{
-			if (m_state.HasValidSelection(m_document.GetPicture()))
+			if (auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); !selectedIds.empty())
 			{
-				std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
 				m_document.GetHistory().Execute(std::make_unique<DeleteCommand>(m_document.GetPicture(), selectedIds));
 				m_state.ClearSelection();
 			}
@@ -88,7 +87,8 @@ public:
 				if (m_state.GetSelectedIds().size() == 1)
 				{
 					std::string id = *m_state.GetSelectedIds().begin();
-					if (m_document.GetPicture().GetShape(id).GetType() == "group")
+					if (m_document.GetPicture().HasShape(id) &&
+						m_document.GetPicture().GetShape(id).GetType() == "group")
 					{
 						auto cmd = std::make_unique<UngroupCommand>(m_document.GetPicture(), id);
 						const auto cmdPtr = cmd.get();
@@ -101,14 +101,13 @@ public:
 			}
 			else
 			{
-				if (m_state.GetSelectedIds().size() >= 2)
+				if (auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); selectedIds.size() >= 2)
 				{
-					std::vector<std::string> ids(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-					auto cmd = std::make_unique<GroupCommand>(m_document.GetPicture(), ids);
+					auto cmd = std::make_unique<GroupCommand>(m_document.GetPicture(), selectedIds);
 					const auto cmdPtr = cmd.get();
 					m_document.GetHistory().Execute(std::move(cmd));
 					auto affectedIds = cmdPtr->AffectedIds();
-					m_state.SetSelectedIds({affectedIds[0]});
+					m_state.SetSelectedIds({ affectedIds[0] });
 				}
 			}
 		}

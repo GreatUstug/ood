@@ -190,9 +190,11 @@ private:
 		case ToolbarAction::Delete:
 			if (m_state.HasValidSelection(m_document.GetPicture()))
 			{
-				std::vector<std::string> selectedIds(m_state.GetSelectedIds().begin(), m_state.GetSelectedIds().end());
-				m_document.GetHistory().Execute(std::make_unique<DeleteCommand>(m_document.GetPicture(), selectedIds));
-				m_state.ClearSelection();
+				if (auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); !selectedIds.empty())
+				{
+					m_document.GetHistory().Execute(std::make_unique<DeleteCommand>(m_document.GetPicture(), selectedIds));
+					m_state.ClearSelection();
+				}
 			}
 			break;
 		case ToolbarAction::SetFillMode:
@@ -211,31 +213,32 @@ private:
 		if (!m_state.HasValidSelection(m_document.GetPicture()))
 			return;
 
-		std::vector<std::string> ids(m_state.GetSelectedIds().begin(),
-			m_state.GetSelectedIds().end());
-
-		shapes::ColorTarget target = (m_state.colorMode == EditorState::ColorMode::Fill)
+		if (const auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); !selectedIds.empty())
+		{
+			shapes::ColorTarget target = (m_state.colorMode == EditorState::ColorMode::Fill)
 			? shapes::ColorTarget::Fill
 			: shapes::ColorTarget::Stroke;
 
-		bool changed = false;
-		for (const auto& id : ids)
-		{
-			const auto& f = m_document.GetPicture().GetShape(id);
-			gfx::Color current = (target == shapes::ColorTarget::Fill)
-				? f.GetFillColor()
-				: f.GetStrokeColor();
-			if (current != c)
+			bool changed = false;
+			for (const auto& id : selectedIds)
 			{
-				changed = true;
-				break;
+				const auto& f = m_document.GetPicture().GetShape(id);
+				gfx::Color current = (target == shapes::ColorTarget::Fill)
+					? f.GetFillColor()
+					: f.GetStrokeColor();
+				if (current != c)
+				{
+					changed = true;
+					break;
+				}
 			}
-		}
-		if (!changed)
-			return;
+			if (!changed)
+				return;
 
-		m_document.GetHistory().Execute(
-			std::make_unique<ColorCommand>(m_document.GetPicture(), ids, c, target));
+			m_document.GetHistory().Execute(
+				std::make_unique<ColorCommand>(m_document.GetPicture(), selectedIds, c, target));
+		}
+
 	}
 
 	Document& m_document;
