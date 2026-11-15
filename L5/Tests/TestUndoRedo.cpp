@@ -27,17 +27,6 @@
 
 using namespace testhelp;
 
-namespace
-{
-    const shapes::Figure* FindChild(const shapes::Figure& group, const std::string& id)
-    {
-        for (const auto& child : group.GetChildren())
-            if (child->GetId() == id)
-                return child.get();
-        return nullptr;
-    }
-}
-
 TEST(UndoRedo, SequentialUndo)
 {
     shapes::Picture pic;
@@ -801,4 +790,108 @@ TEST(GroupTests, DeleteNestedGroupUndoRedo)
 
     h.Redo();
     EXPECT_EQ(pic.GetOrder().size(), 0u);
+}
+
+TEST(ColorMacro, GroupColorAffectsAllChildren)
+{
+    shapes::Picture pic; CommandHistory h;
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string gId = FindFirstGroupId(pic);
+
+    gfx::Color blue(0, 0, 255, 255);
+    h.Execute(std::make_unique<ColorCommand>(
+        pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
+
+    const auto& group = pic.GetShape(gId);
+    EXPECT_EQ(FindChild(group, a)->GetFillColor(), blue);
+    EXPECT_EQ(FindChild(group, b)->GetFillColor(), blue);
+}
+
+TEST(ColorMacro, UndoRestoresGroupColor)
+{
+    shapes::Picture pic; CommandHistory h;
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string gId = FindFirstGroupId(pic);
+
+    gfx::Color oldGroupColor = pic.GetShape(gId).GetFillColor();
+    gfx::Color blue(0, 0, 255, 255);
+
+    h.Execute(std::make_unique<ColorCommand>(
+        pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
+    h.Undo();
+
+    const auto& group = pic.GetShape(gId);
+    EXPECT_EQ(FindChild(group, a)->GetFillColor(), oldGroupColor);
+    EXPECT_EQ(FindChild(group, b)->GetFillColor(), oldGroupColor);
+}
+
+TEST(ColorMacro, RedoReappliesGroupColor)
+{
+    shapes::Picture pic; CommandHistory h;
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string gId = FindFirstGroupId(pic);
+
+    gfx::Color blue(0, 0, 255, 255);
+    h.Execute(std::make_unique<ColorCommand>(
+        pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
+    h.Undo();
+    h.Redo();
+
+    const auto& group = pic.GetShape(gId);
+    EXPECT_EQ(FindChild(group, a)->GetFillColor(), blue);
+    EXPECT_EQ(FindChild(group, b)->GetFillColor(), blue);
+}
+
+TEST(ColorMacro, NestedGroupRecursive)
+{
+    shapes::Picture pic; CommandHistory h;
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    auto c = AddRect(pic, h, {50, 0, 10, 10});
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string g1 = FindFirstGroupId(pic);
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c}));
+    std::string g2 = FindFirstGroupId(pic);
+
+    gfx::Color blue(0, 0, 255, 255);
+    h.Execute(std::make_unique<ColorCommand>(
+        pic, std::vector<std::string>{g2}, blue, shapes::ColorTarget::Fill));
+
+    const auto& g2ref = pic.GetShape(g2);
+    const auto* g1child = FindChild(g2ref, g1);
+    ASSERT_NE(g1child, nullptr);
+    EXPECT_EQ(FindChild(*g1child, a)->GetFillColor(), blue);
+    EXPECT_EQ(FindChild(*g1child, b)->GetFillColor(), blue);
+    EXPECT_EQ(FindChild(g2ref, c)->GetFillColor(), blue);
+
+    h.Undo();
+    const auto& g2after = pic.GetShape(g2);
+    EXPECT_NE(FindChild(*FindChild(g2after, g1), a)->GetFillColor(), blue);
+}
+
+TEST(ColorMacro, SaveLoadPreservesChildColors)
+{
+    shapes::Picture pic; CommandHistory h;
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string gId = FindFirstGroupId(pic);
+
+    gfx::Color blue(0, 0, 255, 255);
+    h.Execute(std::make_unique<ColorCommand>(
+        pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
+
+    std::stringstream ss;
+    SaveService::Save(pic, ss);
+    auto restored = LoadService::Load(ss);
+
+    const auto& g = restored.GetShape(gId);
+    EXPECT_EQ(FindChild(g, a)->GetFillColor(), blue);
+    EXPECT_EQ(FindChild(g, b)->GetFillColor(), blue);
 }

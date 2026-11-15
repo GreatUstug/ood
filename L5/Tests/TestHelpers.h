@@ -55,6 +55,14 @@ inline std::string FindFirstGroupId(const shapes::Picture& pic)
 	}
 	return "";
 }
+
+inline const shapes::Figure* FindChild(const shapes::Figure& group, const std::string& id)
+{
+	for (const auto& child : group.GetChildren())
+		if (child->GetId() == id)
+			return child.get();
+	return nullptr;
+}
 }
 
 #endif //L4_TESTHELPERS_CPP_H
