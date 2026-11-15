@@ -123,7 +123,7 @@ public:
 
 	void AddChild(std::unique_ptr<Figure> child) { m_children.push_back(std::move(child)); }
 
-	const std::vector<std::unique_ptr<Figure> >& GetChildren() const { return m_children; }
+	const std::vector<std::unique_ptr<Figure> >& GetChildren() const override { return m_children; }
 
 	std::unique_ptr<Figure> ExtractChild(const std::string& id) override
 	{
