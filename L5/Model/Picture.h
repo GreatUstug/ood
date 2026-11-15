@@ -152,7 +152,7 @@ public:
 		return std::distance(m_order.begin(), it);
 	}
 
-	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color, ColorTarget target)
+	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color, const ColorTarget target)
 	{
 		for (const auto& id : ids)
 		{
@@ -175,6 +175,10 @@ public:
 
 	void ColorShapes(const std::vector<std::string>& ids, const std::vector<gfx::Color>& colors, ColorTarget target)
 	{
+		if (colors.size() != ids.size())
+		{
+			throw std::invalid_argument("ColorShapes: size mismatch.");
+		}
 		for (size_t i = 0; i < ids.size(); i++)
 		{
 			if (!m_shapes.contains(ids[i]))

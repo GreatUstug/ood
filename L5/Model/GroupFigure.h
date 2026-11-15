@@ -70,11 +70,8 @@ public:
 	void SetBounds(const Bounds& newB) override
 	{
 		Bounds oldB = GetBounds();
-		if (oldB.width == 0 || oldB.height == 0)
-			return;
-
-		double sx = newB.width / oldB.width;
-		double sy = newB.height / oldB.height;
+		const double sx = (oldB.width  == 0) ? 1.0 : newB.width  / oldB.width;
+		const double sy = (oldB.height == 0) ? 1.0 : newB.height / oldB.height;
 
 		for (auto& child : m_children)
 		{
