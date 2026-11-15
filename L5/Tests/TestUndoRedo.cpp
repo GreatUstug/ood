@@ -432,9 +432,9 @@ TEST(GroupTests, UndoGroupRestoresIndices)
 	h.Undo();
 
 	ASSERT_EQ(pic.GetOrder().size(), 3);
-	EXPECT_EQ(pic.GetOrder()[2], a);
+	EXPECT_EQ(pic.GetOrder()[0], a);
 	EXPECT_EQ(pic.GetOrder()[1], b);
-	EXPECT_EQ(pic.GetOrder()[0], c);
+	EXPECT_EQ(pic.GetOrder()[2], c);
 }
 
 TEST(GroupTests, UngroupAndUndoRedo)

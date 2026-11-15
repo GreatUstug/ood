@@ -22,34 +22,30 @@ public:
 
 	void Execute() override
 	{
-		std::vector<std::string> sortedIds = m_ids;
-		std::ranges::sort(sortedIds, [this](const std::string& a, const std::string& b) {
-			return m_picture.IndexOf(a) < m_picture.IndexOf(b);
-		});
-		m_oldIndices.clear();
-		for (const auto& id : sortedIds)
+		for (const auto& id : m_ids)
 		{
-			m_oldIndices.push_back(m_picture.IndexOf(id));
+			m_children.emplace_back(id, m_picture.IndexOf(id));
 		}
 
-		std::size_t insertIndex = m_oldIndices[0];
+		std::ranges::sort(m_children, [](const auto& a, const auto& b) {
+			return a.second < b.second;
+		});
 
-		auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#ffffff", "#000000");
-		for (const auto& id : sortedIds)
+		auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#c678ff", "#000000");
+		for (const auto& id : m_children | std::views::keys)
 		{
 			group->AddChild(m_picture.ExtractFigure(id));
 		}
-		m_picture.AddShape(std::move(group), insertIndex);
+		m_picture.AddShape(std::move(group));
 	};
 
 	void Unexecute() override
 	{
-		auto group = m_picture.ExtractFigure(m_groupId);
+		const auto group = m_picture.ExtractFigure(m_groupId);
 
-		for (const auto& id : m_ids) {
-			auto child = group->ExtractChild(id);
-			if (child) {
-				m_picture.AddShape(std::move(child));
+		for (const auto& [id, idx] : m_children) {
+			if (auto child = group->ExtractChild(id)) {
+				m_picture.AddShape(std::move(child), idx);
 			}
 		}
 	};
@@ -63,6 +59,6 @@ private:
 	shapes::Picture& m_picture;
 	std::vector<std::string> m_ids;
 	std::string m_groupId;
-	std::vector<std::size_t> m_oldIndices;
+	std::vector<std::pair<std::string, std::size_t>> m_children;
 };
 #endif //L5_GROUPCOMMAND_H
