@@ -72,13 +72,15 @@ public:
         if (b.height < shapes::MIN_SHAPE_SIZE)
             b.height = shapes::MIN_SHAPE_SIZE;
 
-        b = shapes::ClampToCanvas(b, m_canvasWidth, m_canvasHeight);
+    	if (b.width > m_canvasWidth)  b.width  = m_canvasWidth;
+    	if (b.height > m_canvasHeight) b.height = m_canvasHeight;
 
-        if (b.width < shapes::MIN_SHAPE_SIZE || b.height < shapes::MIN_SHAPE_SIZE)
-        {
-            m_state.CancelCreating();
-            return;
-        }
+        b = shapes::ClampToCanvasByShift(b, m_canvasWidth, m_canvasHeight);
+    	if (b.width < shapes::MIN_SHAPE_SIZE || b.height < shapes::MIN_SHAPE_SIZE)
+    	{
+    		m_state.CancelCreating();
+    		return;
+    	}
 
         const std::string id = shapes::MakeId(m_state.creatingType);
         auto figure = shapes::MakeShape(m_state.creatingType, id, b);
