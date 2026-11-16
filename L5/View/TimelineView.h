@@ -17,6 +17,20 @@
 #include <cmath>
 #include <memory>
 
+struct TimelineDragResult
+{
+	enum class Mode { Time, Duration, Layer };
+
+	Mode mode = Mode::Time;
+	std::string id;
+	double oldTime = 0.0;
+	double newTime = 0.0;
+	double oldDuration = 0.0;
+	double newDuration = 0.0;
+	std::size_t oldRow = 0;
+	std::size_t newRow = 0;
+};
+
 class TimelineView : public PictureObserver, public EditorStateObserver
 {
 public:
@@ -82,7 +96,10 @@ public:
 				continue;
 
 			int visualRow = (int)order.size() - 1 - i;
-			float rowY = RowY(visualRow);
+			int rowForDraw = (m_dragMode == DragMode::Layer && id == m_dragId)
+				? m_dragCurrentRow
+				: visualRow;
+			float rowY = RowY(rowForDraw);
 			if (rowY + ROW_H < m_y || rowY > m_y + m_h)
 				continue;
 
@@ -224,13 +241,16 @@ public:
 
 		m_state.currentTime = std::max(0.0, clickTime);
 		bool anyVisible = false;
-		for (const auto& id : m_state.GetSelectedIds()) {
-			if (m_state.IsShapeVisible(m_pic, id, m_state.currentTime)) {
+		for (const auto& id : m_state.GetSelectedIds())
+		{
+			if (m_state.IsShapeVisible(m_pic, id, m_state.currentTime))
+			{
 				anyVisible = true;
 				break;
 			}
 		}
-		if (!anyVisible) {
+		if (!anyVisible)
+		{
 			m_state.ClearSelection();
 		}
 		return true;
@@ -255,7 +275,8 @@ public:
 		{
 			double clickTime = XToTime(px);
 			double newTime = m_dragStartShapeTime + (clickTime - m_dragStartMouseTime);
-			if (newTime < 0) newTime = 0;
+			if (newTime < 0)
+				newTime = 0;
 			m_dragCurrentTime = newTime;
 			m_state.preview[m_dragId].time = newTime;
 		}
@@ -265,67 +286,64 @@ public:
 			if (visualRow < 0)
 				visualRow = (py < m_y) ? 0 : (int)m_pic.GetOrder().size() - 1;
 
-			int targetModelRow = (int)m_pic.GetOrder().size() - 1 - visualRow;
-
-			if (targetModelRow != m_dragCurrentRow)
-			{
-				m_pic.MoveShapeToIndex(m_dragId, static_cast<std::size_t>(targetModelRow));
-				m_dragCurrentRow = targetModelRow;
-			}
+			m_dragCurrentRow = (int)m_pic.GetOrder().size() - 1 - visualRow;
 		}
 		else if (m_dragMode == DragMode::Duration)
 		{
 			double clickTime = XToTime(px);
 			double newDuration = m_dragStartShapeDuration + (clickTime - m_dragStartMouseTime);
-			if (newDuration < 0.1) newDuration = 0.1;
+			if (newDuration < 0.1)
+				newDuration = 0.1;
 			m_dragCurrentDuration = newDuration;
 			m_state.preview[m_dragId].duration = newDuration;
 		}
 	}
 
-	std::unique_ptr<ICommand> Release()
+	std::optional<TimelineDragResult> Release()
 	{
 		if (!m_pendingDrag)
-			return nullptr;
+			return std::nullopt;
 		m_pendingDrag = false;
 
 		auto mode = m_dragMode;
 		m_dragMode = DragMode::None;
 
 		if (!m_pic.HasShape(m_dragId))
-			return nullptr;
+			return std::nullopt;
+
+		TimelineDragResult r;
+		r.id = m_dragId;
 
 		if (mode == DragMode::Time)
 		{
 			if (std::abs(m_dragCurrentTime - m_dragStartShapeTime) < 1e-9)
-				return nullptr;
+				return std::nullopt;
 			m_state.preview.erase(m_dragId);
-			return std::make_unique<SetTimeCommand>(
-				m_pic, std::vector<std::string>{ m_dragId },
-				std::vector<double>{ m_dragCurrentTime }, false);
+			r.mode = TimelineDragResult::Mode::Time;
+			r.oldTime = m_dragStartShapeTime;
+			r.newTime = m_dragCurrentTime;
+			return r;
 		}
-
-		if (mode == DragMode::Layer)
-		{
-			if (m_dragCurrentRow == m_dragStartRow)
-				return nullptr;
-			m_pic.MoveShapeToIndex(m_dragId, (std::size_t)m_dragStartRow);
-			return std::make_unique<ReorderCommand>(
-				m_pic, m_dragId,
-				(std::size_t)m_dragStartRow,
-				(std::size_t)m_dragCurrentRow);
-		}
-
 		if (mode == DragMode::Duration)
 		{
 			if (std::abs(m_dragCurrentDuration - m_dragStartShapeDuration) < 1e-9)
-				return nullptr;
+				return std::nullopt;
 			m_state.preview.erase(m_dragId);
-			return std::make_unique<SetDurationCommand>(
-				m_pic, std::vector<std::string>{m_dragId},
-				std::vector<double>{m_dragCurrentDuration});
+			r.mode = TimelineDragResult::Mode::Duration;
+			r.oldDuration = m_dragStartShapeDuration;
+			r.newDuration = m_dragCurrentDuration;
+			return r;
 		}
-		return nullptr;
+		if (mode == DragMode::Layer)
+		{
+			if (m_dragCurrentRow == m_dragStartRow)
+				return std::nullopt;
+			r.mode = TimelineDragResult::Mode::Layer;
+			r.oldRow = static_cast<std::size_t>(m_dragStartRow);
+			r.newRow = static_cast<std::size_t>(m_dragCurrentRow);
+			return r;
+		}
+		return std::nullopt;
 	}
 
 	bool IsDragging() const { return m_pendingDrag; }
@@ -359,6 +377,7 @@ private:
 			return { fig.GetTime(), fig.GetTime() + fig.GetDuration() };
 		return { minT, maxEnd };
 	}
+
 	enum class DragMode { None, Time, Layer, Duration };
 
 	double TimeToX(double t) const { return m_x + (t - m_timeOffset) * m_pixelsPerSecond; }

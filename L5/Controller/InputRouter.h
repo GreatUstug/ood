@@ -144,9 +144,13 @@ private:
 	{
 		if (m_timeline.IsDragging())
 		{
-			if (auto cmd = m_timeline.Release())
-
-				m_document.GetHistory().Execute(std::move(cmd));
+			if (const auto result = m_timeline.Release())
+			{
+				if (auto cmd = CreateTimelineCommand(*result))
+				{
+					m_document.GetHistory().Execute(std::move(cmd));
+				}
+			}
 			return;
 
 		}
@@ -244,6 +248,27 @@ private:
 				std::make_unique<ColorCommand>(m_document.GetPicture(), selectedIds, c, target));
 		}
 
+	}
+
+	std::unique_ptr<ICommand> CreateTimelineCommand(const TimelineDragResult& r)
+	{
+		using Mode = TimelineDragResult::Mode;
+		switch (r.mode)
+		{
+		case Mode::Time:
+			return std::make_unique<SetTimeCommand>(
+				m_document.GetPicture(), std::vector<std::string>{ r.id },
+				std::vector<double>{ r.newTime }, false);
+		case Mode::Duration:
+			return std::make_unique<SetDurationCommand>(
+				m_document.GetPicture(), std::vector<std::string>{ r.id },
+				std::vector<double>{ r.newDuration });
+		case Mode::Layer:
+			return std::make_unique<ReorderCommand>(
+				m_document.GetPicture(), r.id, r.oldRow, r.newRow);
+		default:
+			return nullptr;
+		}
 	}
 
 	Document& m_document;
