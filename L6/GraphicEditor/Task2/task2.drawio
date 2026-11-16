@@ -1,0 +1,332 @@
+<mxfile host="Electron" agent="manual">
+  <diagram id="c3-component" name="C3 — Component">
+    <mxGraphModel dx="1727" dy="1036" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="swimlane;html=1;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;fontStyle=1;fontSize=14;verticalAlign=top;align=left;spacingLeft=10;" value="Graphical Editor (C4 Container)" vertex="1">
+          <mxGeometry height="897.5" width="910" x="160" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_controllers" parent="boundary" style="rounded=0;html=1;fillColor=#e8f5e9;strokeColor=none;fontStyle=1;fontSize=12;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;" value="Controllers" vertex="1">
+          <mxGeometry height="330" width="560" x="-30" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_model" parent="boundary" style="rounded=0;html=1;fillColor=#e3f2fd;strokeColor=none;fontStyle=1;fontSize=12;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;" value="Model" vertex="1">
+          <mxGeometry height="220" width="560" x="20" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_commands" parent="boundary" style="rounded=0;html=1;fillColor=#fff8e1;strokeColor=none;fontStyle=1;fontSize=12;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;" value="Commands" vertex="1">
+          <mxGeometry height="150" width="560" x="20" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="zone_views" parent="boundary" style="rounded=0;html=1;fillColor=#fff3e0;strokeColor=none;fontStyle=1;fontSize=12;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;" value="Views" vertex="1">
+          <mxGeometry height="740" width="560" x="620" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="win" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0e0e0;strokeColor=#424242;strokeWidth=2;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Window / Composition Root&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++ / SFML&lt;/i&gt;&lt;br&gt;&lt;br&gt;EditorWindowController, EditorController,&lt;br&gt;DocumentRegistry, WindowAction&lt;br&gt;&lt;br&gt;Создаёт View и контроллеры, рендер-цикл,&lt;br&gt;pollEvent, мультидокументность" vertex="1">
+          <mxGeometry height="90" width="560" x="620" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="router" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Input Routing&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;InputRouter&lt;br&gt;Маршрутизация SFML-событий,&lt;br&gt;hit-test панелей, создание&lt;br&gt;Delete / Color / timeline команд" vertex="1">
+          <mxGeometry height="120" width="170" x="40" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="shortcuts" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Shortcuts&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;ShortcutController&lt;br&gt;Ctrl+S/O/N/D, Delete,&lt;br&gt;Ctrl+Z/Y, Ctrl+G / Ctrl+Shift+G&lt;br&gt;возвращает WindowAction" vertex="1">
+          <mxGeometry height="120" width="170" x="220" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="create" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Shape Creation&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;ShapeCreateController,&lt;br&gt;MakeShapeUtils, ResizePolicy&lt;br&gt;Start / Begin / UpdatePreview /&lt;br&gt;Commit → AddCommand" vertex="1">
+          <mxGeometry height="120" width="170" x="400" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="transform" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Shape Transform&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;ShapeTransformController&lt;br&gt;TryStartResize / HandleShapeClick /&lt;br&gt;Update / Release →&lt;br&gt;MoveShapes / Resize" vertex="1">
+          <mxGeometry height="130" width="170" x="40" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="docio" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Document IO &amp;amp; File Dialog&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++ / portable-file-dialogs&lt;/i&gt;&lt;br&gt;&lt;br&gt;DocumentController, DocumentIO,&lt;br&gt;SaveService, LoadService, FileDialog&lt;br&gt;New / Save / Load,&lt;br&gt;рекурсивная сериализация групп" vertex="1">
+          <mxGeometry height="130" width="350" x="220" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="model" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565c0;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Document Model&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;Document, Picture, Figure,&lt;br&gt;GroupFigure, PrimitiveFigure&lt;br&gt;Хранение фигур, порядок, иерархия,&lt;br&gt;время/длительность, observer-уведомления" vertex="1">
+          <mxGeometry height="140" width="260" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="state" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565c0;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Editor State&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;EditorState, Bounds, Handle&lt;br&gt;Выделение, primary, режим, preview,&lt;br&gt;currentTime, colorMode" vertex="1">
+          <mxGeometry height="140" width="250" x="320" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="cmds" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff59d;strokeColor=#f57f17;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Command &amp;amp; Undo History&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++&lt;/i&gt;&lt;br&gt;&lt;br&gt;ICommand, CommandHistory,&lt;br&gt;Add / Delete / Move / Resize / Color /&lt;br&gt;SetTime / SetDuration / Reorder /&lt;br&gt;Group / Ungroup" vertex="1">
+          <mxGeometry height="100" width="530" x="40" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="scene" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Scene View&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++ / SFML&lt;/i&gt;&lt;br&gt;&lt;br&gt;EditorView, Toolbar, CursorType&lt;br&gt;Рендер сцены, preview создания,&lt;br&gt;рамок, toolbar, курсоров" vertex="1">
+          <mxGeometry height="140" width="250" x="640" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="panels" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Panel Views&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++ / SFML&lt;/i&gt;&lt;br&gt;&lt;br&gt;ShapeListView, TimelineView&lt;br&gt;Список фигур и таймлайн,&lt;br&gt;подписаны на Picture + EditorState" vertex="1">
+          <mxGeometry height="140" width="250" x="910" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="render" parent="boundary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;Rendering / Canvas Abstraction&lt;/b&gt;&lt;br&gt;&lt;i&gt;C++ / SFML&lt;/i&gt;&lt;br&gt;&lt;br&gt;ICanvas, SFMLCanvas,&lt;br&gt;DrawVisitor, DrawSelectionFrame&lt;br&gt;Абстракция рисования, Visitor" vertex="1">
+          <mxGeometry height="120" width="520" x="640" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="sfml" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;SFML&lt;/b&gt;&lt;br&gt;&lt;i&gt;External system&lt;/i&gt;&lt;br&gt;Окно, ввод, графика" vertex="1">
+          <mxGeometry height="90" width="220" x="1300" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pfd" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;portable-file-dialogs&lt;/b&gt;&lt;br&gt;&lt;i&gt;External system&lt;/i&gt;&lt;br&gt;Нативные диалоги файлов" vertex="1">
+          <mxGeometry height="90" width="220" x="1300" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="fs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcdd2;strokeColor=#b71c1c;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;File System&lt;/b&gt;&lt;br&gt;&lt;i&gt;External system&lt;/i&gt;&lt;br&gt;Файлы документов" vertex="1">
+          <mxGeometry height="90" width="220" x="1300" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;" value="" vertex="1">
+          <mxGeometry height="230" width="250" x="1300" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;" value="&lt;b&gt;Легенда&lt;/b&gt;" vertex="1">
+          <mxGeometry height="25" width="200" x="1310" y="465" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Сплошная стрелка — вызов / использование" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Пунктир — observer-уведомление" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Зелёный — Controllers" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="545" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Синий — Model" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="legend5" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Жёлтый — Commands" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="legend6" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Оранжевый — Views" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="legend7" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Красный — внешние системы" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="legend8" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Серый — Composition Root" vertex="1">
+          <mxGeometry height="20" width="230" x="1310" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="e_win_scene" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="scene">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_scene" connectable="0" parent="e_win_scene" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="владеет, Render" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_win_panels" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="panels">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_panels" connectable="0" parent="e_win_panels" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="владеет, Render" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_win_router" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="router">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_router" connectable="0" parent="e_win_router" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="делегирует события" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_win_docio" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="docio">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_docio" connectable="0" parent="e_win_docio" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="New / Save / Load" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_win_model" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;dashed=1;" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_model" connectable="0" parent="e_win_model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="владеет Document (shared_ptr)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_panels" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="panels">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_panels" connectable="0" parent="e_router_panels" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="hit-test, HandleClick" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_scene" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="scene">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_scene" connectable="0" parent="e_router_scene" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="UpdateCursor" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_create" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="create">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_create" connectable="0" parent="e_router_create" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Start / Commit" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_transform" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="transform">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_transform" connectable="0" parent="e_router_transform" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Resize / Drag" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_shortcuts" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="shortcuts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_shortcuts" connectable="0" parent="e_router_shortcuts" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="OnKeyPressed" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_cmds" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="cmds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_cmds" connectable="0" parent="e_router_cmds" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=9;" value="Execute(Delete / Color / SetTime / SetDuration / Reorder)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_router_state" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="state">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_router_state" connectable="0" parent="e_router_state" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="selection / mode / preview" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_create_cmds" edge="1" parent="1" source="create" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="cmds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_create_cmds" connectable="0" parent="e_create_cmds" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Execute(AddCommand)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_transform_cmds" edge="1" parent="1" source="transform" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="cmds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_transform_cmds" connectable="0" parent="e_transform_cmds" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Execute(MoveShapes / Resize)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_transform_state" edge="1" parent="1" source="transform" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="state">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_transform_state" connectable="0" parent="e_transform_state" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="preview, dragAnchor, resizeStart" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_shortcuts_cmds" edge="1" parent="1" source="shortcuts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="cmds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_shortcuts_cmds" connectable="0" parent="e_shortcuts_cmds" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=9;" value="Execute(Delete / Group / Ungroup), Undo / Redo" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_shortcuts_docio" edge="1" parent="1" source="shortcuts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="docio">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_shortcuts_docio" connectable="0" parent="e_shortcuts_docio" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Save" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_docio_model" edge="1" parent="1" source="docio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_docio_model" connectable="0" parent="e_docio_model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="ReplaceWith, Save / Load" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_docio_pfd" edge="1" parent="1" source="docio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="pfd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_docio_pfd" connectable="0" parent="e_docio_pfd" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="диалоги" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_docio_fs" edge="1" parent="1" source="docio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="fs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_docio_fs" connectable="0" parent="e_docio_fs" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="чтение / запись" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_scene_model" edge="1" parent="1" source="scene" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_scene_model" connectable="0" parent="e_scene_model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="GetOrder / GetShape" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_scene_state" edge="1" parent="1" source="scene" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="state">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_scene_state" connectable="0" parent="e_scene_state" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="preview / selection / currentTime" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_scene_render" edge="1" parent="1" source="scene" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="render">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_scene_render" connectable="0" parent="e_scene_render" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="DrawVisitor, DrawSelectionFrame" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_panels_model" edge="1" parent="1" source="panels" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_panels_model" connectable="0" parent="e_panels_model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Subscribe, GetOrder / GetShape" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_panels_state" edge="1" parent="1" source="panels" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="state">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_panels_state" connectable="0" parent="e_panels_state" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="Subscribe, preview, SetSelectedIds" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_model_panels" edge="1" parent="1" source="model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;" target="panels">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_model_panels" connectable="0" parent="e_model_panels" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="OnPictureChanged (observer)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_state_panels" edge="1" parent="1" source="state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;dashed=1;" target="panels">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_state_panels" connectable="0" parent="e_state_panels" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="OnSelectionChanged (observer)" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_render_sfml" edge="1" parent="1" source="render" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="sfml">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_render_sfml" connectable="0" parent="e_render_sfml" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="рисует через" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_win_sfml" edge="1" parent="1" source="win" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;" target="sfml">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_win_sfml" connectable="0" parent="e_win_sfml" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" value="окно, события" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
