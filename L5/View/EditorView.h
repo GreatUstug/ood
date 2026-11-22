@@ -32,9 +32,7 @@ public:
 		for (const auto& id : m_picture.GetOrder())
 		{
 			const auto& f = m_picture.GetShape(id);
-			double startTime = f.GetTime();
-			double duration = f.GetDuration();
-			double endTime = startTime + duration;
+			auto [startTime, endTime] = f.GetInterval();
 
 			if (m_state.currentTime < startTime || m_state.currentTime > endTime)
 			{

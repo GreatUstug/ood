@@ -144,6 +144,19 @@ public:
 		return ids;
 	}
 
+	std::pair<double, double> GetInterval() const override {
+		if (m_children.empty()) {
+			return { GetTime(), GetTime() + GetDuration() };
+		}
+		double minT = 1e18, maxEnd = -1e18;
+		for (const auto& child : m_children) {
+			auto [t, e] = child->GetInterval();
+			minT = std::min(minT, t);
+			maxEnd = std::max(maxEnd, e);
+		}
+		return { minT, maxEnd };
+	}
+
 private:
 	std::string m_id;
 	std::vector<std::unique_ptr<Figure> > m_children;

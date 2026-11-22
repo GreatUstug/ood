@@ -6,7 +6,6 @@
 #define L4_COLORCOMMAND_H
 #include "ICommand.h"
 #include "Model/Picture.h"
-#include "View/gfx/ICanvas.h"
 
 class ColorCommand : public ICommand
 {

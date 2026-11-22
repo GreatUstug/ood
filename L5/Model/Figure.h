@@ -49,6 +49,9 @@ public:
 		static constexpr std::vector<std::unique_ptr<Figure>> empty;
 		return empty;
 	}
+	virtual std::pair<double, double> GetInterval() const {
+		return { GetTime(), GetTime() + GetDuration() };
+	}
 };
 }
 #endif //L5_FIGURE_H
