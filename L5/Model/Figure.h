@@ -8,6 +8,7 @@
 #include "Bounds.h"
 #include "View/gfx/ICanvas.h"
 #include "Figures/IShapeGeometryVisitor.h"
+#include "Color.h"
 #include <memory>
 #include <string>
 #include <optional>
@@ -26,10 +27,10 @@ public:
 	virtual double GetDuration() const = 0;
 	virtual void SetDuration(double d) = 0;
 
-	virtual gfx::Color GetFillColor() const = 0;
-	virtual gfx::Color GetStrokeColor() const = 0;
-	virtual void SetFillColor(const gfx::Color& c) = 0;
-	virtual void SetStrokeColor(const gfx::Color& c) = 0;
+	virtual Color GetFillColor() const = 0;
+	virtual Color GetStrokeColor() const = 0;
+	virtual void SetFillColor(const Color& c) = 0;
+	virtual void SetStrokeColor(const Color& c) = 0;
 
 	virtual Bounds GetBounds() const = 0;
 	virtual void SetBounds(const Bounds& bounds) = 0;

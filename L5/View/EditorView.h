@@ -89,8 +89,8 @@ public:
 			return;
 		shapes::DrawVisitor v(m_canvas, figure->GetFillColor(), figure->GetStrokeColor());
 		figure->Accept(v);
-		const gfx::Color previewFrame(100, 100, 255, 180);
-		const gfx::Color transparent(0, 0, 0, 0);
+		const Color previewFrame(100, 100, 255, 180);
+		const Color transparent(0, 0, 0, 0);
 		m_canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height,
 			transparent, previewFrame);
 	}

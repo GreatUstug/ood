@@ -55,8 +55,8 @@ inline Handle GetActualHitTestHandle(const shapes::Bounds& b, double px, double 
 
 inline void DrawSelectionFrame(gfx::ICanvas& canvas, const shapes::Bounds& bounds, bool drawWithHandlers)
 {
-	const gfx::Color blue(0, 0, 255, 255);
-	const gfx::Color transparent(0, 0, 0, 0);
+	const Color blue(0, 0, 255, 255);
+	const Color transparent(0, 0, 0, 0);
 
 	canvas.DrawRectangle(bounds.x, bounds.y, bounds.width, bounds.height, transparent, blue);
 

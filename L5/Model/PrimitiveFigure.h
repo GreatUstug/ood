@@ -14,8 +14,8 @@ public:
 		const std::string& fillColor,
 		std::unique_ptr<IShapeGeometry> geometry,
 		const std::string& strokeColor = "#000000")
-		: m_id(id), m_fillColor(gfx::Color::ParseToRGB(fillColor)),
-		  m_strokeColor(gfx::Color::ParseToRGB(strokeColor)), m_geometry(std::move(geometry))
+		: m_id(id), m_fillColor(Color::ParseToRGB(fillColor)),
+		  m_strokeColor(Color::ParseToRGB(strokeColor)), m_geometry(std::move(geometry))
 	{
 	}
 
@@ -33,10 +33,10 @@ public:
 	std::string GetType() const override { return m_geometry->GetType(); }
 	void Accept(IShapeGeometryVisitor& v) const override { m_geometry->Accept(v); }
 
-	gfx::Color GetFillColor() const override { return m_fillColor; }
-	gfx::Color GetStrokeColor() const override { return m_strokeColor; }
-	void SetFillColor(const gfx::Color& color) override { m_fillColor = color; }
-	void SetStrokeColor(const gfx::Color& color) override { m_strokeColor = color; }
+	Color GetFillColor() const override { return m_fillColor; }
+	Color GetStrokeColor() const override { return m_strokeColor; }
+	void SetFillColor(const Color& color) override { m_fillColor = color; }
+	void SetStrokeColor(const Color& color) override { m_strokeColor = color; }
 
 	double GetTime() const override { return m_time; }
 	void SetTime(double t) override { m_time = t; }
@@ -68,8 +68,8 @@ public:
 private:
 	std::string m_id;
 	std::unique_ptr<IShapeGeometry> m_geometry;
-	gfx::Color m_fillColor;
-	gfx::Color m_strokeColor;
+	Color m_fillColor;
+	Color m_strokeColor;
 	double m_time = 0.0;
 	double m_duration = 1.0;
 };

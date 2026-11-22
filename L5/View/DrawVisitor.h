@@ -15,7 +15,7 @@ namespace shapes
 class DrawVisitor : public IShapeGeometryVisitor
 {
 public:
-	DrawVisitor(gfx::ICanvas& canvas, gfx::Color fill, gfx::Color stroke)
+	DrawVisitor(gfx::ICanvas& canvas, Color fill, Color stroke)
 		: m_canvas(canvas), m_fill(fill), m_stroke(stroke) {}
 
 	void Visit(const Rectangle& r) override
@@ -42,8 +42,8 @@ public:
 
 	void Visit(const GroupFigure& gp) override
 	{
-		gfx::Color oldFill = m_fill;
-		gfx::Color oldStroke = m_stroke;
+		Color oldFill = m_fill;
+		Color oldStroke = m_stroke;
 		for (const auto& child : gp.GetChildren())
 		{
 			m_fill = child->GetFillColor();
@@ -55,8 +55,8 @@ public:
 	}
 private:
 	gfx::ICanvas& m_canvas;
-	gfx::Color m_fill;
-	gfx::Color m_stroke;
+	Color m_fill;
+	Color m_stroke;
 };
 }
 

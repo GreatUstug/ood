@@ -15,7 +15,7 @@ class GroupFigure : public Figure
 {
 public:
 	GroupFigure(const std::string& id, const std::string& fillColor, const std::string& strokeColor)
-		: m_id(id), m_fillColor(gfx::Color::ParseToRGB(fillColor)), m_strokeColor(gfx::Color::ParseToRGB(strokeColor))
+		: m_id(id), m_fillColor(Color::ParseToRGB(fillColor)), m_strokeColor(Color::ParseToRGB(strokeColor))
 	{
 	}
 
@@ -27,17 +27,17 @@ public:
 	double GetDuration() const override { return m_duration; }
 	void SetDuration(double d) override { m_duration = d; }
 
-	gfx::Color GetFillColor() const override { return m_fillColor; }
-	gfx::Color GetStrokeColor() const override { return m_strokeColor; }
+	Color GetFillColor() const override { return m_fillColor; }
+	Color GetStrokeColor() const override { return m_strokeColor; }
 
-	void SetFillColor(const gfx::Color& c) override
+	void SetFillColor(const Color& c) override
 	{
 		m_fillColor = c;
 		for (auto& child : m_children)
 			child->SetFillColor(c);
 	}
 
-	void SetStrokeColor(const gfx::Color& c) override
+	void SetStrokeColor(const Color& c) override
 	{
 		m_strokeColor = c;
 		for (auto& child : m_children)
@@ -147,8 +147,8 @@ public:
 private:
 	std::string m_id;
 	std::vector<std::unique_ptr<Figure> > m_children;
-	gfx::Color m_fillColor;
-	gfx::Color m_strokeColor;
+	Color m_fillColor;
+	Color m_strokeColor;
 	double m_time = 0.0;
 	double m_duration = 1.0;
 };

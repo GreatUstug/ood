@@ -217,7 +217,7 @@ private:
 		}
 	}
 
-	void ApplyColorToSelection(const gfx::Color& c)
+	void ApplyColorToSelection(const Color& c)
 	{
 		if (!m_state.HasValidSelection(m_document.GetPicture()))
 			return;
@@ -232,7 +232,7 @@ private:
 			for (const auto& id : selectedIds)
 			{
 				const auto& f = m_document.GetPicture().GetShape(id);
-				gfx::Color current = (target == shapes::ColorTarget::Fill)
+				Color current = (target == shapes::ColorTarget::Fill)
 					? f.GetFillColor()
 					: f.GetStrokeColor();
 				if (current != c)

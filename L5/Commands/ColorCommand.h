@@ -11,7 +11,7 @@
 class ColorCommand : public ICommand
 {
 public:
-	ColorCommand(shapes::Picture& picture, std::vector<std::string> ids, const gfx::Color& newColor, shapes::ColorTarget target)
+	ColorCommand(shapes::Picture& picture, std::vector<std::string> ids, const Color& newColor, shapes::ColorTarget target)
 		: m_picture(picture), m_ids(std::move(ids)), m_newColor(newColor), m_target(target)
 	{
 		m_oldColors.reserve(m_ids.size());
@@ -44,8 +44,8 @@ public:
 private:
 	shapes::Picture& m_picture;
 	std::vector<std::string> m_ids;
-	gfx::Color m_newColor;
-	std::vector<gfx::Color> m_oldColors;
+	Color m_newColor;
+	std::vector<Color> m_oldColors;
 	shapes::ColorTarget m_target;
 };
 #endif //L4_COLORCOMMAND_H

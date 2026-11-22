@@ -77,8 +77,8 @@ private:
 	std::size_t m_groupIndex = 0;
 	std::vector<std::string> m_childIds;
 
-	gfx::Color m_groupFill{ 0, 0, 0, 255 };
-	gfx::Color m_groupStroke{ 0, 0, 0, 255 };
+	Color m_groupFill{ 0, 0, 0, 255 };
+	Color m_groupStroke{ 0, 0, 0, 255 };
 	double m_groupTime = 0.0;
 	double m_groupDuration = 1.0;
 };

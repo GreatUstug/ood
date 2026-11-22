@@ -152,7 +152,7 @@ public:
 		return std::distance(m_order.begin(), it);
 	}
 
-	void ColorShapes(const std::vector<std::string>& ids, const gfx::Color& color, const ColorTarget target)
+	void ColorShapes(const std::vector<std::string>& ids, const Color& color, const ColorTarget target)
 	{
 		for (const auto& id : ids)
 		{
@@ -173,7 +173,7 @@ public:
 		NotifyPictureObservers();
 	}
 
-	void ColorShapes(const std::vector<std::string>& ids, const std::vector<gfx::Color>& colors, ColorTarget target)
+	void ColorShapes(const std::vector<std::string>& ids, const std::vector<Color>& colors, ColorTarget target)
 	{
 		if (colors.size() != ids.size())
 		{

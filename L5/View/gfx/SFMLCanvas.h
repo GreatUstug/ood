@@ -20,7 +20,7 @@ public:
 	~SFMLCanvas() override = default;
 
 	void DrawEllipse(double cx, double cy, double rx, double ry,
-		const gfx::Color& fill, const gfx::Color& outline) override
+		const Color& fill, const Color& outline) override
 	{
 		float maxR = std::max(F(rx), F(ry));
 		if (maxR <= 0)
@@ -38,7 +38,7 @@ public:
 	}
 
 	void DrawRectangle(double x, double y, double w, double h,
-		const gfx::Color& fill, const gfx::Color& outline) override
+		const Color& fill, const Color& outline) override
 	{
 		sf::RectangleShape rect({ F(w), F(h) });
 		rect.setPosition({ F(x), F(y) });
@@ -50,7 +50,7 @@ public:
 
 	void DrawTriangle(double x1, double y1, double x2, double y2,
 		double x3, double y3,
-		const gfx::Color& fill, const gfx::Color& outline) override
+		const Color& fill, const Color& outline) override
 	{
 		sf::ConvexShape tri(3);
 		tri.setPoint(0, { F(x1), F(y1) });
@@ -63,7 +63,7 @@ public:
 	}
 
 	void DrawLine(double x1, double y1, double x2, double y2,
-		const gfx::Color& color) override
+		const Color& color) override
 	{
 		sf::Vertex line[2] = {
 			{ sf::Vector2f(F(x1), F(y1)), sf::Color(color.r, color.g, color.b, color.a) },
@@ -73,7 +73,7 @@ public:
 	}
 
 	void DrawPolygon(const std::vector<std::pair<double, double> >& points,
-		const gfx::Color& fill, const gfx::Color& outline) override
+		const Color& fill, const Color& outline) override
 	{
 		if (points.size() < 3)
 			return;

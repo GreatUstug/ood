@@ -48,17 +48,17 @@ public:
 			{ { x + (w + gap), y + (h + gap) * 2, w, h }, "Stroke", ToolbarAction::SetStrokeMode },
 		};
 		m_palette = {
-			gfx::Color(198, 120, 255, 255),
-			gfx::Color(255,  80,  80, 255),
-			gfx::Color( 80, 200,  80, 255),
-			gfx::Color( 80, 120, 255, 255),
-			gfx::Color(255, 200,  60, 255),
-			gfx::Color( 40,  40,  40, 255),
+			Color(198, 120, 255, 255),
+			Color(255,  80,  80, 255),
+			Color( 80, 200,  80, 255),
+			Color( 80, 120, 255, 255),
+			Color(255, 200,  60, 255),
+			Color( 40,  40,  40, 255),
 		};
 	}
 
 	const std::vector<ToolbarButton>& Buttons() const { return m_buttons; }
-	const std::vector<gfx::Color>& Palette() const { return m_palette; }
+	const std::vector<Color>& Palette() const { return m_palette; }
 
 
 	std::vector<shapes::Bounds> PaletteBounds() const
@@ -105,7 +105,7 @@ public:
 
 private:
 	std::vector<ToolbarButton> m_buttons;
-	std::vector<gfx::Color> m_palette;
+	std::vector<Color> m_palette;
 };
 
 #endif //L3_TOOLBAR_H
