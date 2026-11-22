@@ -2,6 +2,7 @@
 #pragma once
 #include "Bounds.h"
 #include "Figure.h"
+#include "GroupFigure.h"
 #include "ShapeInfo.h"
 #include "Observers/ObserverList.h"
 #include "Observers/PictureObserver.h"
@@ -12,6 +13,7 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <ranges>
 #include <unordered_map>
 
 namespace shapes
@@ -153,9 +155,7 @@ public:
 	{
 		const auto it = std::ranges::find(m_order, id);
 		if (it == m_order.end())
-		{
 			throw std::invalid_argument("Shape not found. IndexOf isn't available");
-		}
 		return std::distance(m_order.begin(), it);
 	}
 
@@ -242,7 +242,130 @@ public:
 		NotifyPictureObservers();
 	}
 
+	bool HasShapeDeep(const std::string& id) const
+	{
+		if (HasShape(id)) return true;
+		for (const auto& fig : m_shapes | std::views::values)
+		{
+			if (HasChildRecursive(*fig, id)) return true;
+		}
+		return false;
+	}
+
+	GroupFigure* FindParent(const std::string& id)
+	{
+		for (const auto& [_, fig] : m_shapes)
+		{
+			if (auto* g = fig->AsGroup())
+			{
+				if (auto* parent = FindParentRecursive(g, id))
+					return parent;
+			}
+		}
+		return nullptr;
+	}
+
+	Figure* GetShapeDeep(const std::string& id)
+	{
+		if (HasShape(id)) return &GetShape(id);
+		for (const auto& [_, fig] : m_shapes)
+		{
+			if (auto* found = FindShapeRecursive(fig.get(), id))
+				return found;
+		}
+		return nullptr;
+	}
+
+	GroupFigure* FindGroupDeep(const std::string& id)
+	{
+		if (auto* fig = GetShapeDeep(id))
+			return fig->AsGroup();
+		return nullptr;
+	}
+
+	std::unique_ptr<Figure> ExtractFigureDeep(const std::string& id)
+	{
+		if (HasShape(id))
+			return ExtractFigure(id);
+
+		if (auto* parent = FindParent(id))
+			return parent->ExtractChild(id);
+
+		throw std::invalid_argument("Shape not found deep: " + id);
+	}
+
+	std::string HitTestDeep(double x, double y) const
+	{
+		for (auto it = m_order.rbegin(); it != m_order.rend(); ++it)
+		{
+			auto shapeIt = m_shapes.find(*it);
+			if (shapeIt != m_shapes.end() && shapeIt->second->HitTest(x, y))
+			{
+				if (auto* g = shapeIt->second->AsGroup())
+				{
+					if (auto deepest = HitTestDeepRecursive(*g, x, y); !deepest.empty())
+						return deepest;
+				}
+				return *it;
+			}
+		}
+		return {};
+	}
+
 private:
+	static bool HasChildRecursive(const Figure& fig, const std::string& id)
+	{
+		for (const auto& child : fig.GetChildren())
+		{
+			if (child->GetId() == id) return true;
+			if (HasChildRecursive(*child, id)) return true;
+		}
+		return false;
+	}
+
+	static Figure* FindShapeRecursive(Figure* fig, const std::string& id)
+	{
+		for (const auto& child : fig->GetChildren())
+		{
+			if (child->GetId() == id) return child.get();
+			if (auto* found = FindShapeRecursive(child.get(), id))
+				return found;
+		}
+		return nullptr;
+	}
+
+	static GroupFigure* FindParentRecursive(GroupFigure* g, const std::string& id)
+	{
+		for (const auto& child : g->GetChildren())
+		{
+			if (child->GetId() == id) return g;
+			if (auto* sub = child->AsGroup())
+			{
+				if (auto* found = FindParentRecursive(sub, id))
+					return found;
+			}
+		}
+		return nullptr;
+	}
+
+	static std::string HitTestDeepRecursive(const GroupFigure& g, double x, double y)
+	{
+		const auto& children = g.GetChildren();
+		for (auto it = children.rbegin(); it != children.rend(); ++it)
+		{
+			const auto& child = *it;
+			if (!child->HitTest(x, y)) continue;
+
+			if (auto* sub = child->AsGroup())
+			{
+				if (auto deepest = HitTestDeepRecursive(*sub, x, y); !deepest.empty())
+					return deepest;
+			}
+			return child->GetId();
+		}
+		return {};
+	}
+
 	void NotifyPictureObservers()
 	{
 		m_observers.Notify([this](PictureObserver* o) {

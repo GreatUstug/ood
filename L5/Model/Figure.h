@@ -52,6 +52,9 @@ public:
 	virtual std::pair<double, double> GetInterval() const {
 		return { GetTime(), GetTime() + GetDuration() };
 	}
+
+	virtual class GroupFigure* AsGroup() { return nullptr; }
+	[[nodiscard]] virtual const class GroupFigure* AsGroup() const { return nullptr; }
 };
 }
 #endif //L5_FIGURE_H

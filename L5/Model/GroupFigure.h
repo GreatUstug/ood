@@ -144,7 +144,7 @@ public:
 		return ids;
 	}
 
-	std::pair<double, double> GetInterval() const override {
+	[[nodiscard]] std::pair<double, double> GetInterval() const override {
 		if (m_children.empty()) {
 			return { GetTime(), GetTime() + GetDuration() };
 		}
@@ -156,6 +156,17 @@ public:
 		}
 		return { minT, maxEnd };
 	}
+
+	void InsertChild(std::size_t index, std::unique_ptr<Figure> child)
+	{
+		if (index >= m_children.size())
+			m_children.push_back(std::move(child));
+		else
+			m_children.insert(m_children.begin() + index, std::move(child));
+	}
+
+	GroupFigure* AsGroup() override { return this; }
+	[[nodiscard]] const GroupFigure* AsGroup() const override { return this; }
 
 private:
 	std::string m_id;
