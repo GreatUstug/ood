@@ -41,7 +41,12 @@ public:
 			return false;
 		}
 
-		auto bounds = m_document.GetPicture().GetShape(m_state.GetPrimarySelectedId()).GetBounds();
+		const shapes::Figure* fig = m_document.GetPicture().GetShapeDeep(m_state.GetPrimarySelectedId());
+		if (!fig)
+		{
+			return false;
+		};
+		auto bounds = fig->GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		if (h == Handle::None)
 		{
@@ -66,7 +71,7 @@ public:
 
 	void HandleShapeClick(const sf::Vector2f& pos)
 	{
-		std::string hit = m_document.GetPicture().HitTest(pos.x, pos.y);
+		std::string hit = m_document.GetPicture().HitTestDeep(pos.x, pos.y);
 
 		if (IsAdditive())
 		{
@@ -93,10 +98,11 @@ public:
 		m_state.dragAnchorX = pos.x;
 		m_state.dragAnchorY = pos.y;
 		m_state.dragStartBounds.clear();
+		m_state.dragStartBounds.clear();
 		for (const auto& id : m_state.GetSelectedIds())
 		{
-			if (m_document.GetPicture().HasShape(id))
-				m_state.dragStartBounds[id] = m_document.GetPicture().GetShape(id).GetBounds();
+			if (const shapes::Figure* fig = m_document.GetPicture().GetShapeDeep(id))
+				m_state.dragStartBounds[id] = fig->GetBounds();
 		}
 		m_state.lastAppliedDx = 0;
 		m_state.lastAppliedDy = 0;
@@ -141,7 +147,7 @@ public:
 		else if (m_state.mode == EditorState::Mode::Resizing)
 		{
 			const std::string& id = m_state.GetPrimarySelectedId();
-			if (!id.empty() && m_document.GetPicture().HasShape(id))
+			if (shapes::Figure* fig = m_document.GetPicture().GetShapeDeep(id); !id.empty() && fig)
 			{
 				shapes::Bounds oldB = m_state.resizeStartBounds;
 				auto pvIt = m_state.preview.find(id);
