@@ -9,14 +9,16 @@
 #include "Model/Figures/Line.h"
 #include "Model/Figures/Polygon.h"
 #include "View/gfx/ICanvas.h"
+#include "Model/EditorState.h"
 
 namespace shapes
 {
 class DrawVisitor : public IShapeGeometryVisitor
 {
 public:
-	DrawVisitor(gfx::ICanvas& canvas, Color fill, Color stroke)
-		: m_canvas(canvas), m_fill(fill), m_stroke(stroke) {}
+	DrawVisitor(gfx::ICanvas& canvas, Color fill, Color stroke,
+	            const std::unordered_map<std::string, PreviewShape>* preview = nullptr)
+		: m_canvas(canvas), m_fill(fill), m_stroke(stroke), m_preview(preview) {}
 
 	void Visit(const Rectangle& r) override
 	{
@@ -46,6 +48,21 @@ public:
 		Color oldStroke = m_stroke;
 		for (const auto& child : gp.GetChildren())
 		{
+			if (m_preview)
+			{
+				auto it = m_preview->find(child->GetId());
+				if (it != m_preview->end() && it->second.bounds)
+				{
+					auto clone = child->Clone();
+					clone->SetBounds(*it->second.bounds);
+
+					m_fill = clone->GetFillColor();
+					m_stroke = clone->GetStrokeColor();
+					clone->Accept(*this);
+					continue;
+				}
+			}
+
 			m_fill = child->GetFillColor();
 			m_stroke = child->GetStrokeColor();
 			child->Accept(*this);
@@ -57,6 +74,7 @@ private:
 	gfx::ICanvas& m_canvas;
 	Color m_fill;
 	Color m_stroke;
+	const std::unordered_map<std::string, PreviewShape>* m_preview;
 };
 }
 

@@ -45,12 +45,12 @@ public:
 				auto clone = f.Clone();
 				clone->SetBounds(*pvIt->second.bounds);
 
-				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
+				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor(), &m_state.preview);
 				clone->Accept(v);
 			}
 			else
 			{
-				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor());
+				shapes::DrawVisitor v(m_canvas, f.GetFillColor(), f.GetStrokeColor(), &m_state.preview);
 				f.Accept(v);
 			}
 		}
@@ -58,11 +58,12 @@ public:
 		auto primary = m_state.GetPrimarySelectedId();
 		for (const auto& id : m_state.GetSelectedIds())
 		{
-			if (!m_picture.HasShape(id))
+			const shapes::Figure* fig = m_picture.GetShapeDeep(id);
+			if (!fig)
 				continue;
 			if (!m_state.IsShapeVisible(m_picture, id, m_state.currentTime))
 				continue;
-			shapes::Bounds drawBounds = m_picture.GetShape(id).GetBounds();
+			shapes::Bounds drawBounds = fig->GetBounds();
 			if (auto pvIt = m_state.preview.find(id); pvIt != m_state.preview.end() && pvIt->second.bounds)
 			{
 				drawBounds = *pvIt->second.bounds;
@@ -101,7 +102,13 @@ public:
 			return;
 		}
 
-		auto bounds = m_picture.GetShape(m_state.GetPrimarySelectedId()).GetBounds();
+		const shapes::Figure* fig = m_picture.GetShapeDeep(m_state.GetPrimarySelectedId());
+		if (!fig)
+		{
+			m_window.setMouseCursor(m_cursorArrow);
+			return;
+		}
+		auto bounds = fig->GetBounds();
 		auto h = GetActualHitTestHandle(bounds, pos.x, pos.y);
 		switch (h)
 		{

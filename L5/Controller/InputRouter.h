@@ -118,7 +118,14 @@ private:
 				if (m_state.IsSelected(topId))
 				{
 					m_state.SetSelectedIds({deepHit});
-					m_state.mode = EditorState::Mode::Idle;
+					m_state.dragAnchorX = pos.x;
+					m_state.dragAnchorY = pos.y;
+					m_state.dragStartBounds.clear();
+					if (const shapes::Figure* fig = m_document.GetPicture().GetShapeDeep(deepHit))
+						m_state.dragStartBounds[deepHit] = fig->GetBounds();
+					m_state.lastAppliedDx = 0;
+					m_state.lastAppliedDy = 0;
+					m_state.mode = EditorState::Mode::Dragging;
 					return;
 				}
 				m_state.SetSelectedIds({ topId });
