@@ -1,80 +1,73 @@
-# Dynamic Diagram: перемещение фигуры по таймлайну (Time Drag)
+# Dynamic Diagram: удаление вложенных фигур с авто-распадом (DeleteNestedCommand)
 
 ## 1. Сценарий
 
-Пользователь перетаскивает фигуру по горизонтали в `TimelineView`. Время фигуры
-(`time`) меняется. Операция **обратима**: Undo возвращает старое время, Redo
-повторяет новое.
+Пользователь выделяет одну или несколько фигур (в том числе вложенных в группы) и нажимает `Delete`.
+Фигуры удаляются, а группы, в которых осталось меньше двух детей, **автоматически распадаются**
+(дети поднимаются на уровень родителя). Операция **обратима**: Undo восстанавливает удалённые фигуры
+и исходную структуру групп, Redo повторяет удаление и распад.
 
 Сценарий соответствует фактическому коду:
-`TimelineView::HandleClick` → `UpdatePreview` → `Release` →
-`InputRouter::CreateTimelineCommand` → `CommandHistory::Execute(SetTimeCommand)`.
+`InputRouter/ShortcutController` → `DeleteNestedCommand` → `Picture::ExtractFigureDeep` →
+`SimplifyGroups` → `CommandHistory::Execute`. Undo — через паттерн **Memento** (снимок `Picture`).
 
 ## 2. Участники (на уровне компонентов C3)
 
-| Участник             | Компонент C3           | Ответственность в сценарии                                          |
-|----------------------|------------------------|---------------------------------------------------------------------|
-| `TimelineView`       | Panel Views            | hit-test, drag-состояние, preview, `Release` → `TimelineDragResult` |
-| `InputRouter`        | Input Routing          | маршрутизация событий, создание `SetTimeCommand`                    |
-| `EditorState`        | Editor State           | хранение `preview[id].time` (временное состояние до commit)         |
-| `EditorView`         | Scene View             | рендер preview по `EditorState::preview`                            |
-| `CommandHistory`     | Command & Undo History | `Execute`, стек undo/redo                                           |
-| `SetTimeCommand`     | Command & Undo History | `Execute`/`Unexecute`, хранит `oldTimes`, флаг `alreadyApplied`     |
-| `Picture`            | Document Model         | `SetShapeTimes`, `NotifyPictureObservers`                           |
-| `ShortcutController` | Shortcuts              | Ctrl+Z / Ctrl+Y → `Undo`/`Redo`                                     |
+| Участник                             | Компонент C3              | Ответственность в сценарии                                                   |
+|--------------------------------------|---------------------------|------------------------------------------------------------------------------|
+| `ShortcutController` / `InputRouter` | Shortcuts / Input Routing | Обрабатывает `Delete`, создаёт `DeleteNestedCommand`                         |
+| `DeleteNestedCommand`                | Command & Undo History    | Удаляет фигуры, каскадно упрощает группы, хранит Memento                     |
+| `Picture`                            | Document Model            | `ExtractFigureDeep`, `FindParent`, `ReplaceWith`, `NotifyPictureObservers`   |
+| `GroupFigure`                        | Document Model            | `ExtractChild`, `InsertChild`, `GetChildren`                                 |
+| `CommandHistory`                     | Command & Undo History    | `Execute`, `Undo`, `Redo` (стек с индексом)                                  |
+| `EditorState`                        | Editor State              | Сброс выделения после удаления (`ClearSelection`), восстановление после Undo |
+| `ShapeListView` / `TimelineView`     | Panel Views               | Подписаны на `PictureObserver`, обновляются после `NotifyPictureObservers`   |
 
-## 3. Последовательность (preview → commit → undo)
+## 3. Последовательность (Execute → Undo → Redo)
 
-1. **MousePressed** в таймлайне:
-    - `InputRouter::OnMousePressed` → `TimelineView::HandleClick`;
-    - hit-test по бару фигуры, `m_pendingDrag = true`, `m_dragMode = None`,
-      `m_dragStartShapeTime = t`, `m_dragStartMouseTime = clickTime`.
-2. **MouseMoved** (drag):
-    - `InputRouter::OnMouseMoved` → `TimelineView::UpdatePreview`;
-    - после dead-zone `m_dragMode = Time`;
-    - `newTime = m_dragStartShapeTime + (clickTime - m_dragStartMouseTime)`;
-    - **`EditorState::preview[id].time = newTime`** (preview, документ не меняется).
-3. **Рендер** (каждый кадр):
-    - `EditorView::Render` читает `m_state.preview` и рисует preview-версию бара;
-    - `TimelineView::Render` тоже читает `preview[id].time` для отрисовки.
-4. **MouseReleased** (commit-намерение):
-    - `InputRouter::OnMouseReleased` → `TimelineView::Release()`;
-    - `Release` проверяет, что время изменилось, **удаляет preview**
-      (`m_state.preview.erase(m_dragId)`) и возвращает `TimelineDragResult{Time, oldTime, newTime}`.
-5. **Создание команды**:
-    - `InputRouter::CreateTimelineCommand(result)` → `SetTimeCommand(picture, {id}, {newTime}, false)`.
-6. **Commit**:
-    - `Document::GetHistory().Execute(cmd)`:
-        - `SetTimeCommand::Execute` → `Picture::SetShapeTimes(ids, newTimes)`;
-        - `Picture::NotifyPictureObservers()` → панели обновляют `ShapeInfo`;
-        - команда кладётся в стек, `m_commandIndex++`.
-7. **Undo** (Ctrl+Z):
-    - `ShortcutController` → `CommandHistory::Undo()`;
-    - `SetTimeCommand::Unexecute` → `Picture::SetShapeTimes(ids, oldTimes)`;
-    - `ShortcutController::ApplySelection(affectedIds)` → выделение восстанавливается.
-8. **Redo** (Ctrl+Y):
-    - `CommandHistory::Redo()` → `SetTimeCommand::Execute` → `SetShapeTimes(ids, newTimes)`.
+1. **Пользователь нажимает `Delete`** (или кнопку в toolbar).
+2. `ShortcutController` / `InputRouter` берёт `GetValidSelectedIds` (через `HasShapeDeep`).
+3. Создаётся `DeleteNestedCommand(picture, ids)`.
+4. `CommandHistory::Execute(cmd)`:
+    - `cmd->Execute()`:
+        - **Memento**: `ClonePicture()` — сохраняет копию `Picture` (`m_snapshot`) до удаления.
+        - Для каждого id: `Picture::ExtractFigureDeep(id)` — извлекает фигуру с любой глубины.
+        - `SimplifyGroups()`: цикл `while(changed)` — находит группы с < 2 детей, распаковывает их
+          (`GroupFigure::ExtractChild` + `Picture::AddShape` / `parent->InsertChild`), сохраняет снимки
+          распавшихся групп (`m_dissolvedGroups`).
+        - `Picture::NotifyPictureObservers()` → `ShapeListView`/`TimelineView` обновляются.
+    - Команда кладётся в стек, `m_commandIndex++`.
+5. `EditorState::ClearSelection()` (в `ShortcutController`/`InputRouter`).
+6. **Undo** (`Ctrl+Z`):
+    - `CommandHistory::Undo()` → `m_commandIndex--`.
+    - `cmd->Unexecute()`:
+        - `ClonePictureFromSnapshot()` — создаёт `Picture` из снимка (`m_snapshot`).
+        - `Picture::ReplaceWith(std::move(restored))` — заменяет внутренности.
+        - `Picture::NotifyPictureObservers()` → View обновляются.
+    - `ApplySelection(affectedIds)` — восстанавливает выделение (если id валидны).
+7. **Redo** (`Ctrl+Y`):
+    - `CommandHistory::Redo()` → `cmd->Execute()` (повторяет удаление и распад).
+    - `m_commandIndex++`.
 
-## 4. Важная деталь: preview vs commit
+## 4. Важная деталь: Memento вместо ручного восстановления
 
-- **Preview** - это `EditorState::preview[id].time`. Документ **не меняется**,
-  наблюдатели `PictureObserver` **не уведомляются**. `EditorView`/`TimelineView`
-  читают preview при рендере.
-- **Commit** - только в `CommandHistory::Execute(SetTimeCommand)`. С этого момента
-  изменение в документе и в истории.
-- **`SetTimeCommand::alreadyApplied`** - флаг для случая, когда значение уже
-  записано в preview, и команда не должна применять его повторно при первом
-  `Execute`. В текущем сценарии `InputRouter::CreateTimelineCommand` передаёт
-  `false`, потому что `Release` уже удалил preview и значение ещё не в документе.
-  Флаг - осознанный костыль под сценарий preview→commit, его надо честно
-  упомянуть.
+`DeleteNestedCommand` использует **Memento** (снимок всего документа), а не ручное восстановление
+путей и индексов. Это **стандартный паттерн** для Undo, когда операция сложная (каскадный распад,
+вложенные группы, Z-order). Снимок делается **до** удаления (`ClonePicture`), а `Unexecute`
+восстанавливает его через `ReplaceWith(ClonePictureFromSnapshot())`.
+
+**Почему это правильно:**
+- Не нужно высчитывать пути `(parentId, index)` для каждой удалённой фигуры.
+- Не нужно вручную восстанавливать распавшиеся группы.
+- Работает для **любой** глубины вложенности и **любого** количества удалений.
+- Undo/Redo — детерминированы (снимок всегда один и тот же).
 
 ## 5. Ссылки на код
 
-- `View/TimelineView.h` - `HandleClick`, `UpdatePreview`, `Release`, `DragMode`.
-- `Controller/InputRouter.h` - `OnMousePressed`, `OnMouseMoved`, `OnMouseReleased`,
-  `CreateTimelineCommand`.
-- `Model/EditorState.h` - `preview`, `PreviewShape`.
-- `Commands/SetTimeCommand.h` - `Execute`, `Unexecute`, `alreadyApplied`.
-- `Commands/CommandHistory.h` - `Execute`, `Undo`, `Redo`.
-- `Controller/ShortcutController.h` - Ctrl+Z / Ctrl+Y, `ApplySelection`.
+- `Commands/DeleteNestedCommand.h` — `Execute`, `Unexecute`, `SimplifyGroups`, `ClonePicture`.
+- `Controller/ShortcutController.h` — `Delete` → `DeleteNestedCommand`.
+- `Controller/InputRouter.h` — `HandleToolbarAction` (Delete) → `DeleteNestedCommand`.
+- `Model/Picture.h` — `ExtractFigureDeep`, `FindParent`, `ReplaceWith`, `NotifyPictureObservers`.
+- `Model/GroupFigure.h` — `ExtractChild`, `InsertChild`, `GetChildren`.
+- `Commands/CommandHistory.h` — `Execute`, `Undo`, `Redo`.
+- `Model/EditorState.h` — `ClearSelection`, `HasValidSelection`, `GetValidSelectedIds`.
