@@ -13,7 +13,6 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
-#include <ranges>
 #include <unordered_map>
 
 namespace shapes
@@ -57,10 +56,10 @@ public:
 	{
 		for (const auto& id : ids)
 		{
-			auto it = m_shapes.find(id);
-			if (it == m_shapes.end())
+			Figure* fig = GetShapeDeep(id);
+			if (!fig)
 				throw std::invalid_argument("Shape not found. MoveShapes isn't available.");
-			it->second->Move(dx, dy);
+			fig->Move(dx, dy);
 		}
 		NotifyPictureObservers();
 	}
@@ -110,10 +109,10 @@ public:
 
 	void SetShapeBounds(const std::string& id, const Bounds& b)
 	{
-		auto it = m_shapes.find(id);
-		if (it == m_shapes.end())
+		Figure* fig = GetShapeDeep(id);
+		if (!fig)
 			throw std::invalid_argument("Shape not found");
-		it->second->SetBounds(b);
+		fig->SetBounds(b);
 		NotifyPictureObservers();
 	}
 
@@ -163,19 +162,13 @@ public:
 	{
 		for (const auto& id : ids)
 		{
-			if (!m_shapes.contains(id))
-			{
+			Figure* fig = GetShapeDeep(id);
+			if (!fig)
 				throw std::invalid_argument("Shape with this id not found.");
-			}
 			if (target == ColorTarget::Fill)
-			{
-				m_shapes[id]->SetFillColor(color);
-			}
+				fig->SetFillColor(color);
 			else
-			{
-				m_shapes[id]->SetStrokeColor(color);
-			}
-
+				fig->SetStrokeColor(color);
 		}
 		NotifyPictureObservers();
 	}
@@ -183,34 +176,30 @@ public:
 	void ColorShapes(const std::vector<std::string>& ids, const std::vector<Color>& colors, ColorTarget target)
 	{
 		if (colors.size() != ids.size())
-		{
 			throw std::invalid_argument("ColorShapes: size mismatch.");
-		}
 		for (size_t i = 0; i < ids.size(); i++)
 		{
-			if (!m_shapes.contains(ids[i]))
-			{
+			Figure* fig = GetShapeDeep(ids[i]);
+			if (!fig)
 				throw std::invalid_argument("Shape with this id not found.");
-			}
 			if (target == ColorTarget::Fill)
-				m_shapes[ids[i]]->SetFillColor(colors[i]);
+				fig->SetFillColor(colors[i]);
 			else
-				m_shapes[ids[i]]->SetStrokeColor(colors[i]);
+				fig->SetStrokeColor(colors[i]);
 		}
 		NotifyPictureObservers();
 	}
 
-	void SetShapeTimes(const std::vector<std::string>& ids,
-				   const std::vector<double>& times)
+	void SetShapeTimes(const std::vector<std::string>& ids, const std::vector<double>& times)
 	{
 		if (ids.size() != times.size())
 			throw std::invalid_argument("SetShapeTimes: size mismatch");
 		for (std::size_t i = 0; i < ids.size(); ++i)
 		{
-			auto it = m_shapes.find(ids[i]);
-			if (it == m_shapes.end())
+			Figure* fig = GetShapeDeep(ids[i]);
+			if (!fig)
 				throw std::invalid_argument("Shape not found");
-			it->second->SetTime(times[i]);
+			fig->SetTime(times[i]);
 		}
 		NotifyPictureObservers();
 	}
@@ -234,10 +223,10 @@ public:
 			throw std::invalid_argument("SetShapeDurations: size mismatch");
 		for (std::size_t i = 0; i < ids.size(); ++i)
 		{
-			auto it = m_shapes.find(ids[i]);
-			if (it == m_shapes.end())
+			Figure* fig = GetShapeDeep(ids[i]);
+			if (!fig)
 				throw std::invalid_argument("Shape not found");
-			it->second->SetDuration(durations[i]);
+			fig->SetDuration(durations[i]);
 		}
 		NotifyPictureObservers();
 	}
@@ -245,7 +234,7 @@ public:
 	bool HasShapeDeep(const std::string& id) const
 	{
 		if (HasShape(id)) return true;
-		for (const auto& fig : m_shapes | std::views::values)
+		for (const auto& [_, fig] : m_shapes)
 		{
 			if (HasChildRecursive(*fig, id)) return true;
 		}
@@ -266,6 +255,17 @@ public:
 	}
 
 	Figure* GetShapeDeep(const std::string& id)
+	{
+		if (HasShape(id)) return &GetShape(id);
+		for (const auto& [_, fig] : m_shapes)
+		{
+			if (auto* found = FindShapeRecursive(fig.get(), id))
+				return found;
+		}
+		return nullptr;
+	}
+
+	const Figure* GetShapeDeep(const std::string& id) const
 	{
 		if (HasShape(id)) return &GetShape(id);
 		for (const auto& [_, fig] : m_shapes)
@@ -314,10 +314,7 @@ public:
 
 	std::string GetTopLevelAncestor(const std::string& id) const
 	{
-		if (HasShape(id))
-		{
-			return id;
-		};
+		if (HasShape(id)) return id;
 
 		for (const auto& topId : m_order)
 		{

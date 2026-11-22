@@ -71,7 +71,7 @@ struct EditorState
 	{
 		for (const auto& id : m_selectedIds)
 		{
-			if (picture.HasShape(id))
+			if (picture.HasShapeDeep(id))
 				return true;
 		}
 		return false;
@@ -135,11 +135,11 @@ struct EditorState
 
 	bool IsShapeVisible(const shapes::Picture& pic, const std::string& id, double currentTime) const
 	{
-		if (!pic.HasShape(id))
+		if (!pic.HasShapeDeep(id))
 			return false;
-		const auto& f = pic.GetShape(id);
-
-		auto [start, end] = f.GetInterval();
+		const shapes::Figure* fig = pic.GetShapeDeep(id);
+		if (!fig) return false;
+		auto [start, end] = fig -> GetInterval();
 
 		if (const auto pv = preview.find(id); pv != preview.end())
 		{
@@ -157,7 +157,7 @@ struct EditorState
 		result.reserve(m_selectedIds.size());
 		for (const auto& id : m_selectedIds)
 		{
-			if (picture.HasShape(id))
+			if (picture.HasShapeDeep(id))
 			{
 				result.push_back(id);
 			}

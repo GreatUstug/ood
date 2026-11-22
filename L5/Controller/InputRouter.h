@@ -112,7 +112,7 @@ private:
 				m_state.ClearSelection();
 				return;
 			}
-			if (m_document.GetPicture().HasShape(deepHit))
+			if (!m_document.GetPicture().HasShape(deepHit))
 			{
 				std::string topId = m_document.GetPicture().GetTopLevelAncestor(deepHit);
 				if (m_state.IsSelected(topId))
@@ -250,10 +250,11 @@ private:
 			bool changed = false;
 			for (const auto& id : selectedIds)
 			{
-				const auto& f = m_document.GetPicture().GetShape(id);
+				shapes::Figure* fig = m_document.GetPicture().GetShapeDeep(id);
+				if (!fig) continue;
 				Color current = (target == shapes::ColorTarget::Fill)
-					? f.GetFillColor()
-					: f.GetStrokeColor();
+					? fig->GetFillColor()
+					: fig->GetStrokeColor();
 				if (current != c)
 				{
 					changed = true;
@@ -266,9 +267,7 @@ private:
 			m_document.GetHistory().Execute(
 				std::make_unique<ColorCommand>(m_document.GetPicture(), selectedIds, c, target));
 		}
-
 	}
-
 	std::unique_ptr<ICommand> CreateTimelineCommand(const TimelineDragResult& r)
 	{
 		using Mode = TimelineDragResult::Mode;
