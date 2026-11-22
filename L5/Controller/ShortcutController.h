@@ -7,6 +7,7 @@
 
 #include "WindowAction.h"
 #include "Commands/DeleteCommand.h"
+#include "Commands/DeleteNestedCommand.h"
 #include "Commands/GroupCommand.h"
 #include "Commands/UngroupCommand.h"
 #include "Controller/DocumentController.h"
@@ -63,7 +64,7 @@ public:
 		{
 			if (auto selectedIds = m_state.GetValidSelectedIds(m_document.GetPicture()); !selectedIds.empty())
 			{
-				m_document.GetHistory().Execute(std::make_unique<DeleteCommand>(m_document.GetPicture(), selectedIds));
+				m_document.GetHistory().Execute(std::make_unique<DeleteNestedCommand>(m_document.GetPicture(), selectedIds));
 				m_state.ClearSelection();
 			}
 		}
