@@ -12,6 +12,7 @@
 #include "Commands/AddCommand.h"
 #include "Commands/ColorCommand.h"
 #include "Commands/DeleteCommand.h"
+#include "Commands/DeleteNestedCommand.h"
 #include "Commands/GroupCommand.h"
 #include "Commands/MoveShapesCommand.h"
 #include "Commands/ReorderCommand.h"
@@ -240,8 +241,8 @@ TEST(Color, FillUndoRedo)
 {
     shapes::Picture pic; CommandHistory h;
     auto a = AddRect(pic, h);
-    gfx::Color oldFill = pic.GetShape(a).GetFillColor();
-    gfx::Color red(255, 0, 0, 255);
+    Color oldFill = pic.GetShape(a).GetFillColor();
+    Color red(255, 0, 0, 255);
 
     h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a},
         red, shapes::ColorTarget::Fill));
@@ -256,8 +257,8 @@ TEST(Color, StrokeUndoRedo)
 {
     shapes::Picture pic; CommandHistory h;
     auto a = AddRect(pic, h);
-    gfx::Color oldStroke = pic.GetShape(a).GetStrokeColor();
-    gfx::Color blue(0, 0, 255, 255);
+    Color oldStroke = pic.GetShape(a).GetStrokeColor();
+	Color blue(0, 0, 255, 255);
 
     h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a},
         blue, shapes::ColorTarget::Stroke));
@@ -271,16 +272,16 @@ TEST(Color, SaveLoadBothColors)
     shapes::Picture pic; CommandHistory h;
     auto a = AddRect(pic, h);
     h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a},
-        gfx::Color(10, 20, 30, 255), shapes::ColorTarget::Fill));
+        Color(10, 20, 30, 255), shapes::ColorTarget::Fill));
     h.Execute(std::make_unique<ColorCommand>(pic, std::vector<std::string>{a},
-        gfx::Color(40, 50, 60, 255), shapes::ColorTarget::Stroke));
+        Color(40, 50, 60, 255), shapes::ColorTarget::Stroke));
 
     std::stringstream ss;
     SaveService::Save(pic, ss);
     shapes::Picture restored = LoadService::Load(ss);
 
-    EXPECT_EQ(restored.GetShape(a).GetFillColor(),   gfx::Color(10, 20, 30, 255));
-    EXPECT_EQ(restored.GetShape(a).GetStrokeColor(), gfx::Color(40, 50, 60, 255));
+    EXPECT_EQ(restored.GetShape(a).GetFillColor(),   Color(10, 20, 30, 255));
+    EXPECT_EQ(restored.GetShape(a).GetStrokeColor(), Color(40, 50, 60, 255));
 }
 
 TEST(Color, MultipleShapesOneCommand)
@@ -290,9 +291,9 @@ TEST(Color, MultipleShapesOneCommand)
     auto b = AddRect(pic, h);
     auto c = AddRect(pic, h);
 
-    gfx::Color oldA = pic.GetShape(a).GetFillColor();
-    gfx::Color oldB = pic.GetShape(b).GetFillColor();
-    gfx::Color red(255, 0, 0, 255);
+    Color oldA = pic.GetShape(a).GetFillColor();
+    Color oldB = pic.GetShape(b).GetFillColor();
+    Color red(255, 0, 0, 255);
 
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{a, b}, red, shapes::ColorTarget::Fill));
@@ -800,7 +801,7 @@ TEST(ColorMacro, GroupColorAffectsAllChildren)
     h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
     std::string gId = FindFirstGroupId(pic);
 
-    gfx::Color blue(0, 0, 255, 255);
+    Color blue(0, 0, 255, 255);
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
 
@@ -817,8 +818,8 @@ TEST(ColorMacro, UndoRestoresGroupColor)
     h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
     std::string gId = FindFirstGroupId(pic);
 
-    gfx::Color oldGroupColor = pic.GetShape(gId).GetFillColor();
-    gfx::Color blue(0, 0, 255, 255);
+    Color oldGroupColor = pic.GetShape(gId).GetFillColor();
+    Color blue(0, 0, 255, 255);
 
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
@@ -837,7 +838,7 @@ TEST(ColorMacro, RedoReappliesGroupColor)
     h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
     std::string gId = FindFirstGroupId(pic);
 
-    gfx::Color blue(0, 0, 255, 255);
+    Color blue(0, 0, 255, 255);
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
     h.Undo();
@@ -859,7 +860,7 @@ TEST(ColorMacro, NestedGroupRecursive)
     h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c}));
     std::string g2 = FindFirstGroupId(pic);
 
-    gfx::Color blue(0, 0, 255, 255);
+    Color blue(0, 0, 255, 255);
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{g2}, blue, shapes::ColorTarget::Fill));
 
@@ -883,7 +884,7 @@ TEST(ColorMacro, SaveLoadPreservesChildColors)
     h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
     std::string gId = FindFirstGroupId(pic);
 
-    gfx::Color blue(0, 0, 255, 255);
+    Color blue(0, 0, 255, 255);
     h.Execute(std::make_unique<ColorCommand>(
         pic, std::vector<std::string>{gId}, blue, shapes::ColorTarget::Fill));
 
@@ -894,4 +895,110 @@ TEST(ColorMacro, SaveLoadPreservesChildColors)
     const auto& g = restored.GetShape(gId);
     EXPECT_EQ(FindChild(g, a)->GetFillColor(), blue);
     EXPECT_EQ(FindChild(g, b)->GetFillColor(), blue);
+}
+
+TEST(DeleteNested, CascadingDissolve)
+{
+    shapes::Picture pic; CommandHistory h;
+
+    auto a = AddRect(pic, h, {0, 0, 10, 10});
+    auto b = AddRect(pic, h, {20, 0, 10, 10});
+    auto c = AddRect(pic, h, {40, 0, 10, 10});
+    auto d = AddRect(pic, h, {60, 0, 10, 10});
+
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+    std::string g1 = FindFirstGroupId(pic);
+
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c}));
+    std::string g2 = FindFirstGroupId(pic);
+
+    h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g2, d}));
+    std::string g3 = FindFirstGroupId(pic);
+	h.Execute(std::make_unique<DeleteNestedCommand>(pic, std::vector<std::string>{a}));
+
+    EXPECT_FALSE(pic.HasShapeDeep(a));
+    EXPECT_FALSE(pic.HasShapeDeep(g1));
+    EXPECT_TRUE(pic.HasShapeDeep(g2));
+    EXPECT_TRUE(pic.HasShapeDeep(g3));
+    EXPECT_TRUE(pic.HasShapeDeep(b));
+    EXPECT_TRUE(pic.HasShapeDeep(c));
+    EXPECT_TRUE(pic.HasShapeDeep(d));
+
+    auto g2Children = pic.FindGroupDeep(g2)->GetChildIds();
+    ASSERT_EQ(g2Children.size(), 2u);
+    EXPECT_NE(std::find(g2Children.begin(), g2Children.end(), b), g2Children.end());
+    EXPECT_NE(std::find(g2Children.begin(), g2Children.end(), c), g2Children.end());
+
+    h.Undo();
+    EXPECT_TRUE(pic.HasShapeDeep(a));
+    EXPECT_TRUE(pic.HasShapeDeep(g1));
+    EXPECT_TRUE(pic.HasShapeDeep(g2));
+    EXPECT_TRUE(pic.HasShapeDeep(g3));
+
+    auto g1Children = pic.FindGroupDeep(g1)->GetChildIds();
+    ASSERT_EQ(g1Children.size(), 2u);
+    EXPECT_NE(std::find(g1Children.begin(), g1Children.end(), a), g1Children.end());
+    EXPECT_NE(std::find(g1Children.begin(), g1Children.end(), b), g1Children.end());
+}
+
+TEST(DeleteNested, MultipleLevelsAtOnce)
+{
+	shapes::Picture pic; CommandHistory h;
+
+	auto a = AddRect(pic, h, {0, 0, 10, 10});
+	auto b = AddRect(pic, h, {20, 0, 10, 10});
+	auto c = AddRect(pic, h, {40, 0, 10, 10});
+	auto d = AddRect(pic, h, {60, 0, 10, 10});
+
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string g1 = FindFirstGroupId(pic);
+
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{g1, c}));
+	std::string g2 = FindFirstGroupId(pic);
+
+	h.Execute(std::make_unique<DeleteNestedCommand>(pic, std::vector<std::string>{a, d}));
+
+	EXPECT_FALSE(pic.HasShapeDeep(a));
+	EXPECT_FALSE(pic.HasShapeDeep(d));
+
+	EXPECT_FALSE(pic.HasShapeDeep(g1));
+	EXPECT_TRUE(pic.HasShapeDeep(g2));
+	EXPECT_TRUE(pic.HasShapeDeep(b));
+	EXPECT_TRUE(pic.HasShapeDeep(c));
+
+	auto g2Children = pic.FindGroupDeep(g2)->GetChildIds();
+	ASSERT_EQ(g2Children.size(), 2u);
+
+	h.Undo();
+	EXPECT_TRUE(pic.HasShapeDeep(a));
+	EXPECT_TRUE(pic.HasShapeDeep(d));
+	EXPECT_TRUE(pic.HasShapeDeep(g1));
+	EXPECT_TRUE(pic.HasShapeDeep(g2));
+}
+
+TEST(DeleteNested, EmptyGroupDissolves)
+{
+	shapes::Picture pic; CommandHistory h;
+
+	auto a = AddRect(pic, h, {0, 0, 10, 10});
+	auto b = AddRect(pic, h, {20, 0, 10, 10});
+
+	h.Execute(std::make_unique<GroupCommand>(pic, std::vector<std::string>{a, b}));
+	std::string g1 = FindFirstGroupId(pic);
+
+	h.Execute(std::make_unique<DeleteNestedCommand>(pic, std::vector<std::string>{a, b}));
+
+	EXPECT_FALSE(pic.HasShapeDeep(a));
+	EXPECT_FALSE(pic.HasShapeDeep(b));
+	EXPECT_FALSE(pic.HasShapeDeep(g1));
+	EXPECT_EQ(pic.GetOrder().size(), 0u);
+
+	h.Undo();
+	EXPECT_TRUE(pic.HasShapeDeep(a));
+	EXPECT_TRUE(pic.HasShapeDeep(b));
+	EXPECT_TRUE(pic.HasShapeDeep(g1));
+
+	auto g1Children = pic.FindGroupDeep(g1)->GetChildIds();
+	ASSERT_EQ(g1Children.size(), 2u);
+	EXPECT_EQ(pic.GetOrder().size(), 1u);
 }
