@@ -312,6 +312,24 @@ public:
 		return {};
 	}
 
+	std::string GetTopLevelAncestor(const std::string& id) const
+	{
+		if (HasShape(id))
+		{
+			return id;
+		};
+
+		for (const auto& topId : m_order)
+		{
+			auto it = m_shapes.find(topId);
+			if (it != m_shapes.end() && HasChildRecursive(*it->second, id))
+			{
+				return topId;
+			}
+		}
+		return {};
+	}
+
 private:
 	static bool HasChildRecursive(const Figure& fig, const std::string& id)
 	{

@@ -104,12 +104,31 @@ private:
 			m_create.Begin(pos);
 			return;
 		}
-		const std::string hitId = m_document.GetPicture().HitTest(pos.x, pos.y);
-		if (!hitId.empty())
+		const std::string deepHit = m_document.GetPicture().HitTestDeep(pos.x, pos.y);
+		if (!deepHit.empty())
 		{
-			if (!m_state.IsShapeVisible(m_document.GetPicture(), hitId, m_state.currentTime))
+			if (!m_state.IsShapeVisible(m_document.GetPicture(), deepHit, m_state.currentTime))
 			{
 				m_state.ClearSelection();
+				return;
+			}
+			if (m_document.GetPicture().HasShape(deepHit))
+			{
+				std::string topId = m_document.GetPicture().GetTopLevelAncestor(deepHit);
+				if (m_state.IsSelected(topId))
+				{
+					m_state.SetSelectedIds({deepHit});
+					m_state.mode = EditorState::Mode::Idle;
+					return;
+				}
+				m_state.SetSelectedIds({ topId });
+				m_state.dragAnchorX = pos.x;
+				m_state.dragAnchorY = pos.y;
+				m_state.dragStartBounds.clear();
+				m_state.dragStartBounds[topId] = m_document.GetPicture().GetShape(topId).GetBounds();
+				m_state.lastAppliedDx = 0;
+				m_state.lastAppliedDy = 0;
+				m_state.mode = EditorState::Mode::Dragging;
 				return;
 			}
 		}
