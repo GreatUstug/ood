@@ -47,9 +47,9 @@ public:
 		try
 		{
 			auto newPicture = DocumentIO::Load(*path);
-			m_document.GetPicture().ReplaceWith(std::move(newPicture));
 			m_state.ClearSelection();
 			m_document.GetHistory().Clear();
+			m_document.GetPicture().ReplaceWith(std::move(newPicture));
 		}
 		catch (const std::exception& e)
 		{
@@ -60,9 +60,9 @@ public:
 	void New()
 	{
 		shapes::Picture empty;
-		m_document.GetPicture().ReplaceWith(std::move(empty));
 		m_state.ClearSelection();
 		m_document.GetHistory().Clear();
+		m_document.GetPicture().ReplaceWith(std::move(empty));
 	}
 
 private:

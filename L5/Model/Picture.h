@@ -25,7 +25,14 @@ public:
 	{
 	}
 
-	void Subscribe(PictureObserver* obs) { m_observers.AddObserver(obs); }
+	void Subscribe(PictureObserver* obs)
+	{
+		m_observers.AddObserver(obs);
+		if (obs)
+		{
+			obs->OnPictureChanged(BuildShapeInfo());
+		}
+	}
 	void Unsubscribe(PictureObserver* obs) { m_observers.RemoveObserver(obs); }
 
 	void AddShape(std::unique_ptr<Figure> figure, const std::optional<size_t> index = std::nullopt)

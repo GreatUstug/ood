@@ -5,6 +5,8 @@
 #ifndef L3_SHAPELISTVIEW_H
 #define L3_SHAPELISTVIEW_H
 
+#include <ranges>
+
 #include "Model/Picture.h"
 #include "Model/EditorState.h"
 #include "Model/ShapeInfo.h"
@@ -58,8 +60,8 @@ public:
 	void DrawRows()
     {
     	float rowY = m_y + ROW_PADDING;
-    	for (auto shape = m_cachedShapes.rbegin(); shape != m_cachedShapes.rend(); ++shape) {
-    		DrawRow(*shape, rowY);
+    	for (auto & m_cachedShape : std::ranges::reverse_view(m_cachedShapes)) {
+    		DrawRow(m_cachedShape, rowY);
     		rowY += ROW_HEIGHT;
     		if (rowY > m_y + m_height) break;
     	}

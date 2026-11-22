@@ -25,7 +25,14 @@ struct EditorState
 
 	ColorMode colorMode = ColorMode::Fill;
 
-	void Subscribe(EditorStateObserver* obs) { m_observers.AddObserver(obs); }
+	void Subscribe(EditorStateObserver* obs)
+	{
+		m_observers.AddObserver(obs);
+		if (obs)
+		{
+			obs->OnSelectionChanged(m_selectedIds);
+		}
+	}
 	void Unsubscribe(EditorStateObserver* obs) { m_observers.RemoveObserver(obs); }
 
 
