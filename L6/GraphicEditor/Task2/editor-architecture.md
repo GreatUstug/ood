@@ -127,11 +127,3 @@ Preview — в `EditorState`.
    `ShapeCreateController`, `ShapeTransformController`.
 7. **`sf::View` в `EditorWindowController`** — это View-уровень, но зум **не** входит в документ,
    Undo/Redo и Save/Load. Каждое окно имеет свой `m_camera`.
-
-## 7. Легенда диаграммы
-
-- Сплошная стрелка — вызов/использование (`Execute`, `Render`, `HandleClick`, `GetShapeDeep`).
-- Пунктирная стрелка с подписью `observer` — уведомление через `ObserverList`.
-- Граница `Graphical Editor` — контейнер C4.
-- Внешние системы: `SFML` (окно/ввод/графика), `portable-file-dialogs` (нативные диалоги),
-  `File System` (файлы документов).
