@@ -37,7 +37,7 @@ public:
             return a.second < b.second;
         });
 
-        auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#c678ff", "#000000");
+        auto group = std::make_unique<shapes::GroupFigure>(m_groupId, "#000000", "#000000");
         for (const auto& [id, idx] : m_children)
             group->AddChild(m_picture.ExtractFigure(id));
         m_picture.AddShape(std::move(group));
